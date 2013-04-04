@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+         version="2.4">
+  <display-name>Clarity Web</display-name>
+  <filter>
+    <filter-name>AddDefaultEncoding Filter</filter-name>
+    <filter-class>org.apache.catalina.filters.AddDefaultCharsetFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>system</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>AddDefaultEncoding Filter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+   <filter-mapping>
+    <filter-name>Charset Filter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+   <filter>
+    <description>GZip Content Compression Filter</description>
+    <display-name>GZip Filter</display-name>
+    <filter-name>GZipFilter</filter-name>
+    <filter-class>
+      com.niku.union.web.filter.GZIPResponseFilter
+    </filter-class>
+  </filter>
+  <filter>
+    <description>Tenant Files Filter</description>
+    <display-name>Tenant Files Filter</display-name>
+    <filter-name>TenantFiles</filter-name>
+    <filter-class>
+      com.niku.union.web.filter.TenantFilesFilter
+    </filter-class>
+    <init-param>
+      <param-name>basepath</param-name>
+      <param-value>/tenants</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>GZipFilter</filter-name>
+    <url-pattern>/wsdl/*</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>AddDefaultEncoding Filter</filter-name>
+    <url-pattern>/app</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>GZipFilter</filter-name>
+    <url-pattern>/app</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>AddDefaultEncoding Filter</filter-name>
+    <url-pattern>/nu</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>GZipFilter</filter-name>
+    <url-pattern>/nu</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>TenantFiles</filter-name>
+    <url-pattern>/tenants/*</url-pattern>
+  </filter-mapping>
+  <!-- Filter mapping for CSS files -->
+  <filter-mapping>
+    <filter-name>GZipFilter</filter-name>
+    <url-pattern>*.css</url-pattern>
+  </filter-mapping>
+  <!-- Filter mapping for JS files -->
+  <filter-mapping>
+    <filter-name>GZipFilter</filter-name>
+    <url-pattern>*.js</url-pattern>
+  </filter-mapping>
+   <filter-mapping>
+    <filter-name>AddDefaultEncoding Filter</filter-name>
+    <url-pattern>*.js</url-pattern>
+  </filter-mapping>
+  <!-- Filter mapping for HTML files -->
+  <filter-mapping>
+    <filter-name>GZipFilter</filter-name>
+    <url-pattern>*.html</url-pattern>
+  </filter-mapping>
+   <filter-mapping>
+    <filter-name>AddDefaultEncoding Filter</filter-name>
+    <url-pattern>*.html</url-pattern>
+  </filter-mapping>
+  <servlet>
+    <description>Processes all http requests for web pages</description>
+    <display-name>Clarity Web Control Servlet</display-name>
+    <servlet-name>Clarity Web Control</servlet-name>
+    <servlet-class>com.niku.union.web.WebControlServlet</servlet-class>
+    <init-param>
+      <param-name>enforceBridge</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <load-on-startup>2</load-on-startup>
+  </servlet>
+  <!--
+    <servlet>
+      <description>Handle requests for object instance data</description>
+      <display-name>Clarity Object REST Servlet</display-name>
+      <servlet-name>Clarity Object REST Servlet</servlet-name>
+      <servlet-class>org.restlet.ext.servlet.ServerServlet</servlet-class>
+      <init-param>
+        <param-name>org.restlet.application</param-name>
+        <param-value>com.niku.union.odf.services.ObjectRestApp</param-value>
+      </init-param>
+    </servlet>
+  -->
+  <servlet>
+    <description>Processes all XOG WSDL requests</description>
+    <display-name>Clarity XOG WSDL Servlet</display-name>
+    <servlet-name>Clarity XOG WSDL Servlet</servlet-name>
+    <servlet-class>com.niku.xog.service.XOGWSDLServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description>Processes all XOG SOAP requests</description>
+    <display-name>Clarity XOG SOAP Servlet</display-name>
+    <servlet-name>Clarity XOG SOAP Servlet</servlet-name>
+    <servlet-class>
+      com.niku.xog.service.XOGSOAPServlet
+    </servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>Clarity Scheduler Servlet</servlet-name>
+    <servlet-class>com.niku.projmgr.SchedulerServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>Xog Apache SOAP Servlet</servlet-name>
+    <servlet-class>
+      com.niku.xog.service.XOGApacheSOAPServlet
+    </servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>proxool</servlet-name>
+    <servlet-class>
+      com.niku.union.web.ProxoolAdminServlet
+    </servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>UIServlet</servlet-name>
+    <servlet-class>com.ca.clarity.uif.UIServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>OSFServlet</servlet-name>
+    <servlet-class>com.ca.platform.osf.service.transport.servlet.OSFServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet>
+    <servlet-name>MonitorServlet</servlet-name>
+    <servlet-class>org.restlet.ext.servlet.ServerServlet</servlet-class>
+    <init-param>
+      <param-name>org.restlet.application</param-name>
+      <param-value>com.ca.clarity.nsa.web.MonitorJaxRsApp</param-value>
+    </init-param>
+  </servlet>
+
+  <!-- Servlet 1: Expose the OData service endpoint -->   
+  <servlet>     
+    <servlet-name>ODataServlet</servlet-name>     
+    <servlet-class>com.ca.platform.osf.object.odata.ODataServlet</servlet-class>
+    <init-param>       
+      <param-name>org.restlet.application</param-name>
+      <param-value>com.ca.platform.osf.object.odata.ODataJaxRsApp</param-value>     
+    </init-param>
+    <init-param>
+      <param-name>odata4j.producerfactory</param-name>   
+      <param-value>com.ca.platform.osf.object.odata.ClarityODataProducerFactory</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>   
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ODataServlet</servlet-name>
+    <url-pattern>/odata/*</url-pattern>   
+  </servlet-mapping>    
+  
+  <!-- Servlet 2: Enable crossdomain access for browser clients -->   
+  <!--
+    <servlet-mapping>
+      <servlet-name>Clarity Object REST Servlet</servlet-name>
+      <url-pattern>/object/*</url-pattern>
+    </servlet-mapping>
+  -->
+  <servlet-mapping>
+    <servlet-name>Clarity Web Control</servlet-name>
+    <url-pattern>/app</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Clarity XOG SOAP Servlet</servlet-name>
+    <url-pattern>/xog</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>MonitorServlet</servlet-name>
+    <url-pattern>/monitor/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Clarity XOG WSDL Servlet</servlet-name>
+    <url-pattern>/wsdl</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Clarity XOG WSDL Servlet</servlet-name>
+    <url-pattern>/wsdl/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Xog Apache SOAP Servlet</servlet-name>
+    <url-pattern>/soap</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Clarity Scheduler Servlet</servlet-name>
+    <url-pattern>/sched</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>proxool</servlet-name>
+    <url-pattern>/proxool</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>UIServlet</servlet-name>
+    <url-pattern>/nu</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>OSFServlet</servlet-name>
+    <url-pattern>/services</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>OSFServlet</servlet-name>
+    <url-pattern>/services/*</url-pattern>
+  </servlet-mapping>
+  <mime-mapping>
+    <extension>rtf</extension>
+    <mime-type>application/msword</mime-type>
+  </mime-mapping>
+  <mime-mapping>
+    <extension>doc</extension>
+    <mime-type>application/msword</mime-type>
+  </mime-mapping>
+  <mime-mapping>
+    <extension>xls</extension>
+    <mime-type>application/x-msexcel</mime-type>
+  </mime-mapping>
+  <mime-mapping>
+    <extension>slk</extension>
+    <mime-type>application/x-msexcel</mime-type>
+  </mime-mapping>
+  <mime-mapping>
+    <extension>pdf</extension>
+    <mime-type>application/pdf</mime-type>
+  </mime-mapping>
+  <welcome-file-list>
+    <welcome-file>welcome.jsp</welcome-file>
+  </welcome-file-list>
+  <error-page>
+    <error-code>401</error-code>
+    <location>/app?action=union.notAuthorized</location>
+  </error-page>
+  <error-page>
+    <error-code>404</error-code>
+    <location>/app?action=union.notFound&amp;RhXm0r7tSeUqEr=true</location>
+  </error-page>
+  <error-page>
+    <error-code>500</error-code>
+    <location>/app?action=union.internalServerError</location>
+  </error-page>
+  <error-page>
+    <error-code>501</error-code>
+    <location>/app?action=union.notImplemented</location>
+  </error-page>
+  <error-page>
+    <error-code>504</error-code>
+    <location>/app?action=union.doubleClickException</location>
+  </error-page>
+  <jsp-config>
+    <taglib>
+      <taglib-uri>http://www.niku.com/taglib/content</taglib-uri>
+      <taglib-location>/WEB-INF/union/template/content.tld</taglib-location>
+    </taglib>
+    <taglib>
+      <taglib-uri>http://www.niku.com/taglib/nde</taglib-uri>
+      <taglib-location>/WEB-INF/union/template/nde.tld</taglib-location>
+    </taglib>
+    <taglib>
+      <taglib-uri>http://www.niku.com/taglib/i18n</taglib-uri>
+      <taglib-location>/WEB-INF/union/template/i18n.tld</taglib-location>
+    </taglib>
+    <taglib>
+      <taglib-uri>http://www.niku.com/taglib/date</taglib-uri>
+      <taglib-location>/WEB-INF/union/template/date.tld</taglib-location>
+    </taglib>
+    <taglib>
+      <taglib-uri>http://www.niku.com/taglib/number</taglib-uri>
+      <taglib-location>/WEB-INF/union/template/number.tld</taglib-location>
+    </taglib>
+    <taglib>
+      <taglib-uri>http://www.niku.com/taglib/jsl</taglib-uri>
+      <taglib-location>/WEB-INF/union/template/jsl-core.tld</taglib-location>
+    </taglib>
+    <taglib>
+      <taglib-uri>http://www.niku.com/taglib/jsl/odf</taglib-uri>
+      <taglib-location>/WEB-INF/union/template/jsl-odf.tld</taglib-location>
+    </taglib>
+    <taglib>
+      <taglib-uri>http://www.opensymphony.com/oscache</taglib-uri>
+      <taglib-location>/WEB-INF/union/template/oscache.tld</taglib-location>
+    </taglib>
+    <taglib>
+      <taglib-uri>http://java.sun.com/jsp/jstl/core</taglib-uri>
+      <taglib-location>/WEB-INF/union/template/c.tld</taglib-location>
+    </taglib>
+    <taglib>
+      <taglib-uri>http://java.sun.com/jsp/jstl/functions</taglib-uri>
+      <taglib-location>/WEB-INF/union/template/fn.tld</taglib-location>
+    </taglib>
+    <jsp-property-group>
+      <url-pattern>*.jspx</url-pattern>
+      <el-ignored>false</el-ignored>
+      <page-encoding>UTF-8</page-encoding>
+      <is-xml>true</is-xml>
+    </jsp-property-group>
+  </jsp-config>
+  <resource-ref>
+    <res-ref-name>jdbc/NikuDS</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+    <res-sharing-scope>Unshareable</res-sharing-scope>
+  </resource-ref>
+
+
+  <!-- configuration -->
+  <!-- If you have your own Guice module(s), put them here as a colon-separated list. -->
+  <!-- Note that any extras modules are optional -->
+  <context-param>
+    <param-name>guice-modules</param-name>
+    <param-value>
+      org.apache.shindig.common.PropertiesModule:
+      org.apache.shindig.gadgets.DefaultGuiceModule:
+      org.apache.shindig.social.core.config.SocialApiGuiceModule:
+      org.apache.shindig.social.sample.SampleModule:
+      org.apache.shindig.gadgets.oauth.OAuthModule:
+      org.apache.shindig.gadgets.oauth2.OAuth2Module:
+      org.apache.shindig.gadgets.oauth2.OAuth2MessageModule:
+      org.apache.shindig.gadgets.oauth2.handler.OAuth2HandlerModule:
+      org.apache.shindig.gadgets.oauth2.persistence.sample.OAuth2PersistenceModule:
+      org.apache.shindig.common.cache.ehcache.EhCacheModule:
+      org.apache.shindig.sample.shiro.ShiroGuiceModule:
+      org.apache.shindig.sample.container.SampleContainerGuiceModule:
+      org.apache.shindig.extras.ShindigExtrasGuiceModule:
+      org.apache.shindig.gadgets.admin.GadgetAdminModule
+    </param-value>
+  </context-param>
+
+  <filter>
+    <filter-name>hostFilter</filter-name>
+    <filter-class>org.apache.shindig.common.servlet.HostFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>hostFilter</filter-name>
+    <url-pattern>/gadgets/ifr</url-pattern>
+    <url-pattern>/gadgets/js/*</url-pattern>
+    <url-pattern>/gadgets/proxy/*</url-pattern>
+    <url-pattern>/gadgets/concat</url-pattern>
+    <url-pattern>/gadgets/makeRequest</url-pattern>
+    <url-pattern>/rpc/*</url-pattern>
+    <url-pattern>/rest/*</url-pattern>
+  </filter-mapping>
+
+    <filter>
+        <filter-name>ShiroFilter</filter-name>
+        <filter-class>org.apache.shiro.web.servlet.IniShiroFilter</filter-class>
+        <init-param>
+            <param-name>config</param-name>
+            <param-value>
+            <![CDATA[
+                # The ShiroFilter configuration is very powerful and flexible, while still remaining succinct.
+                # Please read the comprehensive example, with full comments and explanations, in the JavaDoc:
+                #
+                # http://www.jsecurity.org/api/org/jsecurity/web/servlet/JSecurityFilter.html
+                [main]
+                shindigSampleRealm = org.apache.shindig.sample.shiro.SampleShiroRealm
+                securityManager.realm = $shindigSampleRealm
+                authc.loginUrl = /login.jsp
+
+                [urls]
+                # The /login.jsp is not restricted to authenticated users (otherwise no one could log in!), but
+                # the 'authc' filter must still be specified for it so it can process that url's
+                # login submissions. It is 'smart' enough to allow those requests through as specified by the
+                # shiro.loginUrl above.
+                /login.jsp = authc
+
+                /oauth/authorize/** = authc
+                /oauth2/authorize/** = authc
+            ]]>
+            </param-value>
+        </init-param>
+    </filter>
+
+  <filter>
+    <filter-name>authFilter</filter-name>
+    <filter-class>org.apache.shindig.auth.AuthenticationServletFilter</filter-class>
+  </filter>
+
+  <filter>
+    <filter-name>etagFilter</filter-name>
+    <filter-class>org.apache.shindig.gadgets.servlet.ETagFilter</filter-class>
+  </filter>
+
+
+  <filter-mapping>
+      <filter-name>ShiroFilter</filter-name>
+      <url-pattern>/oauth/authorize</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+      <filter-name>ShiroFilter</filter-name>
+      <url-pattern>/oauth2/authorize</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+      <filter-name>ShiroFilter</filter-name>
+      <url-pattern>*.jsp</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>authFilter</filter-name>
+    <url-pattern>/social/*</url-pattern>
+    <url-pattern>/gadgets/ifr</url-pattern>
+    <url-pattern>/gadgets/makeRequest</url-pattern>
+    <url-pattern>/gadgets/proxy</url-pattern>
+    <url-pattern>/gadgets/api/rpc/*</url-pattern>
+    <url-pattern>/gadgets/api/rest/*</url-pattern>
+    <url-pattern>/rpc/*</url-pattern>
+    <url-pattern>/rest/*</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>etagFilter</filter-name>
+    <url-pattern>*</url-pattern>
+  </filter-mapping>
+
+  <listener>
+    <listener-class>org.apache.shindig.common.servlet.GuiceServletContextListener</listener-class>
+  </listener>
+
+  <!-- Render a Gadget -->
+  <servlet>
+    <servlet-name>xml-to-html</servlet-name>
+    <servlet-class>
+      org.apache.shindig.gadgets.servlet.GadgetRenderingServlet
+    </servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>accel</servlet-name>
+    <servlet-class>
+      org.apache.shindig.gadgets.servlet.HtmlAccelServlet
+    </servlet-class>
+  </servlet>
+
+  <!-- Proxy -->
+  <servlet>
+    <servlet-name>proxy</servlet-name>
+    <servlet-class>
+      org.apache.shindig.gadgets.servlet.ProxyServlet
+    </servlet-class>
+  </servlet>
+
+  <!-- makeRequest -->
+  <servlet>
+    <servlet-name>makeRequest</servlet-name>
+    <servlet-class>
+      org.apache.shindig.gadgets.servlet.MakeRequestServlet
+    </servlet-class>
+  </servlet>
+
+  <!-- Concat -->
+  <servlet>
+    <servlet-name>concat</servlet-name>
+    <servlet-class>
+      org.apache.shindig.gadgets.servlet.ConcatProxyServlet
+    </servlet-class>
+  </servlet>
+
+  <!-- OAuth callback -->
+  <servlet>
+    <servlet-name>oauthCallback</servlet-name>
+    <servlet-class>
+      org.apache.shindig.gadgets.servlet.OAuthCallbackServlet
+    </servlet-class>
+  </servlet>
+
+  <!-- OAuth2 callback -->
+  <servlet>
+    <servlet-name>oauth2callback</servlet-name>
+    <servlet-class>
+      org.apache.shindig.gadgets.servlet.OAuth2CallbackServlet
+    </servlet-class>
+  </servlet>
+
+  <!-- Metadata RPC -->
+  <servlet>
+    <servlet-name>metadata</servlet-name>
+    <servlet-class>
+      org.apache.shindig.gadgets.servlet.RpcServlet
+    </servlet-class>
+  </servlet>
+
+  <!-- javascript serving -->
+  <servlet>
+    <servlet-name>js</servlet-name>
+    <servlet-class>org.apache.shindig.gadgets.servlet.JsServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>restapiServlet</servlet-name>
+    <servlet-class>
+      org.apache.shindig.protocol.DataServiceServlet
+    </servlet-class>
+    <init-param>
+      <param-name>handlers</param-name>
+      <param-value>org.apache.shindig.handlers</param-value>
+    </init-param>
+  </servlet>
+
+  <!-- Serve social RPC api -->
+  <servlet>
+    <servlet-name>jsonRpcServlet</servlet-name>
+    <servlet-class>
+      org.apache.shindig.protocol.JsonRpcServlet
+    </servlet-class>
+    <init-param>
+      <param-name>handlers</param-name>
+      <param-value>org.apache.shindig.handlers</param-value>
+    </init-param>
+  </servlet>
+
+  <!-- Serve sample OAuth apis -->
+  <servlet>
+    <servlet-name>sampleOAuth</servlet-name>
+    <servlet-class>
+      org.apache.shindig.social.sample.oauth.SampleOAuthServlet
+    </servlet-class>
+  </servlet>
+
+  <!-- Serve OAuth 2 APIs -->
+  <servlet>
+    <servlet-name>OAuth2Servlet</servlet-name>
+    <servlet-class>
+      org.apache.shindig.social.core.oauth2.OAuth2Servlet
+    </servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>rpcSwf</servlet-name>
+    <servlet-class>
+      org.apache.shindig.gadgets.servlet.RpcSwfServlet
+    </servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>js</servlet-name>
+    <url-pattern>/gadgets/js/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>proxy</servlet-name>
+    <url-pattern>/gadgets/proxy/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>makeRequest</servlet-name>
+    <url-pattern>/gadgets/makeRequest</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>jsonRpcServlet</servlet-name>
+    <url-pattern>/rpc/*</url-pattern>
+    <url-pattern>/gadgets/api/rpc/*</url-pattern>
+    <url-pattern>/social/rpc/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>restapiServlet</servlet-name>
+    <url-pattern>/rest/*</url-pattern>
+    <url-pattern>/gadgets/api/rest/*</url-pattern>
+    <url-pattern>/social/rest/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>concat</servlet-name>
+    <url-pattern>/gadgets/concat</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>oauthCallback</servlet-name>
+    <url-pattern>/gadgets/oauthcallback</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>oauth2callback</servlet-name>
+    <url-pattern>/gadgets/oauth2callback</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>xml-to-html</servlet-name>
+    <url-pattern>/gadgets/ifr</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>accel</servlet-name>
+    <url-pattern>/gadgets/accel</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>metadata</servlet-name>
+    <url-pattern>/gadgets/metadata</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>sampleOAuth</servlet-name>
+    <url-pattern>/oauth/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>OAuth2Servlet</servlet-name>
+    <url-pattern>/oauth2/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>rpcSwf</servlet-name>
+    <url-pattern>/xpc*</url-pattern>
+  </servlet-mapping>
+</web-app>

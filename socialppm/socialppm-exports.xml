@@ -1,0 +1,9 @@
+<!-- Copyright (c) 2013, CA Inc.  All rights reserved. -->
+<project name="socialppm-exports">
+  <!-- Copyright (c) 2009, CA Inc.  All rights reserved. -->
+  <!--
+    This file contains the properties and paths exported by this module set to all modules within the clarity build.
+  -->
+
+  <property name="dir.socialppm" value="${dir.build}/socialppm"/>  
+</project>

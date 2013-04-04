@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<project name="socialppm.common" basedir="."
+         xmlns:cade-core-antlib="antlib:com.ca.common.cade.core"
+         xmlns:macros-install="macros:platform.infrastructure.devenv.macros-install">
+
+<taskdef name="callList" classname="com.niku.tools.taskdefs.CallList"/>
+  <taskdef name="if" classname="com.niku.tools.taskdefs.IfTask"/>
+  <taskdef name="xpath" classname="com.niku.tools.taskdefs.XPath"/>
+  <taskdef name="proputil" classname="com.niku.tools.taskdefs.PropertyUtil"/>
+  <taskdef name="choose" classname="com.niku.tools.taskdefs.ChooseTask"/>
+
+  <!--<target name="install" depends="src-install"/>-->
+
+  <property file="../../ant.properties"/>  
+  <property name="currentComponent" value="socialppm.common"/>
+  <property name="componentTitle" value="socialppm.common"/>
+
+  <property name="dir.build" location="${basedir}/.."/>
+  <import file="${dir.build}/infrastructure/devenv/std-build.xml"/>
+
+  <echo>BASE DIR = ${basedir}, dir.build = ${dir.build}</echo>
+  <property name="dir.platform.socialppm"
+            value="${dir.build}/socialppm"/>
+  <property name="dir.platform.socialppm.common"
+            value="${dir.platform.socialppm}/common"/>
+
+  <target name="jar" depends="compile">
+    <mkdir dir="${dir.platform.socialppm.common}/build/artifacts/jars"/>
+    <delete file="${dir.platform.socialppm.common}/build/artifacts/jars/socialppm.common.jar"/>
+    <jar jarfile="${dir.platform.socialppm.common}/build/artifacts/jars/socialppm.common.jar">
+      <fileset dir="${dir.platform.socialppm.common}/build/classes" includes="**/*"/>
+      <fileset dir="${dir.platform.socialppm.common}/src/META-INF" includes="**/*"/>
+    </jar>
+  </target>
+  
+  <path id="path.platform.socialppm.common.jars">  
+    <pathelement location="${dir.platform.socialppm}/common-lib/eclipselink-2.1.1.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/persistence-api-1.0.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/lightcouch-0.0.6.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/xercesImpl-2.9.1.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/nekohtml-1.9.17.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/args4j-2.0.16.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/commons-fileupload-1.2.2.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/caja-r5054.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/servlet-api-2.5-20081211.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/closure-compiler-v20130227.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/commons-codec-1.7.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/commons-io-2.4.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/commons-lang3-3.1.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/ehcache-core-2.5.2.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/el-api-6.0.36.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/guava-14.0.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/guice-3.0.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/guice-multibindings-3.0.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/htmlparser-r4209.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/httpclient-4.1.2.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/httpcore-4.1.2.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/icu4j-4.8.1.1.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/jarjar-1.1.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/jasper-el-6.0.36.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/javax.inject-1.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/joda-time-2.1.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/json-20070829.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/json-simple-1.1.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/jsr305-1.3.9.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/juel-impl-2.2.5.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/modules-0.3.2.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/oauth-20100527.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/oauth-consumer-20090617.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/oauth-httpclient4-20090913.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/oauth-provider-20100527.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/rome-1.0.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/sanselan-0.97-incubator.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/shiro-core-1.1.0.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/shiro-web-1.1.0.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/slf4j-api-1.6.1.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/slf4j-jdk14-1.6.1.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/xml-apis-1.3.04.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/xmlpull-1.1.3.1.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/xpp3_min-1.1.4c.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/xstream-1.4.3.jar"/>
+  </path>
+  <path id="lib.path">
+	  <path refid="path.platform.socialppm.common.jars"/>
+  </path>
+
+  <path id="classpath.compile.src">
+		<path refid="path.platform.socialppm.common.jars"/>		   
+    <path refid="path.platform.osf.common"/>
+		<path refid="path.platform.osf.service"/>
+		<path refid="path.platform.ext.common"/>
+		<path refid="path.platform.ext.common.apache.commons.fileupload"/>
+		<path refid="path.platform.ext.common.apache.commons.lang"/>
+		<path refid="path.platform.ext.common.cxf"/>
+		<path refid="path.platform.ext.common.jep"/>
+		<path refid="path.platform.ext.common.castor"/>
+		<path refid="path.platform.ext.common.fragments.xmlbeans"/>
+		<path refid="path.platform.ext.common.jep"/>
+		<path refid="path.platform.ext.common.json"/>
+		<path refid="path.platform.ext.common.servlet-api"/>
+		<path refid="path.platform.ext.common.soap"/>
+		<path refid="path.platform.ext.common.xerces"/>
+		<path refid="path.platform.ext.common.tomcat.jasper"/>
+		<path refid="path.platform.ext.restlet"/>    
+		<path refid="path.platform.ext.google.odata"/>
+		<path refid="path.platform.infrastructure.testing"/>
+		<path refid="path.legacy.union"/>
+		<path refid="path.legacy.ore"/>
+		<path refid="path.legacy.dbtools"/>
+		<path refid="path.legacy.dms"/>
+		<path refid="path.legacy.ore"/>
+		<path refid="path.legacy.xql2"/>
+		<path refid="path.legacy.xmlsrv"/>
+		<path refid="path.legacy.search"/>
+		<path refid="path.legacy.omp"/>		  
+   </path>
+</project>
