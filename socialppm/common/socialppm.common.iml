@@ -13,6 +13,21 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="union" />
+    <orderEntry type="module" module-name="dbtools" />
+    <orderEntry type="module" module-name="ext" />
+    <orderEntry type="module" module-name="ore" />
+    <orderEntry type="module" module-name="xmlsrv" />
+    <orderEntry type="module" module-name="xql2" />
+    <orderEntry type="module" module-name="osf.common" />
+    <orderEntry type="module" module-name="osf.service" />
+    <orderEntry type="module" module-name="dms" />
+    <orderEntry type="module" module-name="search" />
+    <orderEntry type="module" module-name="omp" />
+    <orderEntry type="module" module-name="infrastructure.testing" />
+    <orderEntry type="library" name="ext-test-lib" level="project" />
+    <orderEntry type="library" name="ext-build-lib" level="project" />
+    <orderEntry type="library" name="ext.json.json" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>

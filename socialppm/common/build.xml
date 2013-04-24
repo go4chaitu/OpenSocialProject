@@ -53,8 +53,8 @@
     <pathelement location="${dir.platform.socialppm}/common-lib/guice-3.0.jar"/>
     <pathelement location="${dir.platform.socialppm}/common-lib/guice-multibindings-3.0.jar"/>
     <pathelement location="${dir.platform.socialppm}/common-lib/htmlparser-r4209.jar"/>
-    <pathelement location="${dir.platform.socialppm}/common-lib/httpclient-4.1.2.jar"/>
-    <pathelement location="${dir.platform.socialppm}/common-lib/httpcore-4.1.2.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/httpclient-4.2.2.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common-lib/httpcore-4.2.2.jar"/>
     <pathelement location="${dir.platform.socialppm}/common-lib/icu4j-4.8.1.1.jar"/>
     <pathelement location="${dir.platform.socialppm}/common-lib/jarjar-1.1.jar"/>
     <pathelement location="${dir.platform.socialppm}/common-lib/jasper-el-6.0.36.jar"/>
