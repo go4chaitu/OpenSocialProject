@@ -1,0 +1,292 @@
+@import "../../ext/gxt/css/gxt-all.css";
+@import "../../ext/codemirror/codemirror.css";
+@import "../../npt/css/npt.css";
+@import "../../projmgr/css/projmgr.css";
+@import "../../pfm/css/pfm_portfolio.css";
+@import "gantt.css";
+@import "button.css";
+@import "dialog.css";
+@import "fields.css";
+@import "grid.css";
+@import "login.css";
+@import "omnibar.css";
+@import "portlet.css";
+@import "tab.css";
+@import "toolbar.css";
+@import "ubermenu.css";
+@import "calendar.css";
+@import "clarity_sn.css";
+
+
+/* The main, top-level Clarity CSS styles */
+
+/* Reset CSS styles - thanks to meyerweb.com */
+html,body,button,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td
+{
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-family: inherit;
+}
+
+input[type=checkbox], input[type=radio] {
+  margin: 2px;
+}
+
+a:link, a:visited {
+  color: #003366;
+  text-decoration: none;
+}
+
+a:hover, a:active {
+  color: #AA0000;
+  text-decoration: underline;
+}
+
+#ppm_app {
+  color: #000000;
+  font-family: Arial,Helvetica,Verdana,sans-serif;
+  font-size: 11px;
+  position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	overflow: hidden;
+}
+
+.ppm_app_full {
+  background: #E8EBF2 !important;
+}
+
+#ppm_workspace {
+  margin: 0px 15px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 119px;
+}
+
+.ppm_page_content {
+  overflow: auto;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 30px;
+}
+
+.ppm_workspace_title_row {
+  vertical-align: top;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.ppm_workspace_title {
+  display: inline-block;
+  font-weight: bold;
+  font-size: 15px;
+  padding: 11px 0px 5px 9px;
+  text-shadow: #EFF4F7 -1px 1px;
+}
+
+.ppm_header {
+  height: 38px;
+  white-space: nowrap;
+}
+
+.ppm_header > table td {
+  vertical-align: bottom;
+}
+
+.ppm_header_small {
+  height: 30px;
+  white-space: nowrap;
+}
+
+.ppm_header_links {
+  top: 3px;
+  right: 15px;
+  position: absolute;
+}
+
+#ppm_header_user, #ppm_header_user_img {
+  vertical-align: top;
+}
+
+.ppm_header_links a, .ppm_header_links a:visited {
+  color: inherit;
+  text-decoration: none;
+  vertical-align: top;
+}
+
+.ppm_header_links a:hover {
+  text-decoration: underline;
+}
+
+#ppm_header_logout {
+  margin-left: 6px;
+}
+
+.ppm_header_links_div {
+  margin-left: 6px;
+  padding-left: 6px;
+}
+
+.ppm_refresh_small {
+  background-color: transparent;
+  cursor: pointer;
+  margin: 2px 6px 0px 0px;
+}
+
+.ppm_addToFav_small {
+  background-color: transparent;
+  cursor: pointer;
+  margin: 2px 6px 0px 0px;
+}
+
+.ppm_page_actions {
+  margin: 5px 0px 0px 4px;
+  float: right;
+  white-space: nowrap;
+  padding-right: 5px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.ppm_page_actions a {
+  margin-left: 5px;
+}
+
+.ppm_legend {
+  margin-bottom: 7px;
+}
+
+.ppm_legend_item {
+  margin-left: 16px;
+}
+
+.ppm_error, .ppm_alert {
+  padding: 6px 0px;
+  margin-left: 6px;
+}
+
+.ppm_error > div > span, .ppm_alert > div > span,
+.ppm_error > span, .ppm_alert > span {
+  margin: 0px 8px 0px 4px;
+  color: #aa0000;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.ppm_worksheet_header {
+  color: #001122;
+  font-weight: bold;
+  background-color:#92A7BB;
+  vertical-align: bottom;
+  text-align: center;
+  padding: 3px;
+  border-left: 1px solid #92A7BB;
+  border-bottom: 1px solid #92A7BB;
+}
+
+.ppm_negative_value {
+  color: #FF0000
+}
+.ppm_alert > div > span,
+.ppm_alert > span {
+  color: #958423;
+}
+
+/* == TIMESHEET ======================================================================================================= */
+.pendingActuals { font-weight:bold !important; }
+td.pendingActuals { background-color:#FCD741; }
+
+/**
+ Styles for the portfolio gauges
+ */
+.ppm_gauge_text_under{
+    color: #6EA352;
+}
+
+.ppm_gauge_text_over{
+    color: #BB1D2D;
+}
+
+.ppm_gauge_under{
+   /* background-color: green; */
+  background: #6EA352; /* for non-css3 browsers */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#71A357', endColorstr='#4F8246'); /* for IE */
+  background: -webkit-gradient(linear, left top, left bottom, from(#71A357), to(#4F8246)); /* for webkit browsers */
+  background: -moz-linear-gradient(top, #71A357, #4F8246); /* for firefox 3.6+ */
+
+}
+
+.ppm_gauge_over{
+/*    background-color: red; */
+ background: #BB1D2D; /* for non-css3 browsers */
+ filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#CC2434', endColorstr='#9A3334'); /* for IE */
+ background: -webkit-gradient(linear, left top, left bottom, from(#CC2434), to(#9A3334)); /* for webkit browsers */
+ background: -moz-linear-gradient(top, #CC2434, #9A3334); /* for firefox 3.6+ */
+}
+
+.ppm_totalGauge{
+   width: 160px;
+   height: 25px;
+   margin-right: 20px;
+   background-color: #CCCECB;
+}
+
+.ppm_gapText{
+    text-align: right;
+    padding-right: 10px;
+    font-size: 95%;
+}
+
+.ppm_gaugeHeader{
+  color: #333;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: left;
+  padding-right: 5px;
+}
+
+.ppm_gauge{
+    height: 25px;
+}
+
+.ppm_gauge_label{
+  vertical-align: top;
+  text-align: left;
+}
+
+.boldText {
+  font-weight: bold;
+}
+
+#ppm_claritysn img {
+background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAAREAYAAABr/Zu5AAAFnElEQ?DCxg4gfZC+iw6yQDCh4okUc0C1U3GjvE+NrCP7UMKF+v4NuRVchkpi8c5AAAAASUVORK5CYII=);
+width: 20px;
+height: 20px;
+}
+#claritysn_box {
+position: relative;
+height: 20px;
+margin-left: -60px;
+margin-top: 5px;
+width: 200px;
+background: rgba(255, 0, 0, 0);
+cursor: default;
+}
+#claritysn_box ul {
+display: block;
+}
+#claritysn_box li {
+display: inline-block;
+cursor: pointer;
+}
