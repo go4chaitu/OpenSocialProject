@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) 2013, CA Inc.  All rights reserved. -->
+<Module>
+<ModulePrefs title="Sample PubSub Publisher">
+</ModulePrefs>
+<Content type="html">
+<![CDATA[
+<link rel="stylesheet" type="text/css" href="gadgets.css">
+<script type="text/javascript" src="OpenSocialWrapper.js"></script>
+<script type="text/javascript" src="ActivityStreamsRender.js"></script>
+<script type='text/javascript'>
+var token = '&st=sarch04%3Asarch04%3Aappid%3Acont%3Aurl%3A0%3Adefault&scrolling=no';
+var relativePath = '/niku/socialppm/container/claritysn/';
+var gadgetsPath = 'http://localhost/niku/socialppm/container/claritysn/';
+var profileGadget = gadgetsPath + 'ProfileGadget.xml';
+var friendsGadget = gadgetsPath + 'FriendsGadget.xml';
+var activityGadget = gadgetsPath + 'ActivityGadget.xml';
+var groupGadget = gadgetsPath + 'GroupsGadget.xml';
+var messageGadget = gadgetsPath + 'MessagesGadget.xml';
+var mediaGadget = gadgetsPath + 'MediaGadget.xml';
+var ifrPath = 'http://localhost/niku/gadgets/ifr';
+function creatingURL(){
+	//var profile = relativePath + 'profile.html';
+	var profile = ifrPath + '?url=' + profileGadget + token;
+	var friends = ifrPath + '?url=' + friendsGadget + token;
+ 	var work = '/container/mock-screens/works.html';
+ 	var activity = ifrPath + '?url=' + activityGadget + token;
+ 	var groups = ifrPath + '?url=' + groupGadget + token;
+ 	var message = ifrPath + '?url=' + messageGadget + token;
+ 	var media = ifrPath + '?url=' + mediaGadget + token;
+ 	this.document.getElementById('profileLink').href = profile;
+ 	this.document.getElementById('friendsLink').href = friends;
+ 	this.document.getElementById('workLink').href = work;
+ 	this.document.getElementById('activityLink').href = activity;
+ 	this.document.getElementById('groupsLink').href = groups;
+ 	this.document.getElementById('messageLink').href = message;
+ 	this.document.getElementById('mediaLink').href = media;
+ }
+</script>
+<body onload="creatingURL()">
+<div id="menu" ><br>
+<p align="center">
+	<img class="leftalign" src="imgs/img1.jpg" alt="img" width="100" height="100" float="center" align=""/><br><br>
+	<a  id="profileLink" href="#" target="changingContent">Profile</a><br><br>
+	<a  id="friendsLink" href="#" target="changingContent">Friends</a><br><br>
+	<a  id="workLink" href="#" target="changingContent">Works</a><br><br>
+	<a  id="activityLink" href="#" target="changingContent">Activities</a><br><br>
+	<a  id="groupsLink" href="#" target="changingContent">Groups</a><br><br>
+	<a  id="messageLink" href="#" target="changingContent">Messages</a><br><br>
+	<a  id="mediaLink" href="#" target="changingContent">Media</a><br>
+</p>
+</div>
+</body>
+]]>
+</Content>
+</Module>

@@ -9,16 +9,29 @@ public class MessageHolder
 	private String type;
 	private String _id;
 	private String _rev;
+  private String collectionId;
+
 	public MessageHolder()
 	{
 	}
+
 	public MessageHolder( MessageImpl object_, String type_ )
 	{
 		object = object_;
 		type = type_;
 	}
-	
-	public MessageImpl getDocObject(){
+
+  public String getCollectionId()
+  {
+    return collectionId;
+  }
+
+  public void setCollectionId( String collectionId_ )
+  {
+    collectionId = collectionId_;
+  }
+
+  public MessageImpl getDocObject(){
 		return object;
 	}
 	public String getDocType(){

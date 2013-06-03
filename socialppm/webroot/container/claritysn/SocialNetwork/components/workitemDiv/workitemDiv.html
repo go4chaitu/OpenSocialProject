@@ -1,0 +1,45 @@
+<link rel="stylesheet" type="text/css" href="/niku/socialppm/container/claritysn/SocialNetwork/components/statusbar/statusbar.css">
+<link rel="stylesheet" type="text/css"
+      href="/niku/socialppm/container/claritysn/SocialNetwork/components/workitemDiv/css/workitemDiv.css">
+<link rel="stylesheet" type="text/css"	  
+	  href="/niku/socialppm/container/claritysn/SocialNetwork/components/workitemDiv/css/datepicker.css">
+<link rel="stylesheet" href="/niku/socialppm/container/claritysn/SocialNetwork/components/statusbar/jquery-ui.css">
+<script src="/niku/socialppm/container/claritysn/SocialNetwork/js/jquery-1.9.1.js"></script>
+<script src="/niku/socialppm/container/claritysn/SocialNetwork/js/jquery-ui.js"></script>
+<script src="/niku/socialppm/container/claritysn/SocialNetwork/components/workitemDiv/js/workitemDiv.js"></script>
+
+<div id="workitemDiv">
+  <ul id="workitem_create_ul">
+    <li id="workitem_create">
+      <ul>               
+        <li id="workitem_name">
+		  <span>*</span>
+          <textarea id="workitem_name_ta" placeholder="Enter the name of your work item..." class="common"></textarea>
+        </li>
+		<li id="workitem_desc">
+		  <span>*</span>
+          <textarea id="workitem_desc_ta" placeholder="Enter the description of your work item..." class="common"></textarea>
+        </li>		
+		<li id="workitem_lead">
+		    <span>*</span>
+			<input id="workitem_lead_input" data-placeholder="Find and assign the owner of this work item..." class="text_value"/>
+			<div id="clear"><img src="/niku/ui/uitk/images/clear.jpg" height="15" width="15"></div>
+		</li>
+        <li id="workitem_on_object">			
+			<input id="workitem_lead_input" data-placeholder='Find the project/task to associate with the work item...' class="text_value"/>			
+			<div id="clear"><img src="/niku/ui/uitk/images/clear.jpg" height="15" width="15"></div>
+		</li>
+        <li id="workitem_duedate">
+			<input type="text" class="text_value" data-placeholder='Select the due date for this work item...' class="text_value"/>
+			<div id="clear"><img src="/niku/ui/uitk/images/clear.jpg" height="15" width="15"></div>
+		</li>		
+      </ul>
+    </li>
+    <li id="buttons" style="display: block;" contenteditable="false">
+      <ul>
+        <li id="post"><span> Posts </span></li>        
+        <li id="addpeople"></li>
+      </ul>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) 2013, CA Inc.  All rights reserved. -->
+<Module>
+<ModulePrefs title="Sample PubSub Subscriber"
+             height="250">
+<Require feature="pubsub"/>
+</ModulePrefs>
+<Content type="html">
+<![CDATA[
+	<iframe width="100%" height="100%" name="changingContent" seamless></iframe>
+]]>
+</Content>
+</Module>

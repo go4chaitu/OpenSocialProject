@@ -1,0 +1,136 @@
+	/* Copyright (c) 2013, CA Inc.  All rights reserved. */
+.player_li {
+    display: block;
+	background-color: white;
+	}	
+
+	ul {
+    background-color: white;
+    width: 200px;
+	}
+	.player_label {
+    color: black;
+    font-family: sans-serif;
+    font-weight: 500;
+	}
+	.player_img:hover{
+		cursor: pointer;	
+		height:112px;	
+		width:112px;
+		margin: 5px;	
+	}
+	.player_img{
+		height:80px;	
+		width:80px;
+		margin: 5px;	
+	}	
+	#autosuggest_col {
+		float: right;			
+		margin-right: 8%;
+		width: 200px;
+		height: 34px;
+		color: #404040;
+		background: white;
+		border: 1px solid;
+		border-color: #c4c4c4 #d1d1d1 #d4d4d4;
+		border-radius: 2px;
+		outline: 5px solid #eff4f7;
+		-moz-outline-radius: 3px;
+		-webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+		box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+		
+}
+input[type=text]{
+	float: right;			
+		margin-right: 8%;
+		width: 200px;
+		height: 34px;
+		color: #404040;
+		background: white;
+		border: 1px solid;
+		border-color: #c4c4c4 #d1d1d1 #d4d4d4;
+		border-radius: 2px;
+		outline: 5px solid #eff4f7;
+		-moz-outline-radius: 3px;
+		-webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+		box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+	#choosen_players {
+		float: left;
+		display: block;		
+		width:60%;
+		height: auto;		
+		margin-top: 10px;
+
+	}
+	
+	#choosen_players_1 {
+		float: left;
+		display: block;		
+		width : 800px;	
+		height: 500px;		
+		margin-top: 10px;
+
+	}
+	#choosen_players_1 ul{
+		list-style: none;
+
+	}
+	
+	#choosen_players ul{
+		list-style: none;
+		padding-left:0px;
+
+	}
+	.player_img_content {
+		height:120px;
+		width:120px;
+		margin: 5px;
+	}
+	body{
+
+		background-color: #fff;
+		width : auto;
+		height : auto;
+	}
+	.default_autosuggest_cols {
+		float:right;
+		position: relative;
+		right: 2%;
+	}
+	.player_box {
+		float:left;
+		width:180px;
+		height:180px;
+		margin-right: 5px;
+		margin-top: 10px;
+		background-image:url('images/close.gif');		
+	}
+	.playerbox_close {
+		display: block;
+	}
+	.playerbox_close img {
+    display: block;
+    position: relative;
+    width: 25px;
+    height: 25px;
+    top: -163px;
+    right: -120px;
+	}
+	.playerbox_close img:hover {
+    cursor: pointer;
+	}
+	
+	#team_score_label {
+    
+    color: black;
+    font-size: x-large;
+    width: 420px;
+    float: left;
+    margin-left: 50px;
+	}
+	#autosuggest_col.ui-widget-content {
+	border: 0;
+	background:none;
+	}

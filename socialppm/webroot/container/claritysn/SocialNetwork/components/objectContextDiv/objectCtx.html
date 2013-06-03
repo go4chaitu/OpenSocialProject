@@ -1,0 +1,40 @@
+<!-- Copyright (c) 2013, CA Inc.  All rights reserved. -->
+<link rel="stylesheet" type="text/css"
+      href="/niku/socialppm/container/claritysn/SocialNetwork/components/activityDiv/css/activityDiv.css">
+<link rel="stylesheet" href="/niku/socialppm/container/claritysn/SocialNetwork/components/statusbar/jquery-ui.css">
+
+<ul class="activityEntry" id="activityEntryTemplate">
+  <li class="activitycontent" id="activitycontentTemplate">
+    <ul class="activitycontent_inside">
+      <li class="userImg"><img src="" height="70" width="70"></li>
+      <li class="userText">
+        <span class="userName"></span>
+          <span class="spanUserText"></span>
+      </li>
+      <li class="userActions">
+        <span class="action_like">Like</span>
+        <span class="action_share">Share</span>
+        <span class="action_timestamp">3 hours ago</span>
+      </li>
+      <li>
+      </li>
+    </ul>
+  </li>
+  <li class="activitycomments" id="activitycommentsTemplate" style="display:none">
+    <div id="comments_header"><span>View all comments</span></div>
+    <ul class="usercomment" id="usercommentTemplate">
+
+      <li id="commentedUserImg"><img src="" height="30" width="30"></li>
+      <li id="commentText"><span id="commentedUserId">Emma O'Neil</span>
+        <span id="commentedUserText"> alkdsjlfjldfjakdfsj<br>aklsdjflajdf<br>dalkjflkjdsf<br>dalkjdfjasdlfj<br>dalkjfkdsflkjasdf<br>dlakjdfkjafldsjf</span>
+      </li>
+      <li id="comments_footer"><span class="comment_timestamp">13 minutes ago</span><span
+        class="comment_liked">Like</span></li>
+    </ul>
+  </li>
+  <li id="addcomment_textfield" class="addcomments">
+          <textarea id="addcomment_ta" placeholder="Write your coments here...." class="comment txtstuff"></textarea>
+          <img src="/niku/ui/uitk/images/comment-add.png" width="15" height="15" id="addComment_button">
+  <div class="hiddendiv comment"></div><div class="hiddendiv comment"></div></li>
+  <input type="hidden" id="divIdToLoad"/>
+</ul>

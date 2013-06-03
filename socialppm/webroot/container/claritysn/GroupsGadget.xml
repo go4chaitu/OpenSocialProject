@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) 2013, CA Inc.  All rights reserved. -->
+<Module>
+  <ModulePrefs title="Social Hello World"
+               description="The Social Hello World Application Displays multilingual hello messages"
+               thumbnail="http://localhost:8080/"
+               icon="http://localhost:8080/samplecontainer/examples/icon.png">
+    <Require feature="osapi"></Require>
+    <Require feature="settitle"/>
+    <Require feature="dynamic-height"></Require>
+    <Require feature="opensocial-0.9"/>
+  </ModulePrefs>
+  <Content type="html">
+    <![CDATA[
+  <link rel="stylesheet" href="/niku/socialppm/container/claritysn/css/friends.css" />
+    <script type="text/javascript">
+  	function createGroup(){
+		var params = {"title": "newGroup", "description": "This is the description"};
+		var req = osapi.groups.create(params);
+		req.execute(function (response) {
+    		if (response.error) {
+       				alert("Error " + response.error.code + " creating a new group.  Error message was: " + response.error.message);
+     		}
+     		else {
+       				var group = response;
+       				alert('New group id is ' + group.id);
+     		}
+   		});
+	}
+   </script>
+
+  <script type="text/javascript">
+    // Current viewer
+    var viewer;               
+
+    //Builds the groups select input
+    buildGroupsSelect = function(list, totalResults) {
+      var select = document.getElementById('groups_select');
+      
+      // Fill element with data
+      select.innerHTML += '<option value="@friends">@friends</option>';
+      for(i = 0; i < totalResults; i++) {
+        select.innerHTML += '<ul class="player_box"><li style="text-align:center;list-style:none;"><img src="/container/mock-screens/images/dummy.jpg">' + list[i].id + '<br>' + list[i].title + '</li></ul>';
+      }
+    };
+
+	//Get the OpenSocial Groups of the viewer
+    getGroups = function() {
+      var req = osapi.groups.get({});
+      req.execute(function(result) {
+        buildGroupsSelect(result.list, result.totalResults);
+      });
+    };
+
+    //Getting the Viewer
+    getViewer = function() {
+      var req = osapi.people.getViewer({});
+      req.execute(function(result) {
+        // Set the viewer to the result
+        viewer = result;
+        // Update the 'current_viewer' span
+        document.getElementById('current_viewer').innerHTML = result.name.formatted + " (" + result.id + ")";
+      });
+    };
+   
+
+    //Initialize data for request
+    initData = function() {
+      // Get the current viewer
+      getViewer();
+
+      // Get the groups of the current viewer
+      getGroups();
+    };
+
+    gadgets.util.registerOnLoadHandler(initData);
+  </script>
+  <div style="margin-bottom: 1em">
+    Current Viewer:
+    <span id="current_viewer"></span>
+  </div>
+  <div style="margin-bottom: 1em">
+    Your Groups :<br>
+    <div id="groups_select"></div>
+  </div>
+ 
+  ]]>
+  </Content>
+</Module>

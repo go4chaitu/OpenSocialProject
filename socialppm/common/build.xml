@@ -79,6 +79,7 @@
     <pathelement location="${dir.platform.socialppm}/common-lib/xmlpull-1.1.3.1.jar"/>
     <pathelement location="${dir.platform.socialppm}/common-lib/xpp3_min-1.1.4c.jar"/>
     <pathelement location="${dir.platform.socialppm}/common-lib/xstream-1.4.3.jar"/>
+    <pathelement location="${dir.platform.socialppm}/common/src/META-INF/gson-2.2.2.jar"/>
   </path>
   <path id="lib.path">
 	  <path refid="path.platform.socialppm.common.jars"/>

@@ -1,0 +1,51 @@
+<link rel="stylesheet" type="text/css"
+      href="/niku/socialppm/container/claritysn/SocialNetwork/components/statusbar/statusbar.css">
+<link rel="stylesheet" href="/niku/socialppm/container/claritysn/SocialNetwork/components/statusbar/jquery-ui.css">
+<!--<script src="/niku/socialppm/container/claritysn/SocialNetwork/components/statusbar/statusbar.js"></script>-->
+
+<div id="defaulttextarea" style="height: 60px; min-height: 60px;">
+  <ul id="statusupdate_onclick">
+    <li id="statusbar">
+      <ul>
+        <li id="attachment_field" style="display: none;">
+          <div class="attachment_close"><a><img
+            src="/niku/socialppm/container/claritysn/SocialNetwork/components/statusbar/images/close.jpg" height="20"
+            width="20"></a></div>
+
+          <img src="/niku/socialppm/container/claritysn/SocialNetwork/components/statusbar/images/attachment.png"
+               height="50" width="50" id="attachment_img">
+
+          <form action="/niku/dms" method="post" enctype="multipart/form-data" id="fileuploadForm">
+            <input type="file" name="myfile" id="fileupload">
+            <input type="hidden" name="owner">
+            <input type="hidden" name="owner" group="true">
+          </form>
+          <div class="progress" style="display: none;">
+            <div class="bar" style="width: 100%;"></div>
+            <div class="percent">0%</div>
+          </div>
+        </li>
+        <li id="file_metadata">
+          <ul>
+            <li id="filename"/>
+            <li id="filesize"/>
+            <li id="contenttype"/>
+          </ul>
+        </li>
+        <li id="status_textfield">
+          <textarea id="statusupdate_ta" placeholder="Write your experience here...."
+                    class="common"></textarea>
+        </li>
+      </ul>
+    </li>
+    <li id="buttons" style="display: block;" contenteditable="false">
+      <ul>
+        <li id="post"><span> Posts </span></li>
+        <li id="attachments" alt="Add attachments">
+
+        </li>
+        <li id="addpeople"></li>
+      </ul>
+    </li>
+  </ul>
+</div>

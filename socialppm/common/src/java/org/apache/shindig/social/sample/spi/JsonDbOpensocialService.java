@@ -249,6 +249,52 @@ public class JsonDbOpensocialService implements ActivityService, PersonService, 
     }
   }
 
+  @Override
+  public Future<Void> addComment( UserId userId, String activityId, Set<String> fields, Activity comment,
+                                  SecurityToken token ) throws ProtocolException
+  {
+    return null;  //To change body of implemented methods use File | Settings | File Templates.
+  }
+
+  @Override
+  public Future<RestfulCollection<Activity>> getActivityComments( String activityId_, Set<String> fields,
+                                                                  CollectionOptions options, SecurityToken token )
+    throws ProtocolException
+  {
+    return null;  //To change body of implemented methods use File | Settings | File Templates.
+  }
+
+  @Override
+  public Future<Void> createGroup( UserId userId, Set<String> fields, Group group, SecurityToken token )
+    throws ProtocolException
+  {
+    return null;  //To change body of implemented methods use File | Settings | File Templates.
+  }
+
+  @Override
+  public Future<Void> deleteGroup( UserId userId, GroupId groupId, SecurityToken token ) throws ProtocolException
+  {
+    return null;  //To change body of implemented methods use File | Settings | File Templates.
+  }
+
+  @Override
+  public Future<Void> updateGroup( UserId userId, Group group, SecurityToken token ) throws ProtocolException
+  {
+    return null;  //To change body of implemented methods use File | Settings | File Templates.
+  }
+
+  @Override
+  public Future<Void> addUserToGroup( GroupId groupId, String userId )
+  {
+    return null;  //To change body of implemented methods use File | Settings | File Templates.
+  }
+
+  @Override
+  public Future<Void> removeGroupUser( GroupId groupId, Set<String> userIds )
+  {
+    return null;  //To change body of implemented methods use File | Settings | File Templates.
+  }
+
   /** {@inheritDoc} */
   public Future<Activity> getActivity(UserId userId, GroupId groupId, String appId,
       Set<String> fields, String activityId, SecurityToken token) throws ProtocolException {

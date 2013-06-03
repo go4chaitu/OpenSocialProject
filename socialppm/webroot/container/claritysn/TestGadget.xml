@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) 2013, CA Inc.  All rights reserved. -->
+<Module>
+	<ModulePrefs title="TestGadget!">
+		<Require feature="opensocial-0.9"/>
+		<Require feature="osapi"/>
+		<Require feature="dynamic-height"/>
+	</ModulePrefs>
+	
+	<Content type="html">
+	<![CDATA[
+		<script type="text/javascript">
+
+			activityEntrycallback = function(resp) {
+			    var result = "";
+			    if( resp )
+			    {
+			        if( resp.actor && resp.actor.id ) result = result + resp.actor.id + " :: ";
+              if( resp.actor && resp.actor.objectType ) result = result + resp.actor.objectType + " :: ";
+              if( resp.actor && resp.actor.url ) result = result + resp.actor.url + " :: ";
+              if( resp.actor && resp.actor.image && resp.actor.image.height) result = result + resp.actor.image.height + " :: ";
+              if( resp.actor && resp.actor.image && resp.actor.image.width) result = result + resp.actor.image.width + " :: ";
+              if( resp.actor && resp.actor.image && resp.actor.image.url) result = result + resp.actor.image.url + " :: ";
+			    }
+
+					document.getElementById('activity').innerHTML = result;
+		  };
+		  getPersonData = function(resp)
+		  {
+		      var result = "";
+			    if( resp )
+			    {
+			        if( resp.aboutMe ) result = result + resp.aboutMe + " :: ";
+			        if( resp.displayName ) result = result + resp.displayName + " :: ";
+			        if( resp.id ) result = result + resp.id + " :: ";
+			        if( resp.name && resp.name.formatted ) result = result + resp.name.formatted + " :: ";
+			        if( resp.name && resp.name.givenName ) result = result + resp.name.givenName + " :: ";
+			    }
+			    return result;
+		  }
+      personcallback = function(resp) {
+					document.getElementById('person').innerHTML = getPersonData( resp );
+			};
+			createPersoncallback = function(resp) {
+			    document.getElementById('createPerson').innerHTML = getPersonData( resp );
+			};
+			viewercallback = function(resp) {
+			    document.getElementById('viewer').innerHTML = getPersonData( resp );
+			};
+			ownercallback = function(resp) {
+			    document.getElementById('owner').innerHTML = getPersonData( resp );
+			};
+			getActivityEntry = function()
+			{
+			  var params = {activityId: "ActivityEntry_667164167"};
+		    osapi.activitystreams.get(params).execute(activityEntrycallback);
+			}
+			activitycallback = function(resp) {
+			    var result = "";
+			    if( resp && resp.list && resp.list.length > 0 )
+			    {
+            result = result + resp.list[0].body;
+            result = result + resp.list[0].id;
+            result = result + resp.list[0].postedTime;
+            result = result + resp.list[0].title;
+            result = result + resp.list[0].userId;
+          }
+		  };
+			getActivity = function()
+			{
+			  var params = {userId: '@viewer', groupId: '@friends', count: 20};
+		    osapi.activities.get(params).execute(activitycallback);
+			}
+			activitycallback = function(resp){
+			  alert('hello');
+			  var result = resp;
+			}
+			createActivity = function()
+			{
+			  var params = {userId: '@viewer', activity: {body: 'asdfasdfsdf',title:'',userId:'Emma'}};
+		    osapi.activities.create(params).execute(activitycallback);
+			}
+			createPerson = function()
+			{
+        osapi.people.update({ person : {name:{formatted:'Tom', givenName:'Cruise'},displayName:'Tom Cruise',aboutMe:'Not available',activities: ['swimming','cricket'],currentLocation:{country:"india",postalCode:"500041",streetAddress:"Gachibowli",region:"hyderabad"},books: ['Sherlock Holmes','No book for dummies'],photos: [{type:'url',value:'http://example.com/TomCruise/img',primary:'false'}]}}).execute(createPersoncallback);
+			}
+			updatePerson = function()
+			{
+			}
+			getPerson = function()
+			{
+			  osapi.people.get({ userId : 'User_1634310739', fields : ["id", "displayName"]}).execute(personcallback);
+			  osapi.people.getOwner({ userId : 'sarch04', fields : ["id", "displayName"]}).execute(viewercallback);
+			  osapi.people.getViewer({ userId : 'sarch04', fields : ["id", "displayName"]}).execute(ownercallback);
+			}
+			getFriendsData = function(resp)
+		  {
+		      var result = "asdfasdf";
+			    return result;
+		  }
+			friendcallback = function(resp) {
+			    document.getElementById('friend').innerHTML = getFriendsData( resp );
+			};
+			getFriends = function()
+			{
+			  osapi.people.getViewerFriends({ userId : 'sarch04' }).execute(friendcallback);
+			}
+			createGroupcallback = function(resp) {
+			    alert(resp);
+			};
+			createGroup = function()
+			{
+			  osapi.groups.create({ userId: '@viewer', group: { id:'testgroup1', title:'test title1', description: 'test description1'} }).execute(createGroupcallback);
+			};
+			getGroupcallback = function(resp) {
+			  var result = "";
+			  if( resp.length > 0 )
+			  {
+          result = result + resp.list[0].id;
+          result = result + resp.list[0].title;
+          result = result + resp.list[0].description;
+        }
+        document.getElementById('groups').innerHTML = result;
+   		};
+
+			getGroups = function()
+			{
+			  osapi.groups.get({ userId: '@viewer', groupId: 'testgroup1' }).execute(getGroupcallback);
+			};
+			addUserToGroupcallback = function(resp) {
+			  var result = "";
+			  if( resp.list && resp.list.length > 0 )
+			  {
+          result = result + resp.list[0].id;
+          result = result + resp.list[0].title;
+          result = result + resp.list[0].description;
+        }
+        document.getElementById('addPersonToGroup').innerHTML = result;
+   		};
+      addUserToGroup = function()
+      {
+        osapi.people.create({ userId: '@viewer', groupId: 'testgroup1',  person: { id: 'User_1004841175' }}).execute(addUserToGroupcallback)
+        osapi.people.create({ userId: '@viewer', groupId: 'testgroup1',  person: { id: 'User_578105272' }}).execute(addUserToGroupcallback)
+      }
+      removeUserFromGroup = function()
+      {
+        osapi.grous.removeUser({ userId: '@viewer', groupId: 'testgroup1',  person: { id: 'User_1004841175' }}).execute(addUserToGroupcallback)
+        osapi.people.create({ userId: '@viewer', groupId: 'testgroup1',  person: { id: 'User_578105272' }}).execute(addUserToGroupcallback)
+      }
+      getGroupMembercallback = function(resp) {
+			  var result = "";
+			  if( resp.list && resp.list.length > 0 )
+			  {
+          result = resp.list[0].aboutMe + resp.list[0].description + resp.list[0].id;
+          //resp.list[0].name.formatted
+          //resp.list[0].name.givenName
+        }
+        document.getElementById('groupMembers').innerHTML = result;
+   		};
+      getGroupMembers = function()
+      {
+        osapi.people.get({ userId: '@viewer', groupId: 'testgroup1' }).execute(getGroupMembercallback);
+      };
+
+      deleteGroupUsercallback = function(resp)
+      {
+        var result = "";
+      }
+      deleteGroupMember = function()
+      {
+        osapi.people.delete({ userId: '@viewer', groupId: 'testgroup1',  userIds: [ 'User_1004841175','sarch04' ]}).execute(deleteGroupUsercallback);
+      }
+
+      deleteGroupcallback = function(resp)
+      {
+        var result = "";
+      }
+      deleteGroup = function()
+      {
+        osapi.groups.delete({ userId: '@viewer',  groupId: 'testgroup1' }).execute(deleteGroupcallback);
+      }
+      uploadDocumentcallback = function()
+      {
+        var result = "";
+      }
+      uploadDocument = function(e)
+      {
+        var upload = document.getElementById("document");
+        var file = upload.files[0];
+        osapi.document.put( {document: { inputstream: file,attachmentName:'testdoc1',contentType:'text/plain' } } ).execute(uploadDocumentcallback);;
+      }
+
+			function init() {
+		      //getActivity();
+		      //createActivity();
+		      getPerson();
+		      //getFriends();
+          //createGroup();
+          //getGroups();
+          //addUserToGroup();
+          //getGroupMembers();
+          //deleteGroupMember();
+          //deleteGroup();
+          //uploadDocument();
+          //downloadDocument();
+          //deleteDocument();
+		  };
+
+		  var filecontent = "";
+
+			gadgets.util.registerOnLoadHandler(init);
+		</script>
+		Person:<br><div id="person"></div>
+		Friends:<br><div id="friends"></div>
+		Viewer:<br><div id="viewer"></div>
+		Owner:<br><div id="owner"></div>
+		CreatePerson:<br><div id="createPerson"></div>
+    GetGroups:<br><div id="groups"></div>
+		AddPersonToGroup:<br><div id="addPersonToGroup"></div>
+		GroupMembers:<br><div id="groupMembers"></div>
+		Activities:<br><div id="activity"></div>
+		Message:<br><div id="message"></div>
+		<form action="/niku/dms" method="POST" enctype="multipart/form-data">
+      <input type="file">
+      <button type="submit">Submit"</button>
+    </form>
+
+
+	]]>
+	</Content>
+</Module>

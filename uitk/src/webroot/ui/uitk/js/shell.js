@@ -4,24 +4,25 @@
  * A shell module.  This renders the page shell (header, nav, workspace)
  */
 define( [ "jquery",
-          "uif/js/clarity", 
-          "uitk/js/uitk", 
-          "uitk/js/util", 
+          "uif/js/clarity",
+          "uitk/js/uitk",
+          "uitk/js/util",
           "uitk/js/automation",
-          "uitk/js/dialog", 
+          "uitk/js/dialog",
           "uitk/js/tabs",
           "uitk/js/ubermenu",
           "uitk/js/grid/grid",
           "uitk/js/portlet",
-          "uitk/js/log" ], function( $, $c ) {
+          "uitk/js/log",
+          "ui/ext/jquery-ui/js/jquery-ui.js"], function( $, $c ) {
 
   var A11Y_CSS = "ui/uitk/css/clarity_sr.css";
   var historyBackPointer = null;
   var skipBackUpdate = false;
-  var setMissingIFrameAttrs = true; // used to decided whether to set attributes such as title, etc. on iFrame . 
-  
+  var setMissingIFrameAttrs = true; // used to decided whether to set attributes such as title, etc. on iFrame .
+
   $c.uitk.shell = {};
-  
+
   $c.uitk.shell.resetGlobals = function() {
     $c.uitk.ppm_workspace = null;
   };
@@ -43,7 +44,7 @@ define( [ "jquery",
 
   /**
    * Render the HTML passed, this is a result of HTML that was received that didn't come from Clarity at all.
-   * @param {String} body_ the html body 
+   * @param {String} body_ the html body
    * @param {Object} header_ the html header
    */
   $c.uitk.shell.rawPageRender = function( body_, header_ ) {
@@ -69,7 +70,7 @@ define( [ "jquery",
       //  If we found links then append them to the head element
       //
       var len = links.length;
-      for( var i=0; i < len; i++ ) 
+      for( var i=0; i < len; i++ )
       {
         var s = links[i];
         var eTag = s.indexOf( ">" );
@@ -82,14 +83,14 @@ define( [ "jquery",
         if( hasRel > 0 )
         {
           var srcPos = s.indexOf( "href" );
-          if( srcPos > 0 ) 
+          if( srcPos > 0 )
           {
             // this is an external js script
             var ch = s.substring( srcPos+5, srcPos+6 );
             var ePos = s.indexOf( ch, srcPos+6 );
             $c.util.addCss( "hdr_link_id_" + i, s.substring( srcPos+6, ePos ) );
           }
-          else 
+          else
           {
             // this must be an inline script
             $c.util.addCssInline( "hdr_link_id_" + i, s.substring( eTag + 1, s.length - 7 ) );
@@ -106,20 +107,21 @@ define( [ "jquery",
     //  Update the ppm_app div with the HTML we received.
     //
     $( "#ppm_app" ).empty().html( body_ );
+
     //
     //  The next logical step here is to add an event handler on the form so that we get some notification that the form was
-    //  submitted, which enables the setup of a callback handler, which (hopefully) will force the browser back into the 
+    //  submitted, which enables the setup of a callback handler, which (hopefully) will force the browser back into the
     //  proper rendering cycle.
     //
     var impostorSubmitted = false;
     $( "form" ).each( function ( index ) {
       //
       //  Ensure the form has a name attribute set
-      //  
+      //
       if( !$(this).attr( "name" ) || $(this).attr( "name" ) == '' )
       {
         $(this).attr( "name", "tmp_form_name" );
-  }  
+  }
       var formName = $(this).attr( "name");
       $(this).submit( function () {
         //
@@ -133,7 +135,7 @@ define( [ "jquery",
         return false;
       });
     });
-  }  
+  }
   /**
    * Render the shell.
    * @param {String} h the html contents of the workspace
@@ -144,12 +146,48 @@ define( [ "jquery",
   $c.uitk.shell.render = function( h, labels, page, omnibar ) {
     $c.log.startPerf( "render", "pageShell" );
 
+    if( $( "#socialmenu" ) )
+    {
+      $( "#socialmenu" ).remove();
+    }
+    if( $( "#socialctx" ) )
+    {
+      $( "#socialctx" ).remove();
+    }
+
     $c.uitk.grid.processing = false;
     // setup "global" jQ variables and their shortcuts
+
     var $ppm_app = $c.uitk.ppm_app;
     if( !$ppm_app )
       $ppm_app = $c.uitk.ppm_app = $( "#ppm_app" );
-    
+
+    $ppm_notifybar = $c.uitk.ppm_notifybar = $( '<div id="notification-bar" style="display:none; width:100%; height:0px; background-color: black; position: fixed; z-index: 100; color: black;border-bottom: 1px solid white;"></div>' ).insertBefore($ppm_app);
+    $ppm_socialmenu = $c.uitk.ppm_socialmenu = $( '<div id="socialmenu" class="socialmenu ppm_page_bg"><input type="hidden" id="socialViewerId"/><input type="hidden" id="socialFriendId"/><input type="hidden" id="socialActionId"/><input type="hidden" id="feedsLastUpdateTime"/><table role="presentation" cellspacing="0" cellpadding="0"><tbody><tr><td><img id="socialmenu_header_logo" src="ui/uitk/images/s.gif" alt="CA"></td><td id="socialmenu_product"><span>Clarity PPM</span></td></tr></tbody></table><img src="ui/uitk/images/socialknob.png" width="30" height="90" class="pushbuttons"><iframe src="" width="0" height="800" style="border: 0px; overflow-y: hidden;" id="socialmenuifr"></iframe></div>' ).insertBefore($ppm_app);
+    $ppm_socialcontextpage = $c.uitk.ppm_socialcontextpage = $( '<div id="socialctx" class="socialctx ppm_page_bg"><input type="hidden" id="listViewObjectCode"></input><input type="hidden" id="listViewInstanceId"></input><iframe src="" width="0" style="border: 0px; overflow-y: hidden;" id="socialctxifr"></iframe></div>' ).insertAfter($ppm_app);
+
+    $("#socialViewerId").val($c.session.username);
+    $("#socialActionId").val("viewerProfile");
+    $("#feedsLastUpdateTime").val(new Date().getTime());
+    $(".pushbuttons").toggle(function() {
+      var token = $c.session.username+'%3A'+$c.session.username+'%3Aappid%3Acont%3Aurl%3A0%3Adefault&scrolling=no&nocache';
+      var url = 'http://localhost/niku/socialppm/container/claritysn/SocialNetwork/gadgetmenu.xml';
+      var ifrUrl = 'http://localhost/niku/gadgets/ifr' + '?url=' + url + '&st=' + token;
+      $("#socialmenuifr").animate({'width':'150','display':'inline-block'}, 100);
+      $(".ppm_header table").css({'display':'none'});
+      if( $("#socialmenuifr").attr('src') == '' )
+      {
+        $("#socialmenuifr").attr('src', ifrUrl);
+      }
+      var ppm_app_width = $("#ppm_app").outerWidth() - 150;
+      $("#ppm_app").css({'left':'150px', 'width': ppm_app_width });
+    }, function() {
+    $(".ppm_header table").css({'display':''});
+      $("#socialmenuifr").animate({'width':'0'}, 100);
+      var ppm_app_width = $("#ppm_app").outerWidth() + 150;
+      $("#ppm_app").css({'left':'', 'width': ppm_app_width });
+    });
+
     var $ppm_wk = $c.uitk.ppm_workspace;
     if( !$ppm_wk )
       $ppm_wk = $c.uitk.ppm_workspace = $( "#ppm_workspace" );
@@ -168,12 +206,12 @@ define( [ "jquery",
 
       //set missing attributes on all iFrames that have tabindex=-1
 	  $c.uitk.shell.setIFrameAttrs();
-	  
+
       // add the screen reader css, if needed
       if( $c.session.screenReaderOpt ) {
         $c.util.addCss( "clarity_sr", A11Y_CSS );
       }
-      
+
       // render the full page, e.g. the overview page after login, or if the language changed
       var con = $ppm_app.removeClass( "ppm_app_full" ).addClass( "ppm_page_bg" ).empty();
       if( page && page.headerFunc ) {
@@ -182,7 +220,7 @@ define( [ "jquery",
       else {
         renderHeader( con, labels, isCSA );
         var ob = omnibar ? omnibar( con ) : renderOmniBar( con, labels, !isCSA, !isCSA, !isCSA );  // CSA turns off Favorites, Search, and Timesheets
-        
+
         if( isCSA && page && page.id == "nsa.eula" )
           ob.hide();
       }
@@ -191,19 +229,20 @@ define( [ "jquery",
       var tabs = $( '<div class="ppm_tabs" role="tablist"/>' ).appendTo( con );
       if( page && page.tabs )
       $c.uitk.tabs.render( tabs, labels, page.tabs );
-      
+
       // Refresh button
       $( "#ppm_refresh" ).click( function(e){
         $( "#ppm_header_wait" ).show();
         $c.uitk.service.Navigation.navigate( window.location.hash );
       });
 
+
       // workspace
       $ppm_wk = $c.uitk.ppm_workspace = $( '<div id="ppm_workspace" class="ppm_workspace_bg" role="main"/>' ).appendTo( con )
         .position( {my: "left top", at: "left bottom", of: tabs, collision: "none none" } ).append( h );
-      
+
       var bb = $( '<div id="ppm_workspace_bb" class="ppm_fixed_button_bar"/>' ).appendTo( con );
-      
+
       // global keyboard short cuts
       $(document).keydown( function(e) {
         if( e.ctrlKey && e.altKey ) {
@@ -237,23 +276,23 @@ define( [ "jquery",
               }
               else
               {
-                $( "#ppm_history_dd" ).focus().click(); 
+                $( "#ppm_history_dd" ).focus().click();
               }
               break;
             case 36:  // Home  for Home
               $( "#ppm_home_go" ).click();
               break;
-            case 66:  // b  for back 
+            case 66:  // b  for back
               $( "#ppm_history_back" ).focus().click();
               break;
             case 116:  // F5 for Refresh
               $( "#ppm_refresh" ).click();
               break;
               /**
-               * This code is for Keyboard Pagination for grids AV# CLRT--22397  
-               * if searches the Previous or Next button as CTRL+ALT+ pageUP/DOWN is pressed 
+               * This code is for Keyboard Pagination for grids AV# CLRT--22397
+               * if searches the Previous or Next button as CTRL+ALT+ pageUP/DOWN is pressed
                */
-        	case 33: // Page UP  for paginate previous page  
+        	case 33: // Page UP  for paginate previous page
         		$( "#prevPageButton" ).click();
         		break;
         	case 34: // Page down  for paginate next page
@@ -261,17 +300,17 @@ define( [ "jquery",
         		break;
         	/*
         	case 191: // Display keyboard navigation help
-        		navigateToPage("union.keyboardNavHelp");                  
+        		navigateToPage("union.keyboardNavHelp");
         		break;
         	*/
-              
+
           }
         }
         /*
         else if( e.keyCode == 191 && e.shiftKey)
         {
         	navigateToTarget("MNP",null,"union.keyboardNavHelp");
-              
+
         }
         */
         else if( e.keyCode == 112 ) {  // F1 for help
@@ -279,26 +318,26 @@ define( [ "jquery",
           e.preventDefault();
         }
       });
-      
+
       $c.uitk.button.fixedButtonBar( {resizeCon: $(window), barCon: $ppm_wk, fixedBar: bb } );
     }
     else {
-      
+
       // -------------  Regular page navigation:  render new page -------------------------
-      
+
       if( isCSA && !$( "#ppm_omnibar" ).is( ":visible" ) )
         $( "#ppm_omnibar" ).show();
 
       //set missing attributes on all iFrames that have tabindex=-1
 	  $c.uitk.shell.setIFrameAttrs();
-	  
+
       // update tabs, if this page has them
       var tabs = $( ".ppm_tabs" );
       $c.uitk.tabs.render( tabs.empty(), labels, page.tabs );
-      
+
       // update workspace with new content, adjust postion for show/hide of page tabs
       $ppm_wk.empty().position( {my: "left top", at: "left bottom", of: tabs, collision: "none none" } ).html( h );
-            
+
       setTimeout( function() {
         $c.uitk.button.fixedButtonBar( {resizeCon: $(window), barCon: $ppm_wk, fixedBar: $( "#ppm_workspace_bb" ) } );
       }, 1 );
@@ -309,43 +348,43 @@ define( [ "jquery",
     // focus the first form element on page
     $c.util.focusFirst( $ppm_wk );
     $c.util.bindPageKeyDownElement($ppm_wk);
-    // Use focus to force screen readers to read error messages  
+    // Use focus to force screen readers to read error messages
     $c.util.focusScreenReadersOnErrorMessage( $ppm_wk );
-    
+
     if( page ) {
     var title = (page.context && page.context.length > 0 ? page.context.replace( /&amp;nbsp;/g, " " ) + " - " : "") + page.title;
     document.title = "CA Clarity PPM :: " + title;
     }
-    
+
     $( "#ppm_header_wait" ).hide();
     $c.log.stopPerf( "render", "pageShell" );
   };
 
   /** Find all iframes that have "tabindex=-1" attribute and missing attributes to these iframe elements
    *  attributes set -  'title'
-   * 
+   *
    * Added in V13.1 for Accessibility
    */
   $c.uitk.shell.setIFrameAttrs = function() {
       if(setMissingIFrameAttrs == true) {
     	  $('iframe[tabindex="-1"]').each(
 	    	 function(index){
-	    	   var attr = $(this).attr('title'); 
+	    	   var attr = $(this).attr('title');
 	    	   if(typeof attr == 'undefined' || attr == false) {
-	    	      $(this).attr( "title", "No user content");	
+	    	      $(this).attr( "title", "No user content");
 	    	   }
 	    	 }
           );
 
     	  // update the flag so that iFrame title is added only once per session or until user browser-refreshes the
-          // window. Note, on each page/dialogs, including login page, same five iframes (Gantt, Grid, ObjectAcitons, and 
-          // Container) are loaded and hence once tile of these iframe is set then there is no need to set again. If 
+          // window. Note, on each page/dialogs, including login page, same five iframes (Gantt, Grid, ObjectAcitons, and
+          // Container) are loaded and hence once tile of these iframe is set then there is no need to set again. If
     	  // different iframes are loaded on different pages, or if the these iframes become dynamic, or any other req
     	  // changes then get rid of this flag in which case titles will set set on almost every action.
     	  setMissingIFrameAttrs = false;
       }
   }
-  
+
   /**
    * Render the header portion of the shell.
    * @param {Object} con the jQ object of the container of header
@@ -354,8 +393,8 @@ define( [ "jquery",
   var automationLink = '';
 	  if( $c.automation.enabled ) {
 	    automationLink = '<a href="javascript:clarity.automation.configure()" class="ppm_header_links_div ppm_automation_link_div">Automation</a>';
-	}    
-	  
+	}
+
 	$( '<div class="ppm_header" role="banner"><table role="presentation" cellspacing="0" cellpadding="0"><tr><td><img id="ppm_header_logo" src="' + $c.uitk.SPACER_SRC + '" alt="CA"/></td><td id="ppm_header_product"><span/></td></tr></table>' +
     '<div class="ppm_header_links">' +
     '<img src="' + $c.uitk.IMAGE_BASE + 'uitk/images/wait_header.gif" id="ppm_header_wait" style="display: none; margin-right: 6px;" alt="wait"/>' +
@@ -368,10 +407,17 @@ define( [ "jquery",
     automationLink +
     '</div>' +
     '</div>' ).appendTo( con );
-    
+
     //logout link
     $( "#ppm_header_logout" ).click( function(e) {
       e.preventDefault();
+      $( "#socialmenu" ).remove();
+      $( "#socialctx" ).remove();
+//      var socialmenu_width = $("#socialmenuifr").outerWidth();
+//      var socialctx_ifr = $("#socialctxifr").outerWidth();
+      var ppm_app_width = $("body").outerWidth();
+
+      $("#ppm_app").css({'left':'', 'width': ppm_app_width });
       $c.uitk.service.Navigation.navigate( "#action:security.logoutAction" );
     });
 
@@ -384,7 +430,7 @@ define( [ "jquery",
         });
       });
     }
-    
+
     //help link
     $( "#ppm_header_help" ).click( function(e) {
       e.preventDefault();
@@ -392,7 +438,7 @@ define( [ "jquery",
         $c.uitk.help.showHelp();
       });
     });
-    
+
     //about link
     $( "#ppm_header_about" ).click( function(e) {
       e.preventDefault();
@@ -407,10 +453,10 @@ define( [ "jquery",
           $c.uitk.dialog.render( { id:"ppm_about_dialog", title: labels.about, content: h, labels: labels} );
         }
       } );
-      
+
     });
     // Updates the automation links if they exist
-    $c.automation.updateAutomationLink();    
+    $c.automation.updateAutomationLink();
   };
 
   /**
@@ -432,14 +478,19 @@ define( [ "jquery",
         (hasFavorites ? '<span id="ppm_nav_favs" class="ppm_nav_menu" role="menu" tabindex="0" alt="' + labels.favorites + '" title="' + labels.favorites + '">' + labels.favorites + '</span>' +
         '<img src="' + $c.uitk.SPACER_SRC + '" class="ppm_omnibar_div" alt=""/>' : '') +
         '<div style="float:right; margin-right: 8px;">' +
-        ' <button id="ppm_claritysn" class="ppm_omnibar_button" title="' + labels.claritysn + '" alt="' + labels.claritysn + '"><img src="' + $c.uitk.SPACER_SRC + '" alt="' + labels.claritysn + '"/></button>' +
+        ' <button id="ppm_claritysn" class="ppm_omnibar_button" title="' + labels.claritysn + '"'+'><img src="ui/uitk/images/collaboration.png"/>' +
+        '<div id="claritysn_box" style="display: block;">' +
+        '<ul><li id="claritysn_frndreqs"><img src="ui/uitk/images/social_home.jpg"><span>Home</span></li>'+
+        '<li id="claritysn_activities"><img src="ui/uitk/images/activities.png"><span>Activities</span></li>'+
+        '<li id="claritysn_msgs"><img src="ui/uitk/images/messages.png"><span>Messages</span></li></ul></div>' +
+        '</button>' +
         ' <button id="ppm_refresh" class="ppm_omnibar_button" title="' + labels.refresh + '" alt="' + labels.refresh + '"><img src="' + $c.uitk.SPACER_SRC + '" alt="' + labels.refresh + '"/></button>' +
         ' <button id="ppm_home_go" class="ppm_omnibar_button" title="' + labels.home + '" alt="' + labels.home + '"><img src="' + $c.uitk.SPACER_SRC + '" alt="' + labels.home + '"/></button>' +
         (hasTimesheet ? ' <button id="ppm_timesheet" class="ppm_omnibar_button" title="' + labels.timesheet + '" alt="' + labels.timesheet + '"><img src="' + $c.uitk.SPACER_SRC + '" alt="' + labels.timesheet + '"/></button>' : '' ) +
         renderSearch( hasSearch, labels ) +
         '</div>' +
         '</div>' ).appendTo( con );
-    
+
     // render the uber menus
     uberMenus( labels, hasFavorites );
 
@@ -447,11 +498,35 @@ define( [ "jquery",
     var back = $( "#ppm_history_back" );
     var historyDD = $( "#ppm_history_dd" );
     var historyMenu = $( "#ppm_history_menu" );
-            
+
     historyMenu.keypress( function(e) {
       $c.handleEnter( e, historyMenu );
     });
-    
+
+    $( "#claritysn_box" ).hide();
+
+    $( "#ppm_claritysn" ).click( function(e) {
+      $('#claritysn_box').toggle('fast',function(){});
+    });
+
+    $( "#claritysn_activities" ).click( function(e) {
+      var actionId = parent.document.getElementById("socialActionId").value = 'activitiesPage';
+      var token = $c.session.username+'%3A'+$c.session.username+'%3Aappid%3Acont%3Aurl%3A0%3Adefault&scrolling=no&nocache';
+      var url = 'http://localhost/niku/socialppm/container/claritysn/SocialNetwork/gadgethome.xml';
+      var ifrUrl = 'http://localhost/niku/gadgets/ifr' + '?url=' + url + '&st=' + token;
+      $('#ppm_workspace').html("<iframe width='100%' height='100%' style='border:0px;overflow-y: hidden;' src='"+ifrUrl+"'></iframe");
+      });
+
+    $("#claritysn_frndreqs").click( function(e) {
+      var actionId = parent.document.getElementById("socialActionId").value = 'viewerProfile';
+      var token = $c.session.username+'%3A'+$c.session.username+'%3Aappid%3Acont%3Aurl%3A0%3Adefault&scrolling=no&nocache';
+      var url = 'http://localhost/niku/socialppm/container/claritysn/SocialNetwork/gadgethome.xml';
+      var ifrUrl = 'http://localhost/niku/gadgets/ifr' + '?url=' + url + '&st=' + token;
+      $('#ppm_workspace').html("<iframe width='100%' height='100%' style='border:0px;overflow-y: hidden;' src='"+ifrUrl+"'></iframe");
+    });
+
+
+
     historyDD.blur( function( e ) {
       var th = this;
       // only hide if focus is not moving amongst children or click on button
@@ -474,11 +549,11 @@ define( [ "jquery",
         historyBackPointer = historyBackPointer.next();
       }
     });
-    
+
     back.keypress( function(e) {
       $c.handleEnter( e, back );
     });
-    
+
     historyDD.click( function(e) {
       if( 'true' == $(this).attr( "aria-pressed" ) )
       {
@@ -495,12 +570,12 @@ define( [ "jquery",
     historyDD.keypress( function(e) {
       $c.handleEnter( e, $( "#ppm_history_dd" ) );
     });
-    
+
     // Search buttons/input
     if( hasSearch ) {
       $( "#ppm_search" ).click( function(e){
         $( "#ppm_search_con" ).toggle();
-        $( "#ppm_search_text:visible" ).focus().select();            
+        $( "#ppm_search_text:visible" ).focus().select();
       });
 
       $( "#ppm_search_submit" ).click( function(e) {
@@ -520,35 +595,25 @@ define( [ "jquery",
     // Timesheets
     if( hasTimesheet ) {
       $( "#ppm_timesheet" ).click( function(e) {
-        $c.uitk.service.Navigation.navigate( "#action:timeadmin.currentTimesheet" );        
+        $c.uitk.service.Navigation.navigate( "#action:timeadmin.currentTimesheet" );
       });
     }
-
-    $( "#ppm_claritysn" ).click( function(e) {
-          //$( "ppm_workspace" ).
-//        var req = new XMLHttpRequest();
-//        req.open("GET", "/niku/socialppm/samplecontainer/examples/claritysn/index.html", true);
-//        req.send(null);
-//        var page = req.responseText;
-//        document.getElementById("ppm_workspace").innerHTML = page;
-      $('#ppm_workspace').load('/niku/socialppm/samplecontainer/examples/claritysn/index.html');
-      });
 
     // Home button
     $( "#ppm_home_go" ).click( function(e){
       $c.uitk.service.Navigation.navigate( "#action:homeActionId" );
     });
-    
+
     return w;
   };
-  
+
   function renderSearch( hasSearch, labels ) {
     var ret = '';
     if( hasSearch ) {
       ret = '<span id="ppm_search_con" role="search">' +
-        ' <a id="ppm_search_advanced" href="#action:search.advancedSearchForm&includeFileContents=true&objectTypeId=4&objectTypeId=7&objectTypeId=3&objectTypeId=1&objectTypeId=11&allUsers=true&backAction=homeActionId" title="' + labels.advanced + '">' + labels.advanced + '</a>' + 
+        ' <a id="ppm_search_advanced" href="#action:search.advancedSearchForm&includeFileContents=true&objectTypeId=4&objectTypeId=7&objectTypeId=3&objectTypeId=1&objectTypeId=11&allUsers=true&backAction=homeActionId" title="' + labels.advanced + '">' + labels.advanced + '</a>' +
         ' <div id="ppm_search_box">' +
-        ' <form style="display: inline" name="search.basicSearchForm" method="POST" onsubmit="return false;">' +            
+        ' <form style="display: inline" name="search.basicSearchForm" method="POST" onsubmit="return false;">' +
         '  <input type="text" id="ppm_search_text" name="searchKeywords" title="' + labels.search + '"/>' +
         ' </form>' +
         ' <button id="ppm_search_submit" title="' + labels.search + '" alt="' + labels.search + '"><img src="' + $c.uitk.SPACER_SRC + '" alt="' + labels.search + '"/></button>' +
@@ -557,7 +622,7 @@ define( [ "jquery",
     }
     return ret;
   };
-  
+
   /**
    * Builds the HTML for the refresh button in a ubermenu
    * @param {String} id the id of the source of the menu
@@ -570,7 +635,7 @@ define( [ "jquery",
       $c.uitk.shell.refreshUbermenus( id, m, labels, hasFavorites );
     } );
   };
-  
+
   /**
    * Refreshes all ubermenus with new data from the server.  Closes the current menu as well
    * @param {String} id the id of the source of the currently open menu
@@ -582,9 +647,9 @@ define( [ "jquery",
     $c.uitk.ubermenu.close( id, m );
     $( "#ppm_nav_app, #ppm_nav_admin, #ppm_nav_favs" ).removeClass( "ppm_nav_menu_hover" );
     $( "#ppm_nav_app_menu, #ppm_nav_admin_menu, #ppm_nav_favs_menu" ).remove();
-    uberMenus( labels, hasFavorites, true );        
+    uberMenus( labels, hasFavorites, true );
   };
-  
+
   /**
    * Builds the HTML for all the uber menus
    * @param {Object} labels the i18n labels
@@ -600,7 +665,7 @@ define( [ "jquery",
         // menu model objects
         var menus = data.GetNavigatorMenuBeanResponse.Response.Result.NavigatorMenuResponse.navigatorEntryList.NavigatorEntry;
 
-        // application menu            
+        // application menu
         var m = $c.uitk.ubermenu.render( "ppm_nav_app_menu", menus[0], $( "#ppm_nav_app" ), labels );
         var buttons = $( "<div/>" )
         .append(
@@ -620,9 +685,9 @@ define( [ "jquery",
             }, true );
           } ) )
         .append( renderRefreshUbermenu( "ppm_nav_app_menu", m, labels, hasFavorites ) );
-        
+
         m.append( buttons );
-        
+
         // administration menu
         var hasAdmin = menus[1] && menus[1].portletCode == "union.adminLeftNav";
         if( hasAdmin ) {
@@ -632,7 +697,7 @@ define( [ "jquery",
           buttons = $( "<div/>" ).append( renderRefreshUbermenu( "ppm_nav_admin_menu", m, labels, hasFavorites ) );
           m.append( buttons );
         }
-        
+
         // favs menu
         if( hasFavorites ) {
           var menu = hasAdmin ? menus[2] : menus[1];
@@ -641,7 +706,7 @@ define( [ "jquery",
           var len = configAction.parameterList.NavigatorParameter.length;
           for( var i=0; i < len; i++ )
             config += "&" + configAction.parameterList.NavigatorParameter[i].parameterCode + "=" + configAction.parameterList.NavigatorParameter[i].parameterValue;
-          
+
           var m = $c.uitk.ubermenu.render( "ppm_nav_favs_menu", menu, $( "#ppm_nav_favs" ), labels );
           var buttons = $( "<div/>" )
           .append(
@@ -650,7 +715,7 @@ define( [ "jquery",
               $c.uitk.xhr( {
                 data: '{addFavorites: {Url: "' + $c.uitk.shell.getFavoritesLink() + '", LinkName: "' + name + '"}}',
                 url: $c.uitk.SERVICES_REL_PATH + "AddtoFavoritesService/addFavorites",
-                success: function() { 
+                success: function() {
                   $c.uitk.shell.refreshUbermenus( "ppm_nav_favs_menu", m, labels, hasFavorites );
                 }
               }, true );
@@ -666,7 +731,7 @@ define( [ "jquery",
       }
     }, mask );
   };
-  
+
   /**
    * Builds a string link in the format the Favorites service expects of the current window location from the current href
    * @returns {String} a link for the Favorites service
@@ -686,7 +751,7 @@ define( [ "jquery",
     var link = url_.substring( 0 , sPos ) + "/app?action=" + url_.substring( hPos + 8 );  // favorites service only likes legacy URLs
     return encodeURIComponent( link );
   };
-  
+
   /**
    * Adds an entry to workspace history
    * @param {String} n the name/title of the entry
@@ -706,7 +771,7 @@ define( [ "jquery",
         skipBackUpdate = false;
     }
   };
-  
+
   $c.uitk.shell.setFirstHistory = function( n, u, pc ) {
     if( n && u ) {
       var url = $c.util.normalizeLegacyUrl( u );
@@ -714,6 +779,6 @@ define( [ "jquery",
       var escPc = $c.uitk.shell.escapeHtml(pc);
       $( "#ppm_history_menu a:first" ).attr( { 'href': url, 'title': escName, 'data-ppm_page_context': escPc } ).html( escName );
       skipBackUpdate = false;
-    }    
+    }
   };
 } );

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) 2013, CA Inc.  All rights reserved. -->
+<Module>
+  <ModulePrefs title="Profile Gadget"
+               description="Profile Gadget"
+               thumbnail="http://localhost:8080/"
+               icon="http://localhost:8080/samplecontainer/examples/icon.png">
+    <Require feature="osapi"></Require>
+  </ModulePrefs>
+  <Content type="html">
+    <![CDATA[
+  <link rel="stylesheet" href="/niku/socialppm/container/claritysn/css/profile.css" />
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript">
+
+    //Load the profile details
+    loadProfile = function() {
+      var req = osapi.people.get({userId: '@owner' });
+      req.execute(function(result) {
+        buildProfile( result );
+      });
+    };
+
+    buildProfile = function( result )
+    {
+
+      var addressString = "";
+      if( result.addresses && result.addresses.length > 0 )
+      {
+        addressString = result.addresses[0].formatted;
+      }
+
+      var companyName = "";
+      if( result.organizations && result.organizations.length > 0 )
+      {
+        companyName = result.organizations[0].name;
+      }
+
+      var interests = "";
+      if( result.interests && result.interests.length > 0 )
+      {
+        for (var i=0;i<result.interests.length;i++)
+        {
+          interests = interests +  "<p>" + interests[i] + "</p>";
+        }
+      }
+
+      var phoneNumbers = "";
+
+      if( result.phoneNumbers && result.phoneNumbers.length > 0 )
+      {
+        for (var i=0;i<result.phoneNumbers.length;i++)
+        {
+          phoneNumbers = phoneNumbers +  phoneNumbers[i].value + "&nbsp;&nbsp;";
+        }
+      }
+      $('#profile').load('/niku/socialppm/container/claritysn/profile.html');
+    }
+    //Initialize data for request
+    initData = function() {
+      // Get the current viewer
+      loadProfile();
+    };
+
+    gadgets.util.registerOnLoadHandler(initData);
+  </script>
+  <div id="profile"></div>
+  ]]>
+  </Content>
+</Module>

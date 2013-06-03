@@ -5,6 +5,7 @@ import org.apache.shindig.social.core.model.ActivityImpl;
 
 public class ActivityHandler {
 	private ActivityImpl object;
+  private String parentActivityId;
 	private String type;
 	private String _id;
 	private String _rev;
@@ -14,6 +15,12 @@ public class ActivityHandler {
 	public ActivityHandler(ActivityImpl object_, String type_)
 	{
 		object = object_;
+		type = type_;
+	}
+  public ActivityHandler(ActivityImpl object_, String parentActivityId_, String type_)
+	{
+		object = object_;
+    parentActivityId = parentActivityId_;
 		type = type_;
 	}
 	
@@ -41,4 +48,14 @@ public class ActivityHandler {
 	public void setRevId(String rev_){
 		_rev = rev_;
 	}
+
+  public String getParentActivityId()
+  {
+    return parentActivityId;
+  }
+
+  public void setParentActivityId( String parentActivityId_ )
+  {
+    parentActivityId = parentActivityId_;
+  }
 }

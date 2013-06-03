@@ -1,0 +1,34 @@
+{
+   "aboutMe": "I'm Anil and I love sports. I'm also interested social networking :-)",
+   "activities": [
+       "swimming",
+       "running"
+   ],
+   "age": 23,
+   "bodyType": {
+       "build": "small",
+       "eyeColor": "black",
+       "hairColor": "black",
+       "height": 5.1,
+       "weight": 73
+   },
+   "books": [
+       "The Monk who sold his ferrari",
+       "The Alchemist"
+   ],
+   "id": "Anil",
+   "jobInterests": "Quality Assurance Engineer",
+   "name": {
+       "formatted": "Anil Nassam"
+   },
+   "nickname": "Anil",
+   "photos": [
+       {
+           "type": "jpg",
+           "value": "http://127.0.0.1:5984/lightcouch-db-test/a2b00dab90c94fb3a63292c713288267/anil.jpg",
+           "primary": true
+       }
+   ],
+   "isOwner": false,
+   "isViewer": false
+}

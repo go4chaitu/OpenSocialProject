@@ -1,0 +1,71 @@
+<!-- Copyright (c) 2013, CA Inc.  All rights reserved. -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="gadgets.css">
+<script type="text/javascript" language="JavaScript">
+	function showDiv() {
+		var show = document.getElementById("updateArea")
+        show.innerHTML = '<textarea cols="50" rows="5" name="status" id="status" maxlength="145" placeholder="Post updates here"></textarea>';
+	}
+	
+	
+   function updatePhotos() {
+        var updatePhoto = document.getElementById("updateArea")
+        updatePhoto.innerHTML = "<textarea cols='50' rows='1' maxlength='145' placeholder='Photo Name' id='activityObjectName'></textarea><br><textarea cols='50' rows='3' maxlength='145' placeholder='Photo Summary' id='activityObjectSummary'></textarea><br><textarea cols='50' rows='5' maxlength='145' placeholder='Photo Permalink' id='activityObjectPermalink'></textarea><br><input style='border-radius: 3px;' type='submit' value='Update' onclick='showDiv()'/>";
+    }
+   
+   function updateFiles() {
+       var updateFile = document.getElementById("updateArea")
+       updateFile.innerHTML = "<textarea cols='50' rows='1' maxlength='145' placeholder='File Name' id='activityObjectName'></textarea><br><textarea cols='50' rows='3' maxlength='145' placeholder='File Summary' id='activityObjectSummary'></textarea><br><textarea cols='50' rows='5' maxlength='145' placeholder='File Permalink' id='activityObjectPermalink'></textarea><br><input style='border-radius: 3px;' type='submit' value='Update' onclick='showDiv()'/>";
+   }
+
+</script>
+
+</head>
+<body>
+	<div align="center">
+		    <div id="updateArea">
+			<textarea cols="50" rows="5" name="status" id="status" maxlength="145" placeholder="Post updates here"></textarea>
+			</div>
+            <br> <input style="border-radius: 3px;" type="submit" value="Update" name="submit1" class="update_button1">
+				<input style="border-radius: 3px;" type="submit" value="Update Image" name="submit2" class="update_button2" onclick="updatePhotos()">
+				<input style="border-radius: 3px;" type="submit" value="Update Files" name="submit3" class="update_button3" onclick="updateFiles()">
+
+	</div>
+	<div id="contents"> <img src="img1.jpg" height="50" width="50" align="center">User 1 
+	   <p>
+ 	     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+ 	   </p>
+			<input style="border-radius: 3px;" type="submit" value="like"
+			name="like" class="like_button1" /> 
+			<input style="border-radius: 3px;" type="submit" value="comment"
+			name="comment" class="comment_button1" onclick="showDiv('commentDiv1')"/>
+			<div id="commentDiv1"  style="display:none;" class="answer_list" >
+			<br><textarea style="margin-left:10px" cols="101" rows="1" maxlength="145" placeholder="your comment"></textarea>
+			<div id="contents">
+				<img src="img1.jpg" width="45px" height="45px" align="left" style="padding-top:5px;">
+				<p style="padding-left:10px;font-size:15px;font-family:Arial, sans-serif;">User 2: sample comment 1</p>
+			</div>
+			</div>
+	</div>
+	<div id="contents"> <img src="img1.jpg" height="50" width="50" align="center">User 2 
+	   <p>
+ 	     This an update sample 
+ 	   </p>
+			<input style="border-radius: 3px;" type="submit" value="like"
+			name="like2" class="like_button2" /> 
+			<input
+			style="border-radius: 3px;" type="submit" value="comment"
+			name="comment2" class="comment_button2" onclick="showDiv('commentDiv2')"/>
+			<div id="commentDiv2"  style="display:none;" class="answer_list" >
+			<br><textarea style="margin-left:10px" cols="101" rows="1" maxlength="145" placeholder="your comment"></textarea>
+			<div id="contents">
+				<img src="img1.jpg" width="45px" height="45px" align="left" style="padding-top:5px;">
+				<p style="padding-left:10px;font-size:15px;font-family:Arial, sans-serif;">User 1: sample comment 2</p>
+			</div>
+			</div>
+	</div>
+</body>
+</html>

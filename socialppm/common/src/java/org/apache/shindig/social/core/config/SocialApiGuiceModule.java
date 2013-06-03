@@ -39,6 +39,8 @@ import org.apache.shindig.social.opensocial.service.ActivityHandler;
 import org.apache.shindig.social.opensocial.service.ActivityStreamHandler;
 import org.apache.shindig.social.opensocial.service.AlbumHandler;
 import org.apache.shindig.social.opensocial.service.AppDataHandler;
+import org.apache.shindig.social.opensocial.service.ClarityDataHandler;
+import org.apache.shindig.social.opensocial.service.DocumentHandler;
 import org.apache.shindig.social.opensocial.service.GroupHandler;
 import org.apache.shindig.social.opensocial.service.MediaItemHandler;
 import org.apache.shindig.social.opensocial.service.MessageHandler;
@@ -95,6 +97,6 @@ public class SocialApiGuiceModule extends AbstractModule {
   protected Set<Class<?>> getHandlers() {
     return ImmutableSet.of(ActivityHandler.class, AppDataHandler.class,
             PersonHandler.class, MessageHandler.class, AlbumHandler.class,
-            MediaItemHandler.class, ActivityStreamHandler.class, GroupHandler.class);
+            MediaItemHandler.class, ActivityStreamHandler.class, GroupHandler.class, ClarityDataHandler.class, DocumentHandler.class );
   }
 }

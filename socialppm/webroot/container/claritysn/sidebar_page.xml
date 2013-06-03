@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) 2013, CA Inc.  All rights reserved. -->
+<Module>
+<ModulePrefs title="Menu">
+</ModulePrefs>
+<Content type="html">
+<![CDATA[
+<link rel="stylesheet" type="text/css" href="gadgets.css">
+<div>
+<iframe src="/niku/socialppm/container/claritysn/recentactivities.html" name="sidebar" width="250" height ="650" style="overflow:hidden;" seamless></iframe>
+</div>
+]]>
+</Content>
+</Module>

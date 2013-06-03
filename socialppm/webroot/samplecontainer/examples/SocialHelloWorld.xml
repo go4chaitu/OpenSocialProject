@@ -28,6 +28,7 @@
   </ModulePrefs>
   <Content type="html">
     <![CDATA[
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <style type="text/css">
     #helloworlds {
       margin: 20px;
@@ -68,6 +69,7 @@
   </style>
 
   <script type="text/javascript">
+
     // Set title (if supported by container)
     gadgets.window.setTitle('Social Hello World');
 
@@ -169,6 +171,16 @@
         buildGroupsSelect(result.list, result.totalResults);
       });
     };
+    createGroups = function() {
+      var req = osapi.groups.create({group: {
+                          id: document.getElementById('new_group_id').value,
+				                  title: document.getElementById('new_group_title').value,
+            						  description: document.getElementById('new_group_description').value }
+            						 });
+      req.execute(function(result) {
+        alert(result);
+      });
+    };
 
     /**
      *  Get the Viewer (an OpenSocial Person) by sending an osapi.people.getViewer request
@@ -259,6 +271,12 @@
     <input type="button" value="Say hello" onclick="sayHelloWorld(); return false;"/>
   </div>
   <div id="helloworlds" style="margin: 4px"></div>
+  <div id="helloworlds" style="margin: 4px">
+  	<input type="text" value="Id" id="new_group_id"/>
+  	<input type="text" value="Title" id="new_group_title"/>
+  	<input type="text" value="Description" id="new_group_description"/>
+  	<input type="button" value="Create Group" onclick="createGroups(); return false;"/>
+  </div>
   ]]>
   </Content>
 </Module>

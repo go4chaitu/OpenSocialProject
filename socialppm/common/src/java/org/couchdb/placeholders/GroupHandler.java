@@ -12,6 +12,7 @@ public class GroupHandler
   private String _id;
   private String _rev;
   private List<String> groupmembers;
+  private String owner;
 
   public GroupImpl getGroupObject()
   {
@@ -61,5 +62,15 @@ public class GroupHandler
   public void setGroupmembers( List<String> groupmembers_ )
   {
     groupmembers = groupmembers_;
+  }
+
+  public String getGroupOwner()
+  {
+    return owner;
+  }
+
+  public void setGroupOwner( String owner_ )
+  {
+    owner = owner_;
   }
 }

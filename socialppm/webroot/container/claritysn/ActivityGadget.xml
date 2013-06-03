@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) 2013, CA Inc.  All rights reserved. -->
+<Module>
+	<ModulePrefs title="ActivityStreams Gadget!">
+		<Require feature="opensocial-0.9"/>
+		<Require feature="osapi"/>
+		<Require feature="dynamic-height"/>
+	</ModulePrefs>
+	
+	<Content type="html">
+	<![CDATA[
+    <head>
+      <link rel="stylesheet" href="/niku/socialppm/container/claritysn/gadgets.css" />
+    </head>
+	<body>
+		<script type="text/javascript" src="OpenSocialWrapper.js"></script>
+		<script type="text/javascript" src="/niku/socialppm/container/claritysn/js/Activities3.js"></script>
+		
+		<script type="text/javascript">
+		
+			social = new OpenSocialWrapper();
+			render = new ActivityStreamsRender();
+			
+			// TODO: move this stuff into ActivityStreamRender (if you can...)
+			
+			//Show div for entering objects 
+			function ObjectDiv(){
+				var state = document.getElementById('objectArea').style.display;
+            	if (state == 'block') {
+                	document.getElementById('objectArea').style.display = 'none';
+            	} else {
+                document.getElementById('objectArea').style.display = 'block';
+            	}
+       		}
+       		
+       		//Enter comments 
+			function commentDiv(d){
+				//var state = document.getElementById(d).style.display;
+    			//if (document.getElementById(d).style.display == 'block') {
+        		//	document.getElementById(d).style.display = 'none';
+    			//} else {
+        		//	document.getElementById(d).style.display = 'block';
+    			//}
+    			var argValue = commentDiv.arguments;
+    			var title = argValue[0];
+    			var commentBody = 'commentBody'+argValue[0];
+				var body = blankToNull(this.document.getElementById(commentBody).value);
+				//var body = blankToNull($(this).parent().find("contentDiv").value;);
+				selVerbs = [];
+				selVerbs[0] = 'comment';
+				selTypes = [];
+				var objectName = null;
+				var objectSummary =null;
+				var objectPermalink = null;
+				if(body != null){
+					social.postActivityEntry(title, body, selVerbs[0], viewer.id, viewer.name.formatted,
+						objectName, objectSummary, objectPermalink, selTypes[0],
+						function(response) {render.renderComments(argValue[0], refresh);
+				});
+				
+				this.document.getElementById(commentBody).value='';
+				//$(this).parent().document.getElementById('commentBody').value;
+				//$('commentBody').parent().value;
+				}
+				
+			}
+			
+			
+			//Loading Comments
+			function loadComments(){
+			var arg = loadComments.arguments;
+				osapi.activitystreams.get({'userId': '@viewer', 'groupId': '@friends'}).execute(function(response) {
+					render.renderComments(arg[0], refresh);
+				});
+			}			
+			
+			
+			// Renders retrieval of an ActivityEntry by ID
+			function renderActivityEntryId(div, callback) {
+				var html = "<h2>Work with an ActivityEntry</h2>";
+				html += "ActivityEntry ID: <input type='text' size=40 id='activityEntryId'>";
+				html += "<input type='button' value='Retrieve' onclick='retrieveActivityEntryId()'>";
+				html += "<input type='button' value='Delete' onclick='deleteActivityEntryId()'><br>";
+				html += "Note: you must be the owner of the ActivityEntry to retrieve it.";
+				html += "<textarea id='activityEntryText' cols=75 rows=10>No entry to display...</textarea><br>";
+				document.getElementById(div).innerHTML = html;
+				callback();
+			}
+			
+			// Deletes the activity entry
+			function deleteActivityEntryId() {
+				social.deleteActivityEntryById(document.getElementById('activityEntryId').value, function(response) {
+					document.getElementById('activityEntryText').value = 'No entry to display...';
+					render.renderActivityEntries('activityEntryies', refresh);
+				});
+			}
+			
+			// Retrieves the activity entry
+			function retrieveActivityEntryId() {
+				social.getActivityEntryById(document.getElementById('activityEntryId').value, function(response) {
+					document.getElementById('activityEntryText').value = JSON.stringify(response);
+				});
+			}
+			
+			// Creation form for activity entry
+			function renderCreateActivityEntry(div, callback) {
+				var htmlCreateActivityEntry = "<div align='center'><h2>Create an ActivityEntry</h2>";
+				htmlCreateActivityEntry += "<textarea cols='50' rows='1' maxlength='145' placeholder='Enter Title' id='activityEntryTitle' required></textarea><br>";
+				htmlCreateActivityEntry += "<textarea cols='50' rows='5' maxlength='250' placeholder='Post updates here' id='activityEntryBody' required></textarea><br>";
+				htmlCreateActivityEntry += "<div id='objectArea' style='display:none;'><textarea cols='50' rows='1' maxlength='145' placeholder='Object Name' id='activityObjectName'></textarea><br>";
+				htmlCreateActivityEntry += "<textarea cols='50' rows='1' maxlength='145' placeholder='Object Summary' id='activityObjectSummary'></textarea><br>";
+				htmlCreateActivityEntry += "<textarea cols='50' rows='1' maxlength='145' placeholder='Object Permalink' id='activityObjectPermalink'></textarea></div><br>";
+				htmlCreateActivityEntry += "<input type='button' value='Add Object' onclick='ObjectDiv()' style='border-radius: 3px;'/>";
+				htmlCreateActivityEntry += "<input type='button' value='Submit' onclick='createActivityEntry()' style='border-radius: 3px;'/>";
+				htmlCreateActivityEntry += "</div><br><br>";
+				document.getElementById(div).innerHTML = htmlCreateActivityEntry;
+				callback();
+			}
+			function createActivityEntry() {
+				// Gather selected verbs
+				//verbOptions = document.getElementById('selectVerbs');
+				selVerbs = [];
+				//selVerbs[0] = 'shared';
+				//count = 0;
+				//for(i = 0; i < verbOptions.options.length; i++) {
+				//	if(verbOptions.options[i].selected) {
+				//		selVerbs[count] = verbOptions.options[i].value;
+				//		count++;
+				//	}
+				//}
+				
+				// Gather selected types
+				//typeOptions = document.getElementById('selectObjectTypes');
+				selTypes = [];
+				//count = 0;
+				//for(i = 0; i < typeOptions.options.length; i++) {
+				//	if(typeOptions.options[i].selected) {
+				//		selTypes[count] = typeOptions.options[i].value;
+				//		count++;
+				//	}
+				//}
+				
+				var title = blankToNull(document.getElementById('activityEntryTitle').value);
+				var body = blankToNull(document.getElementById('activityEntryBody').value)
+				var objectName = blankToNull(document.getElementById('activityObjectName').value);
+				var objectSummary = blankToNull(document.getElementById('activityObjectSummary').value);
+				var objectPermalink = blankToNull(document.getElementById('activityObjectPermalink').value);
+				if((title != null) && (body != null)){
+					if(((objectName != null)&&((objectSummary == null)||(objectPermalink == null)))||((objectSummary != null)&&((objectName == null)||(objectPermalink == null)))||((objectPermalink != null)&&((objectName == null)||(objectSummary == null)))){
+						alert('Enter complete Object details');
+					}
+					else{
+						social.postActivityEntry(title, body, selVerbs[0], viewer.id, viewer.name.formatted,
+												objectName, objectSummary, objectPermalink, selTypes[0],
+												function(response) {
+												render.renderActivityEntries('activityEntries', refresh);
+					});
+					this.document.getElementById('activityEntryTitle').value='';
+					this.document.getElementById('activityEntryBody').value='';
+					this.document.getElementById('activityObjectName').value='';
+					this.document.getElementById('activityObjectSummary').value='';
+					this.document.getElementById('activityObjectPermalink').value='';
+					if (this.document.getElementById('objectArea').style.display = 'block') {
+	                	this.document.getElementById('objectArea').style.display = 'none';
+	            		}
+					}
+					}	
+			}
+			
+			function blankToNull(str) {
+				return (str == '' ? null : str);
+			}
+		
+			// Adjusts the window height
+			function refresh() {
+				gadgets.window.adjustHeight();
+			}
+		
+			// Initializes the gadget
+			function init() {
+				render.getViewerOwner('viewerOwner', refresh);
+				//render.renderActivities('activities', refresh);
+				render.renderActivityEntries('activityEntries', refresh);
+				//renderActivityEntryId('htmlGetEntry', refresh);
+				renderCreateActivityEntry('htmlCreateEntry', refresh);
+			}
+			
+			gadgets.util.registerOnLoadHandler(init);
+		</script>
+		
+		
+		<div id='viewerOwner'></div>
+		<div id='htmlCreateEntry'></div>
+		<div id='activityEntries'></div>
+	</body>
+	]]>
+	</Content>
+</Module>

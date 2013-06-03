@@ -1,0 +1,111 @@
+#workitemDiv {
+	width: 450px;
+}
+#workitemDiv ul {
+    display: block;
+    padding: 0;
+    width: 100%;
+    margin-left: 50%;
+}
+#workitemDiv li {
+    display: inline-block;
+}
+#workitem_create {
+    width: 100%;
+    min-height: 30px;
+    height: auto;
+    background: rgb(255, 255, 255);
+    float: left;
+    border: 1px solid rgb(154, 178, 228);
+    padding: 0;
+}
+#workitem_create ul {
+    margin: 0;
+    padding: 0;
+    display: block;
+    width: 100%;
+}
+#workitem_create #workitem_name, #workitem_create #workitem_desc, #workitem_lead,  #workitem_on_object,  #workitem_duedate {
+    min-height: 20px;
+    width: 100%;
+    border-bottom: 1px solid #98b3ca;
+    float: left;
+}
+#workitem_name_ta, #workitem_desc_ta {
+    width: 420px;      
+    min-height: 20px;
+    border: 0px;
+    font-family: Arial, sans-serif;      font-size: 13px;      overflow: hidden;
+}
+
+
+#workitem_name .lbr, #workitem_desc .lbr {
+    line-height: 3px;
+}
+#workitem_name textarea, #workitem_desc textarea {      padding: 5px;
+      resize: none;}
+#workitem_name .textstuff, #workitem_desc .textstuff {
+    resize: none; /* remove this if you want the user to be able to resize it in modern browsers */      overflow: hidden;
+}
+#workitem_name .hiddendiv, #workitem_desc .hiddendiv {
+    display: none;      white-space: pre-wrap;      word-wrap: break-word;      overflow-wrap: break-word; /* future version of deprecated 'word-wrap' */;
+}
+#workitem_name .lbr, #workitem_desc .lbr {
+    line-height: 3px;
+}
+#workitem_lead, #workitem_on_object, #workitem_duedate {
+    font-family: Arial, sans-serif;      
+    font-size: 11px;
+}
+div[data-placeholder]:not(:focus):not([data-div-placeholder-content]):before {
+    content: attr(data-placeholder);
+    float: left;
+    margin-left: 5px;
+    color: gray;
+}
+#workitem_lead .text_value, #workitem_on_object .text_value, #workitem_duedate .text_value {
+    display: block;
+    float: left;
+    min-width: 93%;
+    font-family: Arial, sans-serif;  font-size: 13px;  overflow: hidden;
+    padding:  5;
+    border: 0px;
+}
+
+#workitem_lead #clear, #workitem_on_object #clear, #workitem_duedate #clear {
+    margin-top: 3px;
+}
+#workitem_lead #clear:hover, #workitem_on_object #clear:hover, #workitem_duedate #clear:hover {
+    cursor: pointer;
+}
+#workitem_duedate {
+	font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+	font-size: 62.5%;
+}
+#workitem_duedate span {
+    display: block;
+    float: left;
+    margin-top: 5px;
+}
+#workitem_duedate span:after {
+    content: ":";
+}
+#buttons ul {
+    margin: 0;
+}
+#workitem_name span {
+	font-size: 13px;
+    float: left;
+    color: red;
+}
+#workitem_desc span {
+	font-size: 13px;
+    float: left;
+    color: red;
+}
+#workitem_lead span {
+    font-size: 13px;
+    float: left;
+    color: red;
+}
+

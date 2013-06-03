@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) 2013, CA Inc.  All rights reserved. -->
+<Module>
+	<ModulePrefs title="FriendsGadget!">
+		<Require feature="opensocial-0.9"/>
+		<Require feature="osapi"/>
+		<Require feature="dynamic-height"/>
+	</ModulePrefs>
+
+	<Content type="html">
+	<![CDATA[
+      <link rel="stylesheet" type="text/css" href="/niku/socialppm/container/claritysn/SocialNetwork/css/mycss.css">
+      <link href="/niku/socialppm/container/claritysn/SocialNetwork/css/fullcalendar.css" rel="stylesheet">
+      <link rel="stylesheet" type="text/css" href="/niku/socialppm/container/claritysn/SocialNetwork/css/calendar.css">
+      <script src="/niku/socialppm/container/claritysn/SocialNetwork/js/jquery-1.9.1.js"></script>
+      <script src="/niku/socialppm/container/claritysn/SocialNetwork/js/jquery-ui-1.10.2.custom.min.js"></script>
+      <script type="text/javascript" src="/niku/socialppm/container/claritysn/OpenSocialWrapper.js"></script>
+      <script type="text/javascript" src="/niku/socialppm/container/claritysn/js/friends.js"></script>
+      <script src="/niku/socialppm/container/claritysn/SocialNetwork/js/loadmodules.js"></script>
+
+      <ul id="sn_main_content">
+        <li id="sn_header"></li>
+
+        <li id="sn_content">
+          <ul id="sn_content_ul">
+            <li id="sn_centerbar"></li>
+            <li id="sn_rightbar"></li>
+          </ul>
+        </li>
+      </ul>      
+	]]>
+	</Content>
+</Module>

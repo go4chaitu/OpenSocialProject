@@ -48,6 +48,7 @@ public class ActivityImpl implements Activity {
   private String titleId;
   private String url;
   private String userId;
+  private String parentId;
 
   public ActivityImpl() {
   }
@@ -59,6 +60,16 @@ public class ActivityImpl implements Activity {
 
   public String getAppId() {
     return appId;
+  }
+
+  public String getParentId()
+  {
+    return parentId;
+  }
+
+  public void setParentId( String parentId_ )
+  {
+    parentId = parentId_;
   }
 
   public void setAppId(String appId) {

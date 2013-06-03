@@ -1,0 +1,32 @@
+#sn_calendar_content {
+    width: 100px;
+    margin: 0 auto;
+    font-size: 7px;
+}
+.fc-header-title h2 {
+    font-size: .3em;
+    white-space: normal !important;
+}
+.fc-header-right {
+    display: none;
+}
+.fc-view-month .fc-event, .fc-view-agendaWeek .fc-event {
+    font-size: 0;
+    display:none;
+    overflow: hidden;
+    height: .3em;
+}
+.fc-view-agendaWeek .fc-event-vert {
+    font-size: 0;
+    display:none;
+    overflow: hidden;
+    width: .3em !important;
+}
+.fc-agenda-axis {
+    width: .6em !important;
+    font-size: .4em;
+}
+
+.fc-button-content {
+    padding: 0;
+}

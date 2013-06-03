@@ -1,0 +1,58 @@
+<!-- Copyright (c) 2013, CA Inc.  All rights reserved. -->
+<!DOCTYPE html>
+
+<!-- default container look and feel -->
+<link rel="stylesheet" href="/niku/socialppm/container/claritysn/gadgets.css">
+<script type="text/javascript" src="/niku/gadgets/js/shindig-container:pubsub.js?c=1&debug=1"></script>
+<script type="text/javascript" src="/niku/socialppm/container/claritysn/jquery.min.js"></script>
+<script type="text/javascript" src="/niku/socialppm/container/claritysn/posts.js"></script>
+<script type="text/javascript">
+var my = {}; 
+var rootpath = 'http://' + window.location.host + '/niku/socialppm/container/claritysn'
+my.gadgetSpecUrls = [
+  rootpath + '/menu_page.xml',
+  rootpath + '/content_page.xml',
+  rootpath + '/sidebar_page.xml'
+];
+
+my.LayoutManager = function() { 
+  shindig.LayoutManager.call(this);
+};
+
+my.LayoutManager.inherits(shindig.LayoutManager);
+
+my.LayoutManager.prototype.getGadgetChrome = function(gadget) {
+  var chromeId = 'gadget-chrome-' + gadget.id;
+  return chromeId ? document.getElementById(chromeId) : null;
+};
+
+my.init = function() {
+  gadgets.pubsubrouter.init(function(id) {
+    var gadgetId = shindig.container.gadgetService.getGadgetIdFromModuleId(id);
+    var gadget = shindig.container.getGadget(gadgetId);
+    return gadget.specUrl;
+
+  });
+  shindig.container.layoutManager = new my.LayoutManager();
+};
+
+my.renderGadgets = function() {
+  shindig.container.setParentUrl("http://" + window.location.host + "/");
+  for (var i = 0; i < my.gadgetSpecUrls.length; ++i) { 
+    var gadget = shindig.container.createGadget(
+        {debug:1,specUrl: my.gadgetSpecUrls[i], title: (i ? " " : " ")});
+    shindig.container.addGadget(gadget);
+    shindig.container.renderGadget(gadget);
+   
+  }
+};
+
+function log(message) {
+  document.getElementById("output").innerHTML += gadgets.util.escapeString(message) + "<br/>";
+}
+my.init();
+my.renderGadgets();
+</script>
+<div id="gadget-chrome-0" class="gadgets-gadget-chrome-left"></div>
+<div id="gadget-chrome-1" class="gadgets-gadget-chrome-right"></div>
+<div id="gadget-chrome-2" class="gadgets-gadget-chrome-sidebar"></div>

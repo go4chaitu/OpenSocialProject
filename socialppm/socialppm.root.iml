@@ -3,7 +3,6 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <excludeFolder url="file://$MODULE_DIR$/common-lib" />
       <excludeFolder url="file://$MODULE_DIR$/common/build" />
       <excludeFolder url="file://$MODULE_DIR$/extras/build" />
       <excludeFolder url="file://$MODULE_DIR$/gadgets/build" />

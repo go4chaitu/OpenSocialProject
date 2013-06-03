@@ -96,11 +96,27 @@ public class ActivityHandler  {
     HandlerPreconditions.requireNotEmpty(userIds, "No userId specified");
     HandlerPreconditions.requireSingular(userIds, "Multiple userIds not supported");
     // TODO(lryan) This seems reasonable to allow on PUT but we don't have an update verb.
-    HandlerPreconditions.requireEmpty(activityIds, "Cannot specify activityId in create");
+    HandlerPreconditions.requireEmpty(activityIds, "Canno    t specify activityId in create");
 
     return service.createActivity(Iterables.getOnlyElement(userIds), request.getGroup(),
         request.getAppId(), request.getFields(),
         request.getTypedParameter("activity", Activity.class),
+        request.getToken());
+  }
+
+  @Operation(httpMethods="POST", bodyParam = "activity")
+  public Future<?> addComment(SocialRequestItem request) throws ProtocolException {
+
+    Set<UserId> userIds = request.getUsers();
+    List<String> activityIds = request.getListParameter("activityId");
+
+    HandlerPreconditions.requireNotEmpty(userIds, "No userId specified");
+    HandlerPreconditions.requireSingular(userIds, "Multiple userIds not supported");
+    HandlerPreconditions.requireNotEmpty(userIds, "No activityId specified");
+    HandlerPreconditions.requireSingular(userIds, "Multiple activityIds not supported");
+
+    return service.addComment(Iterables.getOnlyElement(userIds), Iterables.getOnlyElement(activityIds),
+        request.getFields(), request.getTypedParameter("activity", Activity.class),
         request.getToken());
   }
 
@@ -125,6 +141,11 @@ public class ActivityHandler  {
       throw new IllegalArgumentException("Cannot fetch same activityIds for multiple userIds");
     }
 
+    String lastUpdatedTime = request.getParameter( "lastUpdatedTime" );
+    if( lastUpdatedTime != null && lastUpdatedTime.length() > 0 )
+    {
+      return service.getNewActivities( Long.valueOf( lastUpdatedTime ), request.getFields(), options, request.getToken() );
+    }
     if (!optionalActivityIds.isEmpty()) {
       if (optionalActivityIds.size() == 1) {
         return service.getActivity(userIds.iterator().next(), request.getGroup(),
@@ -141,6 +162,35 @@ public class ActivityHandler  {
         // TODO: add pagination and sorting support
         // getSortBy(params), getFilterBy(params), getStartIndex(params), getCount(params),
         request.getFields(), options, request.getToken());
+  }
+
+  @Operation(httpMethods="GET")
+  public Future<?> getActivityComments(SocialRequestItem request)
+      throws ProtocolException {
+    Set<UserId> userIds = request.getUsers();
+    Set<String> activityIds = ImmutableSet.copyOf(request.getListParameter("activityId"));
+
+    CollectionOptions options = new CollectionOptions(request);
+
+    // Preconditions
+    HandlerPreconditions.requireNotEmpty(activityIds, "No ActivityId specified");
+    if (activityIds.size() > 1 && !activityIds.isEmpty()) {
+      throw new IllegalArgumentException("Cannot fetch comments for multiple activityIds");
+    }
+
+    return service.getActivityComments(activityIds.iterator().next(), request.getFields(), options,
+            request.getToken());
+  }
+
+  @Operation(httpMethods="GET", path="/@getNewActivies")
+  public Future<?> getNewActivities(SocialRequestItem request)
+      throws ProtocolException {
+    Set<UserId> userIds = request.getUsers();
+    long lastUpdatedTime = Long.getLong( request.getParameter( "lastupdatedtime" ));
+    CollectionOptions options = new CollectionOptions(request);
+
+    return service.getNewActivities( lastUpdatedTime, request.getFields(), options,
+            request.getToken());
   }
 
   @Operation(httpMethods = "GET", path="/@supportedFields")

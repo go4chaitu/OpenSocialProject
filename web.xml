@@ -335,7 +335,7 @@
       org.apache.shindig.common.PropertiesModule:
       org.apache.shindig.gadgets.DefaultGuiceModule:
       org.apache.shindig.social.core.config.SocialApiGuiceModule:
-      org.apache.shindig.social.sample.SampleModule:
+      org.apache.shindig.social.couchadapter.SampleModule:
       org.apache.shindig.gadgets.oauth.OAuthModule:
       org.apache.shindig.gadgets.oauth2.OAuth2Module:
       org.apache.shindig.gadgets.oauth2.OAuth2MessageModule:
@@ -360,7 +360,6 @@
     <url-pattern>/gadgets/proxy/*</url-pattern>
     <url-pattern>/gadgets/concat</url-pattern>
     <url-pattern>/gadgets/makeRequest</url-pattern>
-    <url-pattern>/rpc/*</url-pattern>
     <url-pattern>/rest/*</url-pattern>
   </filter-mapping>
 
@@ -434,7 +433,11 @@
 
   <filter-mapping>
     <filter-name>etagFilter</filter-name>
-    <url-pattern>*</url-pattern>
+    <url-pattern>/rest/*</url-pattern>
+    <url-pattern>/gadgets/*</url-pattern>
+    <url-pattern>/social/*</url-pattern>
+    <url-pattern>/socialppm/*</url-pattern>
+    <url-pattern>/rest/*</url-pattern>
   </filter-mapping>
 
   <listener>
@@ -511,6 +514,17 @@
   </servlet>
 
   <servlet>
+    <servlet-name>documentapiServlet</servlet-name>
+    <servlet-class>
+      org.apache.shindig.protocol.DocumentServiceServlet
+    </servlet-class>
+    <init-param>
+      <param-name>handlers</param-name>
+      <param-value>org.apache.shindig.handlers</param-value>
+    </init-param>
+  </servlet>
+
+  <servlet>
     <servlet-name>restapiServlet</servlet-name>
     <servlet-class>
       org.apache.shindig.protocol.DataServiceServlet
@@ -583,6 +597,11 @@
     <url-pattern>/rest/*</url-pattern>
     <url-pattern>/gadgets/api/rest/*</url-pattern>
     <url-pattern>/social/rest/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>documentapiServlet</servlet-name>
+    <url-pattern>/dms/*</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>

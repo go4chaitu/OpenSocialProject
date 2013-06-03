@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) 2013, CA Inc.  All rights reserved. -->
+<Module>
+  <ModulePrefs title="Social Hello World"
+               description="The Social Hello World Application Displays multilingual hello messages"
+               thumbnail="http://localhost:8080/"
+               icon="http://localhost:8080/samplecontainer/examples/icon.png">
+    <Require feature="osapi"></Require>
+    <Require feature="settitle"/>
+    <Require feature="dynamic-height"></Require>
+    <Require feature="opensocial-0.9"/>
+  </ModulePrefs>
+  <Content type="html">
+    <![CDATA[
+	<link rel="stylesheet" href="/niku/socialppm/container/claritysn/gadgets.css" />
+	<script type="text/javascript" src="jquery-1.9.1.js"></script>
+	<script type='text/javascript'>
+	//loading the page
+	$(document).ready(function() {
+			var fetchData = function() {
+			var html = '';
+			var groupID = document.getElementById('groups_select').value;
+			var req = osapi.appdata.get({userId: '@viewer', groupId: '@all', keys: ['content']});
+			req.execute(function(response) {
+			for (var id in response) {
+				var obj = response[id];
+				if(obj['content'] != null){
+					var message = obj['content'];
+					html += '<div id="contents"><li>' + id + ': ' + message + '</li></div>';
+					}
+				}
+			document.getElementById('posts').innerHTML = html;
+			gadgets.window.adjustHeight();
+				});
+		    }
+			setInterval(fetchData, 1000);
+		});
+	
+	// Current viewer
+    var viewer;   
+		
+	//sending the message	
+	function shareData() {
+	  var content = document.getElementById('content').value;
+	  
+	  var req = osapi.appdata.update({userId: '@viewer', groupId: 'example.com:391nvf03381', data: {content: content}});
+	  req.execute(function(response) {
+	    if (response.error) {
+	      document.getElementById('result_appdata').innerHTML = response.error.message;
+	    } else {
+	      document.getElementById('result_appdata').innerHTML = 'Message Sent!';
+	    }
+	    gadgets.window.adjustHeight();
+	  });
+	  document.getElementById('content').value = '';
+	}
+	
+	//something
+	function fetchFriendsData() {
+	  var html = '';
+	  var req = osapi.appdata.get({userId: '@viewer', groupId: '@all', keys: ['content']});
+	  req.execute(function(response) {
+	    for (var id in response) {
+	      var obj = response[id];
+	      html += '<div id="contents"><li>' + id + ': ' + obj['content'] + '</li></div>';
+	    }
+	    document.getElementById('posts').innerHTML = html;
+	    gadgets.window.adjustHeight();
+	  });
+	}
+	
+	//displaying message on send success
+	function showDiv(d) {
+	    if (document.getElementById(d).style.display == "none") {
+			document.getElementById(d).style.display = "block";
+		} else {
+			document.getElementById(d).style.display = "none";
+		}
+	}
+	            
+
+    //Builds the groups select input
+    buildGroupsSelect = function(list, totalResults) {
+      var select = document.getElementById('groups_select');
+      
+      // Fill element with data
+      select.innerHTML += '<option value="@friends">@friends</option>';
+      for(i = 0; i < totalResults; i++) {
+        select.innerHTML += '<option value="' + list[i].id + '">'+ list[i].title +'</option>';
+      }
+    };
+
+	//Get the OpenSocial Groups of the viewer
+    getGroups = function() {
+      var req = osapi.groups.get({});
+      req.execute(function(result) {
+        buildGroupsSelect(result.list, result.totalResults);
+      });
+    };
+
+    //Getting the Viewer
+    getViewer = function() {
+      var req = osapi.people.getViewer({});
+      req.execute(function(result) {
+        // Set the viewer to the result
+        viewer = result;
+        // Update the 'current_viewer' span
+        //document.getElementById('current_viewer').innerHTML = result.name.formatted + " (" + result.id + ")";
+      });
+    };
+   
+
+    //Initialize data for request
+    initData = function() {
+      // Get the current viewer
+      getViewer();
+
+      // Get the groups of the current viewer
+      getGroups();
+    };
+
+    gadgets.util.registerOnLoadHandler(initData);
+  </script>
+		
+	<div align='center'>
+	  <textarea placeholder='Enter messages here' cols='50' rows='5' id='content' maxlength='145'></textarea><br>
+	  <button style="border-radius: 3px;" onclick="showDiv('sendButton')">Add Recipient</button>
+	  <div id='sendButton' style='display:none'>
+	      Select a group :&nbsp
+    	  <select id="groups_select" style="border-radius: 3px;"></select>
+	  <button onclick='shareData();'>Send</button>
+	  <button onclick='fetchFriendsData();'>Fetch friend's data</button>
+	  </div>
+	  <div id='result_appdata'></div>
+	</div>
+	<div>
+	  <div id='posts'><ul></ul></div>
+	</div>
+	
+  ]]>
+  </Content>
+</Module>

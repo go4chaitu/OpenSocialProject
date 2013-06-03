@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) 2013, CA Inc.  All rights reserved. -->
+<Module>
+  <ModulePrefs title="FriendsGadget!">
+    <Require feature="opensocial-0.9"/>
+    <Require feature="osapi"/>
+    <Require feature="dynamic-height"/>
+  </ModulePrefs>
+
+  <Content type="html">
+    <![CDATA[
+      <link rel="stylesheet" type="text/css" href="/niku/socialppm/container/claritysn/SocialNetwork/components/objectContextDiv/css/objectCtx.css">
+      <link rel="stylesheet" type="text/css" href="/niku/socialppm/container/claritysn/SocialNetwork/css/follow_unfollow.css">
+      <script src="/niku/socialppm/container/claritysn/SocialNetwork/js/jquery-1.9.1.js"></script>
+      <script src="/niku/socialppm/container/claritysn/SocialNetwork/js/jquery-ui.js"></script>
+      <script type="text/javascript" src="/niku/socialppm/container/claritysn/SocialNetwork/js/loadObjectCtx.js"></script>
+
+      <ul class="objectCtx_ul">
+       <li class="objectCtx_li" id="objCtxHeader_li">
+       <span class="objectCtx_title1"></span>
+ <span class="objectCtx_title2"></span>
+ <span id="search"><input class="text_value" data-placeholder="search..." style="color: rgb(169, 169, 169);" type="text"><img class="searchImg" height="20" width="16"></span>
+</li>
+<li class="objectCtx_li" id="objCtxDashboard_li">
+          <div class="dashboard_box" id="posts_count">
+            <ul>
+                <li class="icon"><img height="30" src="/niku/ui/uitk/images/posts.png" width="30"></li>
+                <li class="count">0</li>
+                <li class="title">Posts</li>
+            </ul>
+          </div>
+          <div class="dashboard_box" id="followers_count">
+            <ul>
+                <li class="icon"><img height="30" src="/niku/ui/uitk/images/followers.png" width="30"></li>
+                <li class="count">1</li>
+                <li class="title">Followers</li>
+            </ul>
+          </div>
+          <div class="follow_unfollow">
+            <button class="btn followButton" rel="6">Follow</button>
+          </div>
+       </li>
+       <li class="objectCtx_li" id="objCtxStatusbar_li">
+          <ul id="objectCtx_inner_ul">
+            <li id="objectCtx_profilepic">
+              <img height="50" src="" width="50">
+            </li>
+            <li id="objectCtx_name">
+              <span id="displayname"></span>
+              <span id="designation"></span>
+            </li>
+            <li id="objectCtx_updatebar">
+              <textarea class="common txtstuff" id="objectCtx_updatebar_ta" placeholder="Enter your experience here...." style="height: 20px;"></textarea>
+            </li>
+          </ul>
+       </li><li class="objectCtx_li" id="objCtxstatusbar_btn_li">
+  <span id="post">Submit</span>
+  <span id="cancel">Cancel</span>
+</li>
+
+       <li class="objectCtx_li" id="objCtxActivites_li">
+        <span id="objCtxActivites_content"></span>
+       </li>
+      </ul>
+	]]>
+  </Content>
+</Module>

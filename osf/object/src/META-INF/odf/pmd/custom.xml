@@ -1,0 +1,1778 @@
+<?xml version="1.0"?>
+<persistMetaData xmlns="http://schemas.niku.com/2002/pmd">
+
+  <statementSet id="odf.getPageInfo" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select  c.name, page.page_code, page.instance_type
+          from    cmn_pages page, cmn_captions_nls c
+          where   page.page_code = ?
+          and     page.id = c.pk_id
+          and     c.language_code = ?
+          and     c.table_name = 'CMN_PAGES'
+        </text>
+        <param type="string" name="page_id"/>
+        <param replace="language"/>
+      </sql>
+      <outputMapping rowElementName="pageInfo"/>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.getObjectInfo" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select  name, component
+          from    odf_objects_v
+          where   code = ?
+          and     language_code = ?
+        </text>
+        <param type="string" name="code"/>
+        <param replace="language"/>
+      </sql>
+      <outputMapping rowElementName="objectInfo"/>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.getObjectInfo" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select  name, component
+          from    odf_objects_v
+          where   code = ?
+          and     language_code = ?
+        </text>
+        <param type="string" name="code"/>
+        <param replace="language"/>
+      </sql>
+      <outputMapping rowElementName="objectInfo"/>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.getProjectName" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select NAME instanceName from SRM_PROJECTS where id = ?
+        </text>
+        <param type="long" name="id"/>
+      </sql>
+      <outputMapping rowElementName="projectName"/>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.getTaskName" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select PRNAME instanceName from PRTASK where prid = ?
+        </text>
+        <param type="long" name="id"/>
+      </sql>
+      <outputMapping rowElementName="taskName"/>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.getPageNames" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select  frame.id id, c.name frame_name, ct.name tab_name, frame.is_personalizable,
+                  template.page_code template_page_code, frame.page_code frame_page_code,
+                  frame.instance_type frame_instance_type, fin.name frame_instance_name,
+        </text>
+      </sql>
+      <sql dbVendor="oracle">
+        <text>
+          concat('odf_cst_', frame.instance_type) object_sec_code
+        </text>
+      </sql>
+      <sql dbVendor="mssql">
+        <text>
+          'odf_cst_' + frame.instance_type object_sec_code
+        </text>
+      </sql>
+      <sql>
+        <text>
+          from    cmn_pages frame, cmn_captions_nls c,
+                  cmn_pages tab, cmn_captions_nls ct,
+                  cmn_pages template, cmn_lookups_v fin
+          where   tab.page_code = ?
+          and     frame.page_code = tab.page_code
+          and     tab.template_page_id = template.id
+          and     tab.page_type_code = ?
+          and     frame.id = c.pk_id
+          and     c.language_code = ?
+          and     c.table_name = 'CMN_PAGES'
+          and     tab.id = ct.pk_id
+          and     ct.language_code = ?
+          and     ct.table_name = 'CMN_PAGES'
+          and     fin.language_code = ?
+          and     fin.lookup_code = frame.instance_type
+          and     fin.lookup_type = ?
+        </text>
+        <param type="string" name="page_id"/>
+        <param type="string" constantValue="tab"/>
+        <param replace="language"/>
+        <param replace="language"/>
+        <param replace="language"/>
+        <param type="string" constantValue="CMN_PAGE_INSTANCE_TYPE"/>
+      </sql>
+      <outputMapping rowElementName="pageNames"/>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.getInstancePageNames" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select  frame.id id, c.name frame_name, ct.name tab_name, frame.is_personalizable,
+                  template.page_code template_page_code, frame.page_code frame_page_code,
+                  frame.instance_type frame_instance_type, fin.name frame_instance_name,
+        </text>
+      </sql>
+      <sql dbVendor="oracle">
+        <text>
+          concat('odf_cst_', frame.instance_type) object_sec_code
+        </text>
+      </sql>
+      <sql dbVendor="mssql">
+        <text>
+          'odf_cst_' + frame.instance_type object_sec_code
+        </text>
+      </sql>
+      <sql>
+        <text>
+          from    cmn_pages frame, cmn_captions_nls c,
+                  cmn_pages tab, cmn_captions_nls ct,
+                  cmn_pages template, cmn_lookups_v fin, cmn_instance_pages ip
+          where   tab.page_code = ?
+          and     tab.template_page_id = template.id
+          and     tab.page_type_code = ?
+          and     ip.page_frame_id = frame.id
+          and     ip.object_type = tab.instance_type
+          and     ip.object_type = frame.instance_type
+          and     ip.object_instance_id = ?
+          and     frame.id = c.pk_id
+          and     c.language_code = ?
+          and     c.table_name = 'CMN_PAGES'
+          and     tab.id = ct.pk_id
+          and     ct.language_code = ?
+          and     ct.table_name = 'CMN_PAGES'
+          and     fin.language_code = ?
+          and     fin.lookup_code = frame.instance_type
+          and     fin.lookup_type = ?
+        </text>
+        <param type="string" name="page_id"/>
+        <param type="string" constantValue="tab"/>
+        <param type="long" name="id"/>
+        <param replace="language"/>
+        <param replace="language"/>
+        <param replace="language"/>
+        <param type="string" constantValue="CMN_PAGE_INSTANCE_TYPE"/>
+      </sql>
+      <outputMapping rowElementName="pageNames"/>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.getObjectPageTabs" databaseId="Niku">
+    <statementRef id="union.getInstancePageTabs" inputSource="map"/>
+  </statementSet>
+
+  <statementSet id="odf.getObjectPageTabParams" databaseId="Niku">
+    <statementRef id="union.getInstancePageTabParams" inputSource="map"/>
+  </statementSet>
+
+  <statementSet id="odf.getObjectPageSubTabs" databaseId="Niku">
+    <statementRef id="union.getInstancePageSubTabs" inputSource="map"/>
+    <statementRef id="union.getInstancePageSubTabParams" inputSource="map"/>
+  </statementSet>
+
+  <statementSet id="odf.insertSecurityObject" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          {call CMN_SEC_OBJECTS_INS_SP (?, ?, ?, ?, ?, ?, ?, ?)}
+        </text>
+        <param type="string" name="objectCode"/>
+        <param type="string" name="objectName"/>
+        <param type="string" name="objectDescription"/>
+        <param type="string" name="objectType"/>
+        <param type="string" name="componentCode" defaultValue="CMN"/>
+        <param type="int" name="isSystem" defaultValue="1"/>
+        <param type="int" name="isActive" defaultValue="1"/>
+        <param replace="userId"/>
+      </sql>
+    </statement>
+    <statement inputSource="map">
+      <sql dbVendor="oracle">
+        <text>
+          select cmn_security_pkg.clearObjectCache from dual
+        </text>
+      </sql>
+      <sql dbVendor="mssql">
+        <text>
+          select -1 clearObjectCache from dual
+        </text>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.insertSecurityRole" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          {call CMN_SEC_GROUP_ROLE_INS_SP (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}
+        </text>
+        <param type="string" name="roleCode"/>
+        <param type="string" constantValue="ROLE"/>
+        <param type="string" name="roleName"/>
+        <param type="string" name="roleDescription"/>
+        <param type="int"    name="isActive" defaultValue="1"/>
+        <param replace="userId"/>
+        <param type="string" constantValue="INTERNAL"/>
+        <param type="string" name="rightType"/>
+        <param type="int"    name="automatic" defaultValue="0"/>
+        <param type="string" name="globalRightType"/>
+        <param type="string" name="licRightType"/>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.insertAssignedObjectPermission" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          {call CMN_SEC_ASSGND_OBJ_PERM_INS_SP (?, ?, ?, ?, ?, ?, ?, ?)}
+        </text>
+        <param type="string" name="objectCode"/>
+        <param type="string" name="objectTypeCode"/>
+        <param type="string" constantValue="CMN"/>
+        <param type="string" name="permissionCode"/>
+        <param type="string" constantValue="RIGHT"/>
+        <param type="string" name="roleCode"/>
+        <param type="string" constantValue="NULL"/>
+        <param replace="userId"/>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.objectList" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select id odf_pk, code, name from odf_ca_@objectCode@
+          where   id in (@pkList@)
+        </text>
+        <param dynamicReplacement="@objectCode@"/>
+        <param type="long" name="pkList" expressionListTag="@pkList@"/>
+      </sql>
+      <outputMapping rowElementName="object"/>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.getOdfPk" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          SELECT id odf_pk
+            FROM ODF_CA_@objectCode@
+           WHERE code = ?
+        </text>
+        <param dynamicReplacement="@objectCode@"/>
+        <param type="string" name="instanceCode"/>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.getOdfSubObjectPk" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select  s.id odf_pk
+          from    odf_ca_@objectCode@ p, odf_ca_@subObjectCode@ s
+          where   s.code = ?
+          and     p.code = ?
+          and     s.odf_parent_id = p.id
+        </text>
+        <param dynamicReplacement="@objectCode@"/>
+        <param dynamicReplacement="@subObjectCode@"/>
+        <param type="string" name="subInstanceCode"/>
+        <param type="string" name="instanceCode"/>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.getOdfSubObjectPkForParentId" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select  s.id odf_pk
+          from    odf_ca_@subObjectCode@ s
+          where   s.code = ?
+          and     s.odf_parent_id = ?
+        </text>
+        <param dynamicReplacement="@subObjectCode@"/>
+        <param type="string" name="instanceCode"/>
+        <param type="long" name="parentId"/>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.objectPermList" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select  object_instance_id
+          from    cmn_sec_chk_user_inst_v
+          where   user_id = ?
+          and     object_instance_id in (@pkList@)
+          and     permission_code = ?
+          and     object_code = ?
+          and     object_type = 'RECORD'
+          and     component_code = 'CMN'
+        </text>
+        <param replace="userId"/>
+        <param type="long" name="pkList" expressionListTag="@pkList@"/>
+        <param type="string" name="permissionCode"/>
+        <param type="string" name="secObjectCode"/>
+      </sql>
+      <outputMapping rowElementName="perm"/>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.insertAcl" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          insert into cmn_sec_acls (id, acl_code, created_date, created_by, last_updated_date, last_updated_by)
+          values ( ?, ?, ?, ?, ?, ? )
+        </text>
+        <param sequenceType="nextValue" tableName="CMN_SEC_ACLS" sequenceName="CMN_SEC_ACLS_S1"/>
+        <param name="acl_code" type="string"/>
+        <param replace="timestamp"/>
+        <param replace="userId"/>
+        <param replace="timestamp"/>
+        <param replace="userId"/>
+      </sql>
+    </statement>
+  </statementSet>
+  <statementSet id="odf.currentAclId" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select ? id from dual
+        </text>
+        <param sequenceType="currentValue" tableName="CMN_SEC_ACLS" sequenceName="CMN_SEC_ACLS_S1"/>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.insertPolicy" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          insert into cmn_sec_policies (id, policy_code, object_instance_id, object_code, component_code,
+            object_type_code, permission_code, feature_code,created_date, created_by, last_updated_date, last_updated_by)
+          values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        </text>
+        <param sequenceType="nextValue" tableName="CMN_SEC_POLICIES" sequenceName="CMN_SEC_POLICIES_S1"/>
+        <param name="policy_code" type="string"/>
+        <param name="object_instance_id" type="string"/>
+        <param name="object_code" type="string"/>
+        <param name="component_code" type="string" defaultValue="CMN"/>
+        <param name="object_type_code" type="string"/>
+        <param name="permission_code" type="string"/>
+        <param name="feature_code" type="string" defaultValue="base"/>
+        <param replace="timestamp"/>
+        <param replace="userId"/>
+        <param replace="timestamp"/>
+        <param replace="userId"/>
+      </sql>
+    </statement>
+    <statement inputSource="map">
+      <sql>
+        <text>
+          insert into cmn_sec_acl_definition ( id, acl_id, policy_id, created_date, created_by, last_updated_date, last_updated_by)
+          values ( ?, ?, ?, ?, ?, ?, ? )
+        </text>
+        <param sequenceType="nextValue" tableName="CMN_SEC_ACL_DEFINITION" sequenceName="CMN_SEC_ACL_DEFINITION_S1"/>
+        <param name="acl_id" type="long"/>
+        <param sequenceType="currentValue" tableName="CMN_SEC_POLICIES" sequenceName="CMN_SEC_POLICIES_S1"/>
+        <param replace="timestamp"/>
+        <param replace="userId"/>
+        <param replace="timestamp"/>
+        <param replace="userId"/>
+      </sql>
+    </statement>
+    <statement inputSource="map">
+      <sql>
+        <text>
+          update  cmn_actions set policy_id = ?
+          where   ? != 1 and action_code in ( @codes@ )
+        </text>
+        <param sequenceType="currentValue" tableName="CMN_SEC_POLICIES" sequenceName="CMN_SEC_POLICIES_S1"/>
+        <param name="action_code" type="nullIndicator"/>
+        <param name="action_code" type="string" expressionListTag="@codes@"/>
+      </sql>
+    </statement>
+    <statement inputSource="map">
+      <sql>
+        <text>
+          update  cmn_pages set policy_id = ?
+          where   ? != 1 and page_code in ( @codes@ )
+        </text>
+        <param sequenceType="currentValue" tableName="CMN_SEC_POLICIES" sequenceName="CMN_SEC_POLICIES_S1"/>
+        <param name="page_code" type="nullIndicator"/>
+        <param name="page_code" type="string" expressionListTag="@codes@"/>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.insertPolicyOnly" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          insert into cmn_sec_policies (id, policy_code, object_instance_id, object_code, component_code,
+            object_type_code, permission_code, feature_code,created_date, created_by, last_updated_date, last_updated_by)
+          values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        </text>
+        <param sequenceType="nextValue" tableName="CMN_SEC_POLICIES" sequenceName="CMN_SEC_POLICIES_S1"/>
+        <param name="policy_code" type="string"/>
+        <param name="object_instance_id" type="string"/>
+        <param name="object_code" type="string"/>
+        <param name="component_code" type="string" defaultValue="CMN"/>
+        <param name="object_type_code" type="string"/>
+        <param name="permission_code" type="string"/>
+        <param name="feature_code" type="string" defaultValue="base"/>
+        <param replace="timestamp"/>
+        <param replace="userId"/>
+        <param replace="timestamp"/>
+        <param replace="userId"/>
+      </sql>
+    </statement>
+    <statement inputSource="map">
+      <sql>
+        <text>
+          update  cmn_actions set policy_id = ?
+          where   ? != 1 and action_code in ( @codes@ )
+        </text>
+        <param sequenceType="currentValue" tableName="CMN_SEC_POLICIES" sequenceName="CMN_SEC_POLICIES_S1"/>
+        <param name="action_code" type="nullIndicator"/>
+        <param name="action_code" type="string" expressionListTag="@codes@"/>
+      </sql>
+    </statement>
+    <statement inputSource="map">
+      <sql>
+        <text>
+          update  cmn_pages set policy_id = ?
+          where   ? != 1 and page_code in ( @codes@ )
+        </text>
+        <param sequenceType="currentValue" tableName="CMN_SEC_POLICIES" sequenceName="CMN_SEC_POLICIES_S1"/>
+        <param name="page_code" type="nullIndicator"/>
+        <param name="page_code" type="string" expressionListTag="@codes@"/>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.insertAclDefinition" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          insert into cmn_sec_acl_definition ( id, acl_id, policy_id, created_date, created_by, last_updated_date, last_updated_by)
+          select ?, ?, p.id, ?, ?, ?, ?
+          from cmn_sec_policies p where p.policy_code = ?
+        </text>
+        <param sequenceType="nextValue" tableName="CMN_SEC_ACL_DEFINITION" sequenceName="CMN_SEC_ACL_DEFINITION_S1"/>
+        <param name="acl_id" type="long"/>
+        <param replace="timestamp"/>
+        <param replace="userId"/>
+        <param replace="timestamp"/>
+        <param replace="userId"/>
+        <param name="policy_code" type="string"/>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.setPortletAcl" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          update cmn_portlets set acl_id = ?
+          where  portlet_code in (@list@)
+        </text>
+        <param name="acl_id" type="long"/>
+        <param name="portlet_code" type="string" expressionListTag="@list@"/>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.getRightId" databaseId="Niku">
+    <statementRef id="odf.getRightId" inputSource="map"/>
+  </statementSet>
+  <statement id="odf.getRightId">
+    <sql>
+      <text>
+       select id from cmn_sec_groups where group_code = ?
+      </text>
+      <param type="string" name="right_code"/>
+    </sql>
+  </statement>
+
+  <statementSet id="odf.insertCreatorGlobalRight" databaseId="Niku">
+    <statementRef id="odf.insertCreatorGlobalRight" inputSource="map"/>
+  </statementSet>
+  <statement id="odf.insertCreatorGlobalRight">
+    <sql>
+      <text>
+        insert into cmn_sec_assgnd_right
+          ( id, principal_type, principal_id, right_id, instance_type,
+          created_date, created_by, last_updated_date, last_updated_by )
+        values ( ?,?,?,?,?,?,?,?,? )
+      </text>
+      <param sequenceName="cmn_sec_assgnd_right_s1" tableName="cmn_sec_assgnd_right" sequenceType="nextValue"/>
+      <param type="string" constantValue="USER"/>
+      <param replace="userId"/>
+      <param type="long" name="right_id"/>
+      <param type="string" constantValue="SYSTEM"/>
+      <param replace="timestamp"/>
+      <param replace="userId"/>
+      <param replace="timestamp"/>
+      <param replace="userId"/>
+    </sql>
+  </statement>
+
+  <statementSet id="odf.insertCreatorInstanceRight" databaseId="Niku">
+    <statementRef id="odf.insertCreatorInstanceRight" inputSource="map"/>
+  </statementSet>
+  <statement id="odf.insertCreatorInstanceRight">
+    <sql>
+      <text>
+      {call CMN_SEC_ASSIGN_INST_RIGHT_SP(?,?,?,?)}
+      </text>
+      <param type="string" constantValue="USER"/>
+      <param type="string" name="userName"/>
+      <param type="string" name="rightCode"/>
+      <param type="long" name="instance_id"/>
+    </sql>
+  </statement>
+
+  <statementSet id="odf.deleteCustomObjectCA">
+    <statementRef id="odf.deleteCustomObjectCA" inputSource="map"/>
+  </statementSet>
+  <statement id="odf.deleteCustomObjectCA">
+    <sql>
+      <text>
+        delete from odf_ca_@objectCode@ where id = ?
+      </text>
+      <param dynamicReplacement="@objectCode@"/>
+      <param name="instance_id" type="long"/>
+    </sql>
+  </statement>
+
+  <statementSet id="odf.deleteObjectInstanceRights" databaseId="Niku">
+    <statementRef id="odf.deleteObjectInstanceRights" inputSource="map"/>
+  </statementSet>
+  <statement id="odf.deleteObjectInstanceRights">
+    <sql>
+      <text>
+        delete from cmn_sec_assgnd_obj_perm
+        where right_id in ( select id from cmn_sec_groups where right_type = ? )
+          and object_instance_id = ?
+      </text>
+      <param type="string" name="right_type"/>
+      <param type="long" name="instance_id"/>
+    </sql>
+  </statement>
+
+  <statementSet id="odf.deleteOBSUnitAssociations" databaseId="Niku">
+    <statementRef id="odf.deleteOBSUnitAssociations" inputSource="map"/>
+  </statementSet>
+  <statement id="odf.deleteOBSUnitAssociations">
+    <sql>
+      <text>
+        delete from prj_obs_associations
+        where @UPPER@(table_name) = @UPPER@(?)
+        and   record_id = ?
+      </text>
+      <param type="string" name="object_code"/>
+      <param type="long" name="instance_id"/>
+    </sql>
+  </statement>
+
+  <!-- ODF OBS Attribute pmd statements -->
+
+  <statementSet id="odf.obsUnitAssocUpdate">
+    <statementRef id="odf.obsUnitAssocDelete" inputSource="map"/>
+    <statementRef id="odf.obsUnitAssociationInsert" inputSource="map"/>
+  </statementSet>
+
+  <statementSet id="odf.obsUnitAssocDelete">
+    <statementRef id="odf.obsUnitAssocDelete" inputSource="map"/>
+  </statementSet>
+
+  <statement id="odf.obsUnitAssocDelete" batchable="true">
+    <sql>
+      <text>
+        delete from prj_obs_associations where id in (
+          select assoc.id
+            from prj_obs_associations assoc, prj_obs_object_types obsObjTypes, prj_obs_units obsUnits, prj_obs_types obsTypes
+            where obsTypes.id = obsObjTypes.type_id and
+                  obsTypes.id = obsUnits.type_id and
+                  assoc.unit_id = obsUnits.id and
+                  obsObjTypes.table_name= assoc.table_name and
+                  obsObjTypes.table_name=? and
+                  obsObjTypes.assoc_att_code=? and
+                  assoc.record_id = ?
+      </text>
+      <param type="string" name="table_name"/>
+      <param type="string" name="attribute_code"/>
+      <param type="int" name="record_id"/>
+      <param name="type_id" type="long">
+        <variation text=" and obsTypes.id = ?"/>
+      </param>
+    </sql>
+    <sql>
+      <text>)</text>
+    </sql>
+  </statement>
+
+  <statement id="odf.obsUnitAssociationInsert">
+    <sql>
+      <text>
+        insert  into prj_obs_associations
+                (id, unit_id, table_name, record_id,
+                created_date, created_by, last_updated_date, last_updated_by)
+        select  ?, ?, ?, ?,
+                ?, ?, ?, ?
+        from    prj_obs_units u
+        where   id = ?
+        and     not exists (select  a.id
+                            from    prj_obs_associations a, prj_obs_units u2
+                            where   a.record_id = ?
+                            and     a.table_name = ?
+                            and     a.unit_id = u2.id
+                            and     u.type_id = u2.type_id)
+      </text>
+      <param name="id" tableName="PRJ_OBS_ASSOCIATIONS" sequenceType="nextValue"/>
+      <param type="int" name="unit_id"/>
+      <param type="string" name="table_name"/>
+      <param type="int" name="record_id"/>
+      <param replace="timestamp"/>
+      <param replace="userId"/>
+      <param replace="timestamp"/>
+      <param replace="userId"/>
+      <param type="int" name="unit_id"/>
+      <param type="int" name="record_id"/>
+      <param type="string" name="table_name"/>
+    </sql>
+  </statement>
+
+  <statementSet id="odf.obsUnitId">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select pou.type_id type_id, poa.unit_id unit_id
+                 from   prj_obs_associations poa, prj_obs_units pou
+                 where  table_name = ?
+                 and    record_id = ?
+                 and    pou.id = poa.unit_id
+                 and    pou.type_id = ?
+        </text>
+        <param type="string" name="table_name"/>
+        <param type="long" name="record_id"/>
+        <param type="long" name="type_id" />
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.obsUnitPath">
+    <statement inputSource="map">
+      <sql dbVendor="oracle">
+        <text>
+          SELECT rownum depth, name
+            FROM prj_obs_units
+            CONNECT BY PRIOR PARENT_ID = ID
+            START WITH ID = ?
+        </text>
+        <param type="long" name="unit_id"/>
+      </sql>
+      <sql dbVendor="mssql">
+        <text>
+          WITH GET_OBS_UNIT_PATH (DEPTH,ID,NAME)
+          AS
+          (SELECT 1  DEPTH, PARENT_ID ID, NAME
+          FROM prj_obs_units
+          WHERE ID = ?
+          UNION ALL
+          SELECT GETPATH.DEPTH + 1, S.PARENT_ID, S.NAME
+          FROM prj_obs_units S
+          INNER JOIN GET_OBS_UNIT_PATH GETPATH
+          ON S.id = GETPATH.id)
+          SELECT * FROM GET_OBS_UNIT_PATH
+        </text>
+        <param type="long" name="unit_id"/>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.obsAttributeTypeId">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select type_id
+              from PRJ_OBS_OBJECT_TYPES a, ODF_OBJECTS b
+              where a.table_name = b.obs_code and
+                    b.code = ? and
+                    @UPPER@( assoc_att_code) = @UPPER@(?)
+        </text>
+        <param type="string" name="object_code"/>
+        <param type="string" name="attribute_code" />
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.deleteInstancePage" databaseId="Niku">
+    <statementRef id="npt.objectInstancePageDelete" inputSource="map"/>
+  </statementSet>
+
+  <statementSet id="odf.objectDefinitionAccessRights" databaseId="Niku">
+    <statementRef id="odf.objectDefinitionAccessRights" inputSource="xml" inputLocation="/data" defaultSortColumn="group_name"/>
+  </statementSet>
+  <statement id="odf.objectDefinitionAccessRights" subjectToSorting="true">
+    <!-- Returns all rights, instance + global -->
+    <sql>
+      <text>
+          select  g.id, g.group_name @COLLATE@ group_name, g.right_type,
+                  g.description @COLLATE@ description, g.group_code
+          from    cmn_sec_groups_v g
+          where   (g.right_type = ? or g.global_right_type = ?)
+              and g.language_code = ?
+              and g.group_role_type = ?
+      </text>
+      <param type="string" constantValue="ODF_OBJECTS"/>
+      <param type="string" path="object/@code"/>
+      <param replace="language"/>
+      <param type="string" constantValue="ROLE"/>
+      <param path="rightName/@value" name="rightName" type="searchString">
+        <variation text="AND @UPPER@(g.group_NAME) LIKE @UPPER@(?) ESCAPE '\'"/>
+      </param>
+      <param path="description/@value" name="description" type="searchString">
+        <variation text="AND @UPPER@(g.description) LIKE @UPPER@(?) ESCAPE '\'"/>
+      </param>
+    </sql>
+    <outputMapping collectionElementName="rights" rowElementName="right"/>
+  </statement>
+
+  <statementSet id="odf.objectDefaultTabAction" databaseId="Niku">
+    <statementRef id="odf.objectDefaultTabAction" inputSource="map"/>
+  </statementSet>
+  <statementSet id="odf.getObjectDefaultAction" databaseId="Niku">
+    <statementRef id="npt.getDefaultPageForInstanceType" inputSource="map"/>
+  </statementSet>
+  <statement id="odf.objectDefaultTabAction">
+    <sql>
+      <text>
+        select  a.action_code, a.id
+        from    cmn_instance_pages ip, cmn_actions a
+        where   ip.object_instance_id = ?
+        and     ip.object_type = ?
+        and     ip.entry_action_id = a.id
+      </text>
+      <param type="long" name="instanceId"/>
+      <param type="string" name="objectCode"/>
+    </sql>
+    <outputMapping rowElementName="action"/>
+  </statement>
+  <statementSet id="odf.objectDefaultTabActionByObjectCode" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select  a.action_code
+          from    cmn_instance_pages ip, cmn_actions a
+          where   ip.object_instance_id = ?
+          and     ip.entry_action_id = a.id
+          and     ip.object_type in (
+                  select  ? code
+                  from    dual
+                  union
+                  select  obs_code code
+                  from    odf_objects
+                  where   code = ?
+                  and     not exists (select 'x' obs_exists
+                                      from   cmn_instance_pages iip
+                                      where  iip.object_instance_id = ?
+                                      and    iip.object_type = ?) )
+        </text>
+        <param type="long" name="instanceId"/>
+        <param type="string" name="objectCode"/>
+        <param type="string" name="objectCode"/>
+        <param type="long" name="instanceId"/>
+        <param type="string" name="objectCode"/>
+      </sql>
+      <outputMapping rowElementName="action"/>
+    </statement>
+  </statementSet>
+  <!--
+  Gets the portlets for the custom object.  Used in the view all.
+  -->
+  <statementSet id="odf.getCustomInstancePortlets" databaseId="Niku">
+    <statementRef id="odf.getCustomInstancePortlets" inputSource="map"/>
+  </statementSet>
+  <statement id="odf.getCustomInstancePortlets">
+    <sql>
+      <text>
+        SELECT  pp.id, pp.portlet_id, pr.portlet_code, c.name portlet_name, pr.portlet_type_code
+        FROM cmn_instance_pages ip, cmn_actions a, cmn_menu_items mi,
+        cmn_pages p, cmn_page_portlets pp, cmn_portlets pr, cmn_captions_nls c
+        WHERE ip.object_instance_id = ?
+        AND ip.object_type = ?
+        AND ip.page_frame_id = mi.container_id
+        AND mi.action_id = a.id
+        AND a.page_id = p.id
+        AND p.id = pp.page_id
+        AND pp.portlet_id = pr.id
+        AND pr.portlet_type_code IN ( 'GRID', 'GRAPH')
+        AND pr.id = c.pk_id
+        AND c.language_code = ?
+        AND c.table_name = 'CMN_PORTLETS'
+      </text>
+      <param type="long" name="instanceId"/>
+      <param type="string" name="objectCode"/>
+      <param replace="language"/>
+    </sql>
+    <outputMapping rowElementName="portlet"/>
+  </statement>
+  <!--
+  Gets the portlets for the custom object that the user has instance right too.  Used in the view all.
+  -->
+  <statementSet id="odf.getSecureCustomInstancePortlets" databaseId="Niku">
+    <statementRef id="odf.getSecureCustomInstancePortlets" inputSource="map"/>
+  </statementSet>
+  <statement id="odf.getSecureCustomInstancePortlets">
+    <sql>
+      <text>
+        SELECT  pp.id, pp.portlet_id, pr.portlet_code, c.name portlet_name, pr.portlet_type_code
+        FROM    cmn_instance_pages ip, cmn_actions a, cmn_menu_items mi,
+                cmn_pages p, cmn_page_portlets pp, cmn_portlets pr, cmn_captions_nls c,
+                cmn_sec_chk_user_v ap
+        WHERE ip.object_instance_id = ?
+        AND ip.object_type = ?
+        AND ip.page_frame_id = mi.container_id
+        AND mi.action_id = a.id
+        AND a.page_id = p.id
+        AND p.id = pp.page_id
+        AND pp.portlet_id = pr.id
+        AND pr.portlet_type_code IN ( 'GRID', 'GRAPH')
+        AND pr.id = c.pk_id
+        AND c.language_code = ?
+        AND c.table_name = 'CMN_PORTLETS'
+        AND ap.permission_code = 'VIEW'
+        AND ap.user_id = ?
+        AND ap.object_code = 'PORTLET'
+        AND ap.object_type = 'PORTLET'
+        AND ap.component_code = 'CMN'
+        AND ap.object_instance_id = pr.id
+      </text>
+      <param type="long" name="instanceId"/>
+      <param type="string" name="objectCode"/>
+      <param replace="language"/>
+      <param replace="userId"/>
+    </sql>
+    <outputMapping rowElementName="portlet"/>
+  </statement>
+  <!--
+  Gets the object names for all the object codes passed in.  Used in the view all.
+  -->
+  <statementSet id="odf.getObjectNames" databaseId="Niku">
+    <statementRef id="odf.getObjectNames" inputSource="map"/>
+  </statementSet>
+  <statement id="odf.getObjectNames">
+    <sql>
+      <text>
+        SELECT  o.code object_code,
+                n.name object_caption,
+                o.component, o.is_custom
+        FROM odf_objects o, cmn_captions_nls n
+        WHERE n.table_name = 'ODF_OBJECTS'
+        AND n.pk_id = o.ID
+        AND n.language_code = ?
+        AND o.code IN (@list@)
+      </text>
+      <param replace="language"/>
+      <param name="idList" type="string" expressionListTag="@list@"/>
+    </sql>
+    <outputMapping rowElementName="object"/>
+  </statement>
+  <!--
+  rename the Internalname of CustomAttribute conflicting with seeded attribute.  Used in the CDF->ODF patch.
+  -->
+  <statementSet id="odf.renameCustomAttributeInternalname" databaseId="Niku">
+    <statementRef id="odf.renameCustomAttributeInternalname" inputSource="map"/>
+  </statementSet>
+  <statement id="odf.renameCustomAttributeInternalname">
+    <sql>
+      <text>
+        UPDATE odf_custom_attributes
+           SET internal_name = ?
+           WHERE object_name = ?
+             AND internal_name = ?
+             AND is_custom = 1
+      </text>
+      <param path="new_internal_name/@value" name="new_internal_name" type="string" />
+      <param path="object_name/@value" name="object_name" type="string" />
+      <param path="old_internal_name/@value" name="old_internal_name" type="string" />
+    </sql>
+  </statement>
+
+  <statementSet id="odf.getAttributeViewUsage" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select  va.id, va.attribute_code, vac.name view_attribute_name,
+                  vc.name view_name, v.partition_code, pc.name partition_name,
+                  v.view_type, v.view_subtype
+          from    odf_view_attributes va, odf_views v, cmn_captions_nls vac,
+                  cmn_captions_nls vc, cmn_captions_nls pc,
+                  (select id, code
+                   from   cmn_partitions
+                   union
+                   select -1 id, 'NIKU.ROOT' code
+                   from dual ) p
+          where   va.attribute_code = ?
+          and     va.view_id = v.id
+          and     v.principal_type = 'ADMINISTRATOR'
+          and     v.object_code = ?
+          and     vac.pk_id = va.label_pk_id
+          and     vac.table_name = 'ODF_VIEW_ATTRIBUTES'
+          and     vac.language_code = ?
+          and     vc.pk_id = v.id
+          and     vc.table_name = 'ODF_VIEWS'
+          and     vc.language_code = ?
+          and     v.partition_code = p.code
+          and     pc.pk_id = p.id
+          and     pc.table_name = 'CMN_PARTITIONS'
+          and     pc.language_code = ?
+        </text>
+        <param name="attributeCode" type="string"/>
+        <param name="objectCode" type="string"/>
+        <param replace="language"/>
+        <param replace="language"/>
+        <param replace="language"/>
+        <param name="notViewSubType" type="string">
+          <variation text=" and @NVL@(v.view_subtype, 'none') != ?"/>
+        </param>
+      </sql>
+    </statement>
+  </statementSet>
+  <statementSet id="odf.getAttributeViewParamUsage" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select  va.id, va.attribute_code, vac.name progress_bar_name,
+                  vc.name view_name, v.partition_code, pc.name partition_name,
+                  v.view_type, v.view_subtype, vap.name param_usage, vap.code,
+                  pbc.name view_attribute_name
+          from    odf_view_attributes va, odf_views v, cmn_captions_nls vac,
+                  cmn_captions_nls vc, cmn_captions_nls pc,
+                  (select id, code
+                   from   cmn_partitions
+                   union
+                   select -1 id, 'NIKU.ROOT' code
+                   from dual ) p, odf_view_attr_parameters vap, cmn_captions_nls pbc,
+                  odf_view_attributes rva, odf_views rv, odf_view_attributes pbca
+          where   vap.code = ?
+          and     vap.view_attr_id = rva.id
+          and     rva.view_id = rv.id
+          and     rv.principal_type = 'ADMINISTRATOR'
+          and     rv.object_code = ?
+          and     rv.view_subtype = 'fieldList'
+          and     rv.view_type = v.view_type
+          and     rv.object_code = v.object_code
+          and     rv.partition_code = v.partition_code
+          and     vap.code = pbca.attribute_code
+          and     pbca.view_id = rva.view_id
+          and     va.attribute_code = rva.attribute_code
+          and     va.view_id = v.id
+          and     vac.pk_id = va.label_pk_id
+          and     vac.table_name = 'ODF_VIEW_ATTRIBUTES'
+          and     vac.language_code = ?
+          and     pbc.pk_id = pbca.label_pk_id
+          and     pbc.table_name = 'ODF_VIEW_ATTRIBUTES'
+          and     pbc.language_code = ?
+          and     vc.pk_id = v.id
+          and     vc.table_name = 'ODF_VIEWS'
+          and     vc.language_code = ?
+          and     v.partition_code = p.code
+          and     pc.pk_id = p.id
+          and     pc.table_name = 'CMN_PARTITIONS'
+          and     pc.language_code = ?
+        </text>
+        <param name="attributeCode" type="string"/>
+        <param name="objectCode" type="string"/>
+        <param replace="language"/>
+        <param replace="language"/>
+        <param replace="language"/>
+        <param replace="language"/>
+        <param name="notViewSubType" type="string">
+          <variation text=" and @NVL@(v.view_subtype, 'none') != ?"/>
+        </param>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.getAttributeListViewUsage" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select  cols.id, cols.col_code, gcc.name col_name,
+                  gc.name list_name, g.dal_partition_code, pc.name partition_name,
+                  'list' list_type, '' portlet_name
+          from    cmn_grid_cols cols, cmn_grids g, cmn_captions_nls gc,
+                  cmn_captions_nls gcc, cmn_captions_nls pc,
+                  (select id, code
+                   from   cmn_partitions
+                   union
+                   select -1 id, 'NIKU.ROOT' code
+                   from dual ) p
+          where   (cols.col_code = ?
+                   or
+                   cols.col_code = ? @+@ '_caption' )
+          and     cols.grid_id = g.id
+          and     g.portlet_id is null
+          and     g.dal_code = ?
+          and     g.dal_type = ?
+          and     gcc.pk_id = cols.id
+          and     gcc.table_name = 'CMN_GRID_COLS'
+          and     gcc.language_code = ?
+          and     gc.pk_id = g.id
+          and     gc.table_name = 'CMN_GRIDS'
+          and     gc.language_code = ?
+          and     g.dal_partition_code = p.code
+          and     pc.pk_id = p.id
+          and     pc.table_name = 'CMN_PARTITIONS'
+          and     pc.language_code = ?
+        </text>
+        <param name="attributeCode" type="string"/>
+        <param name="attributeCode" type="string"/>
+        <param name="objectCode" type="string"/>
+        <param name="dataProviderType" type="string"/>
+        <param replace="language"/>
+        <param replace="language"/>
+        <param replace="language"/>
+      </sql>
+      <sql>
+        <text>
+          union
+          select  cols.id, cols.col_code, gcc.name col_name,
+                  'portlet' list_name, g.dal_partition_code, pc.name partition_name,
+                  'portlet' list_type, poc.name portlet_name
+          from    cmn_grid_cols cols, cmn_grids g,
+                  cmn_captions_nls gcc, cmn_captions_nls pc,
+                  (select id, code
+                   from   cmn_partitions
+                   union
+                   select -1 id, 'NIKU.ROOT' code
+                   from dual ) p, cmn_portlets po, cmn_captions_nls poc
+          where   (cols.col_code = ?
+                   or
+                   cols.col_code = ? @+@ '_caption' )
+          and     cols.grid_id = g.id
+          and     g.portlet_id =po.id
+          and     g.dal_code = ?
+          and     g.dal_type = ?
+          and     poc.pk_id = po.id
+          and     poc.table_name = 'CMN_PORTLETS'
+          and     poc.language_code = ?
+          and     gcc.pk_id = cols.id
+          and     gcc.table_name = 'CMN_GRID_COLS'
+          and     gcc.language_code = ?
+          and     g.dal_partition_code = p.code
+          and     pc.pk_id = p.id
+          and     pc.table_name = 'CMN_PARTITIONS'
+          and     pc.language_code = ?
+        </text>
+        <param name="attributeCode" type="string"/>
+        <param name="attributeCode" type="string"/>
+        <param name="objectCode" type="string"/>
+        <param name="dataProviderType" type="string"/>
+        <param replace="language"/>
+        <param replace="language"/>
+        <param replace="language"/>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <sql id="odf.gridSortColumnTables">
+    <text>
+      odf_custom_attributes attr,
+      (select default_sort_col_code sort_col_code, 'default' sort_col_type,
+              portlet_id, dal_partition_code, id, principal_type, principal_id
+       from   cmn_grids g
+       where  g.dal_code = ?
+       and    g.dal_type = ?
+       and    default_sort_col_code is not null
+       union
+       select sort_col_code_2 sort_col_code, 'sortCol2' sort_col_type,
+              portlet_id, dal_partition_code, id, principal_type, principal_id
+       from   cmn_grids g
+       where  g.dal_code = ?
+       and    g.dal_type = ?
+       and    sort_col_code_2 is not null
+       union
+       select sort_col_code_3 sort_col_code, 'sortCol3' sort_col_type,
+               portlet_id, dal_partition_code, id, principal_type, principal_id
+       from   cmn_grids g
+       where  g.dal_code = ?
+       and    g.dal_type = ?
+       and    sort_col_code_3 is not null
+       union
+       select sort_col_code_4 sort_col_code, 'sortCol4' sort_col_type,
+              portlet_id, dal_partition_code, id, principal_type, principal_id
+       from   cmn_grids g
+       where  g.dal_code = ?
+       and    g.dal_type = ?
+       and    sort_col_code_4 is not null
+       ) g,
+       (select  u.user_name, u.id, 'USER' user_type
+        from    cmn_sec_users u
+        union
+        select  'SYSTEM' user_name, 0 id, 'SYSTEM' user_type
+        from    dual
+       ) userInfo,
+    </text>
+  </sql>
+  <statementSet id="odf.getAttributeListViewSortUsage" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select  attr.id, attr.internal_name col_code, gcc.name col_name,
+                  gc.name list_name, g.dal_partition_code, pc.name partition_name,
+                  'list' list_type, '' portlet_name, g.sort_col_type,
+                  userInfo.user_name, userInfo.user_type
+          from
+        </text>
+      </sql>
+      <sqlRef id= "odf.gridSortColumnTables"/>
+      <sql>
+        <text>
+                  cmn_captions_nls gc,
+                  cmn_captions_nls gcc, cmn_captions_nls pc,
+                  (select id, code
+                   from   cmn_partitions
+                   union
+                   select -1 id, 'NIKU.ROOT' code
+                   from dual ) p,
+                  cmn_captions_nls poc
+          where   (attr.internal_name = ?
+                   or
+                   attr.internal_name = ? @+@ '_caption' )
+          and     attr.internal_name = g.sort_col_code
+          and     gcc.pk_id = attr.id
+          and     gcc.table_name = 'ODF_CUSTOM_ATTRIBUTES'
+          and     gcc.language_code = ?
+          and     gc.pk_id = g.id
+          and     gc.table_name = 'CMN_GRIDS'
+          and     gc.language_code = ?
+          and     g.dal_partition_code = p.code
+          and     pc.pk_id = p.id
+          and     pc.table_name = 'CMN_PARTITIONS'
+          and     pc.language_code = ?
+          and     g.principal_type = userInfo.user_type
+          and     g.principal_id = userInfo.id
+        </text>
+        <param name="objectCode" type="string"/>
+        <param name="dataProviderType" type="string"/>
+        <param name="objectCode" type="string"/>
+        <param name="dataProviderType" type="string"/>
+        <param name="objectCode" type="string"/>
+        <param name="dataProviderType" type="string"/>
+        <param name="objectCode" type="string"/>
+        <param name="dataProviderType" type="string"/>
+        <param name="attributeCode" type="string"/>
+        <param name="attributeCode" type="string"/>
+        <param replace="language"/>
+        <param replace="language"/>
+        <param replace="language"/>
+      </sql>
+      <sql>
+        <text>
+          union
+          select  attr.id, attr.internal_name, gcc.name col_name,
+                  poc.name list_name, g.dal_partition_code, pc.name partition_name,
+                  'portlet' list_type, poc.name portlet_name, g.sort_col_type,
+                  userInfo.user_name, userInfo.user_type
+          from
+        </text>
+      </sql>
+      <sqlRef id= "odf.gridSortColumnTables"/>
+      <sql>
+        <text>
+                  cmn_captions_nls gcc, cmn_captions_nls pc,
+                  cmn_portlets po,
+                  (select id, code
+                   from   cmn_partitions
+                   union
+                   select -1 id, 'NIKU.ROOT' code
+                   from dual ) p,
+                  cmn_captions_nls poc
+          where   (attr.internal_name = ?
+                   or
+                   attr.internal_name = ? @+@ '_caption' )
+          and     attr.internal_name = g.sort_col_code
+          and     g.portlet_id = po.id
+          and     gcc.pk_id = attr.id
+          and     gcc.table_name = 'ODF_CUSTOM_ATTRIBUTES'
+          and     gcc.language_code = ?
+          and     g.dal_partition_code = p.code
+          and     pc.pk_id = p.id
+          and     pc.table_name = 'CMN_PARTITIONS'
+          and     pc.language_code = ?
+          and     poc.pk_id = po.id
+          and     poc.language_code = ?
+          and     poc.table_name = 'CMN_PORTLETS'
+          and     g.principal_type = userInfo.user_type
+          and     g.principal_id = userInfo.id
+        </text>
+        <param name="objectCode" type="string"/>
+        <param name="dataProviderType" type="string"/>
+        <param name="objectCode" type="string"/>
+        <param name="dataProviderType" type="string"/>
+        <param name="objectCode" type="string"/>
+        <param name="dataProviderType" type="string"/>
+        <param name="objectCode" type="string"/>
+        <param name="dataProviderType" type="string"/>
+        <param name="attributeCode" type="string"/>
+        <param name="attributeCode" type="string"/>
+        <param replace="language"/>
+        <param replace="language"/>
+        <param replace="language"/>
+      </sql>
+      <sql>
+        <text>
+          union
+          select  attr.id, attr.internal_name, gcc.name col_name,
+                  poc.name list_name, g.dal_partition_code, pc.name partition_name,
+                  'graph' list_type, poc.name portlet_name, g.sort_col_type,
+                  userInfo.user_name, userInfo.user_type
+          from    odf_custom_attributes attr,
+                  (select sort_col_code sort_col_code, 'default' sort_col_type,
+                          portlet_id, dal_partition_code, id, principal_type, principal_id
+                   from   cmn_graphs g
+                   where  g.dal_code = ?
+                   and    g.dal_type = ?
+                   and    sort_col_code is not null
+                   ) g,
+                   (select  u.user_name, u.id, 'USER' user_type
+                    from    cmn_sec_users u
+                    union
+                    select  'SYSTEM' user_name, 0 id, 'SYSTEM' user_type
+                    from    dual
+                   ) userInfo, cmn_captions_nls gcc, cmn_captions_nls pc,
+                  cmn_portlets po,
+                  (select id, code
+                   from   cmn_partitions
+                   union
+                   select -1 id, 'NIKU.ROOT' code
+                   from dual ) p,
+                  cmn_captions_nls poc
+          where   (attr.internal_name = ?
+                   or
+                   attr.internal_name = ? @+@ '_caption' )
+          and     attr.internal_name = g.sort_col_code
+          and     g.portlet_id = po.id
+          and     gcc.pk_id = attr.id
+          and     gcc.table_name = 'ODF_CUSTOM_ATTRIBUTES'
+          and     gcc.language_code = ?
+          and     g.dal_partition_code = p.code
+          and     pc.pk_id = p.id
+          and     pc.table_name = 'CMN_PARTITIONS'
+          and     pc.language_code = ?
+          and     poc.pk_id = po.id
+          and     poc.language_code = ?
+          and     poc.table_name = 'CMN_PORTLETS'
+          and     g.principal_type = userInfo.user_type
+          and     g.principal_id = userInfo.id
+        </text>
+        <param name="objectCode" type="string"/>
+        <param name="dataProviderType" type="string"/>
+        <param name="attributeCode" type="string"/>
+        <param name="attributeCode" type="string"/>
+        <param replace="language"/>
+        <param replace="language"/>
+        <param replace="language"/>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.getAttributeGGUsage" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select  oca.id, oca.internal_name, gcc.name col_name,
+                  gc.name list_name, g.dal_partition_code, pc.name partition_name,
+                  poc.name portlet_name, g.usage_type, ggi.item_code,
+                  ggi.location_code, g.table_name
+          from    (select item_name, item_code, gg_id, location_code
+                   from   cmn_gg_items
+                   where  location_code != 'R'
+                   union
+                   select gca.item_code item_name, 'AGG' item_code, gi.gg_id, 'AGG' location_code
+                   from   CMN_GRID_COL_AGGS gca, cmn_gg_items gi
+                   where  gi.id = gca.gg_item_id) ggi,
+                  (select id, internal_name
+                   from   odf_custom_attributes
+                   where  object_name = ?
+                   union
+                   select id, internal_name @+@ '_caption' internal_name
+                   from   odf_custom_attributes
+                   where  object_name = ?
+                   and    extended_type = 'lookup') oca,
+                  (select g.id pk_id, id, 'CMN_GRIDS' table_name, -1 portlet_id, 'list' usage_type, dal_partition_code
+                   from   cmn_grids g
+                   where  principal_type = 'SYSTEM'
+                   and    g.dal_code = ?
+                   and    g.dal_type = 'object'
+                   and    g.portlet_id is null
+                   union
+                   select g.id pk_id, id, 'CMN_GRIDS' table_name, portlet_id, 'portletGrid' usage_type, dal_partition_code
+                   from   cmn_grids g
+                   where  principal_type = 'SYSTEM'
+                   and    g.dal_code = ?
+                   and    g.dal_type = 'object'
+                   and    g.portlet_id is not null
+                   union
+                   select gc.id pk_id, gc.id, 'CMN_GRID_COLS' table_name, portlet_id, 'timeSliceColumn' usage_type, dal_partition_code
+                   from   cmn_grid_cols gc, cmn_grids g
+                   where  principal_type = 'SYSTEM'
+                   and    g.dal_code = ?
+                   and    g.dal_type = 'object'
+                   union
+                   select gc.id pk_id, gc.id, 'CMN_GRID_COLS' table_name, portlet_id, 'aggregationRow' usage_type, dal_partition_code
+                   from   cmn_grid_col_aggs gca, cmn_gg_items gi, cmn_grid_cols gc, cmn_grids g
+                   where  gi.id = gca.gg_item_id
+                   and    gc.id = gca.col_id
+                   and    g.id = gc.grid_id
+                   and    principal_type = 'SYSTEM'
+                   and    g.dal_code = ?
+                   and    g.dal_type = 'object'
+                   union
+                   select g.portlet_id pk_id, g.id id, 'CMN_PORTLETS' table_name, portlet_id, 'portletGraph' usage_type, dal_partition_code
+                   from   cmn_graphs g
+                   where  principal_type = 'SYSTEM'
+                   and    g.dal_code = ?
+                   and    g.dal_type = 'object') g, cmn_captions_nls gc,
+                  cmn_captions_nls gcc, cmn_captions_nls pc,
+                  (select id, code
+                   from   cmn_partitions
+                   union
+                   select -1 id, 'NIKU.ROOT' code
+                   from   dual ) p,
+                  (select -1 id
+                   from   dual
+                   union
+                   select id
+                   from   cmn_portlets) po,
+                  (select -1 pk_id, 'noName' name, language_code
+                   from   cmn_languages
+                   union
+                   select pk_id, name, language_code
+                   from   cmn_captions_nls
+                   where  table_name = 'CMN_PORTLETS') poc
+          where   (ggi.item_name = ?
+                   or
+                   ggi.item_name = ? @+@ '_caption' )
+          and     ggi.gg_id = g.id
+          and     g.portlet_id = po.id
+          and     oca.internal_name = ggi.item_name
+          and     gcc.pk_id = oca.id
+          and     gcc.table_name = 'ODF_CUSTOM_ATTRIBUTES'
+          and     gcc.language_code = ?
+          and     gc.pk_id = g.pk_id
+          and     gc.table_name = g.table_name
+          and     gc.language_code = ?
+          and     g.dal_partition_code = p.code
+          and     pc.pk_id = p.id
+          and     pc.table_name = 'CMN_PARTITIONS'
+          and     pc.language_code = ?
+          and     poc.pk_id = po.id
+          and     poc.language_code = ?
+        </text>
+        <param name="objectCode" type="string"/>
+        <param name="objectCode" type="string"/>
+        <param name="objectCode" type="string"/>
+        <param name="objectCode" type="string"/>
+        <param name="objectCode" type="string"/>
+        <param name="objectCode" type="string"/>
+        <param name="objectCode" type="string"/>
+        <param name="attributeCode" type="string"/>
+        <param name="attributeCode" type="string"/>
+        <param replace="language"/>
+        <param replace="language"/>
+        <param replace="language"/>
+        <param replace="language"/>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.getAttributeFilterMappings" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select  g.portlet_id, i.dal_code attribute_code,
+                  oc.name attribute_name, poc.name partition_name, pc.name portlet_name,
+                  i.id
+          from    cmn_grids g, cmn_page_portlets pp, cmn_filter_field_instances i,
+                  cmn_captions_nls pc, cmn_captions_nls poc, cmn_captions_nls oc,
+                  odf_custom_attributes o, cmn_partitions par
+          where   g.portlet_id = pp.portlet_id
+          and     pp.id = i.portlet_instance_id
+          and     i.dal_code = ?
+          and     g.dal_code = ?
+          and     g.dal_type = 'object'
+          and     g.dal_partition_code = par.code
+          and     poc.pk_id = par.id
+          and     poc.table_name = 'CMN_PARTITIONS'
+          and     poc.language_code = ?
+          and     pc.pk_id = pp.portlet_id
+          and     pc.table_name = 'CMN_PORTLETS'
+          and     pc.language_code = ?
+          and     o.internal_name = ?
+          and     o.object_name = ?
+          and     oc.pk_id = o.id
+          and     oc.table_name = 'ODF_CUSTOM_ATTRIBUTES'
+          and     oc.language_code = ?
+        </text>
+        <param name="attributeCode" type="string"/>
+        <param name="objectCode" type="string"/>
+        <param replace="language"/>
+        <param replace="language"/>
+        <param name="attributeCode" type="string"/>
+        <param name="objectCode" type="string"/>
+        <param replace="language"/>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.getAttributeSliceRequests" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select  bs.id, request_name, bs.field,
+                  bs.created_date, bs.created_by, bs.last_updated_date, bs.last_updated_by,
+                  bs.is_system, bs.table_name, bs.is_synchronous, bs.is_template,
+                  bs.is_active, bs.frequency, bs.period
+          from    prj_blb_slicerequests bs, cmn_lookups l, odf_custom_attributes ca
+          where   ca.object_name = ?
+          and     ca.data_type = 'tsv'
+          and     l.lookup_type = 'BLB_SLICE_ITEM'
+          and     l.lookup_code =
+        </text>
+      </sql>
+      <sql dbVendor="oracle">
+        <text>'' || bs.field </text>
+      </sql>
+      <sql dbVendor="mssql">
+        <text>cast(bs.field as varchar)</text>
+      </sql>
+      <sql>
+        <text>
+          and     bs.field in
+                    (select bsi.field
+                     from   prj_blb_slicerequests bsi
+                     where  request_name = ca.object_name @+@ '::' @+@ ca.internal_name @+@ '::default' )
+        </text>
+        <param name="objectCode" type="string"/>
+        <param name="isActive" type="long">
+          <variation text=" and bs.is_active = ? "/>
+        </param>
+        <param name="isTemplate" type="long">
+          <variation text=" and bs.is_template = ? "/>
+        </param>
+        <param name="isInstaSlice" type="long">
+          <variation text=" and bs.is_synchronous = ? "/>
+        </param>
+        <param name="attributeCode" type="string">
+          <variation text=" and ca.internal_name = ? "/>
+        </param>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.getAbstractObjectPks" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select  secondary_object_instance_id, secondary_object_instance_code
+          from    odf_object_instance_mapping
+          where   primary_object_instance_id = ?
+          and     primary_object_instance_code = ?
+        </text>
+        <param name="odf_pk" type="int"/>
+        <param name="objectCode" type="string"/>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.getConcreteObjectPk" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select  id real_id
+          from    odf_ca_@secondaryObjectCode@
+          where   id = ?
+          and     not exists(
+              select  primary_object_instance_id
+              from    odf_object_instance_mapping
+              where   secondary_object_instance_id = ?
+              and     secondary_object_instance_code = ?
+              and     primary_object_instance_code = ?)
+          union
+          select  primary_object_instance_id real_id
+          from    odf_object_instance_mapping
+          where   secondary_object_instance_code = ?
+          and     secondary_object_instance_id = ?
+          and     primary_object_instance_code = ?
+        </text>
+        <param dynamicReplacement="@secondaryObjectCode@"/>
+        <param name="secondaryPk" type="int"/>
+        <param name="secondaryPk" type="int"/>
+        <param name="secondaryObjectCode" type="string"/>
+        <param name="primaryObjectCode" type="string"/>
+        <param name="secondaryObjectCode" type="string"/>
+        <param name="secondaryPk" type="int"/>
+        <param name="primaryObjectCode" type="string"/>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.getPrimaryObjectCode" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select  primary_object_instance_code
+          from    odf_object_instance_mapping
+          where   secondary_object_instance_code = ?
+          and     secondary_object_instance_id = ?
+          and     primary_object_instance_id = ?
+        </text>
+        <param name="secondaryObjectCode" type="string"/>
+        <param name="secondaryPk" type="int"/>
+        <param name="primaryPk" type="int"/>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.insertConcreteParentIdAttribute" databaseId="Niku">
+    <statement inputSource="map">
+      <errorMapping applicationCode="ATTRIBUTE_EXISTS">
+        <dbError dbCode="1" dbVendor="oracle"/>
+        <dbError dbCode="2601" dbVendor="mssql"/>
+        <dbError dbCode="2627" dbVendor="mssql"/>
+      </errorMapping>
+      <sql>
+        <text>
+          insert
+          into    odf_custom_attributes
+                  (id, object_name, internal_name, column_name, is_private,
+                   data_type, is_required, is_editable,
+                   created_date, created_by, last_updated_date, last_updated_by)
+          values(?, ?, ?, ?, ?,
+                 ?, ?, ?,
+                 ?, ?, ?, ?)
+        </text>
+        <param name="pk_id" sequenceType="nextValue" tableName="ODF_CUSTOM_ATTRIBUTES"/>
+        <param type="string" name="object"/>
+        <param type="string" name="code"/>
+        <param type="string" name="column_name"/>
+        <param type="int"    constantValue="1"/>
+
+        <param type="string" constantValue="number"/>
+        <param type="int"    constantValue="0"/>
+        <param type="int"    constantValue="0"/>
+
+        <param replace="timestamp"/>
+        <param replace="userId"/>
+        <param replace="timestamp"/>
+        <param replace="userId"/>
+      </sql>
+      <outputMapping rowElementName="attribute"/>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.upgradeConcreteObjectPk" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          update  odf_ca_@objectCode@
+          set     odf_cncrt_parent_id = @parentpkAttr@
+          where   odf_cncrt_parent_id is null
+        </text>
+        <param dynamicReplacement="@parentpkAttr@"/>
+        <param dynamicReplacement="@objectCode@"/>
+      </sql>
+    </statement>
+    <statement inputSource="map">
+      <sql>
+        <text>
+          update  odf_view_attributes
+          set     xpath_expression = '/data/odf_parent_id/@value'
+          where   attribute_code = 'odf_parent_id'
+          and     view_id in
+                  ( select  id
+                    from    odf_views
+                    where   code like '%.subObjList.' @+@ ?
+                    and     view_type = 'filter')
+        </text>
+        <param type="string" name="objectCode"/>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.getObjectsForConcreteObjectPkUpdate" databaseId="Niku">
+    <statement inputSource="none">
+      <sql>
+        <text>
+          select  o.code, parent_object_code
+          from    odf_objects o
+          where   o.parent_object_code is not null
+          and     o.is_custom = 1
+          and     o.code not in
+                    ( select  object_name
+                      from    odf_custom_attributes ca
+                      where   ca.object_name = o.code
+                      and     ca.internal_name = 'odf_cncrt_parent_id')
+        </text>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.getAttributeSliceTables" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select  bs.id, request_name
+                  , bs.table_name
+          from    prj_blb_slicerequests bs
+                  , cmn_lookups l
+          where   l.lookup_type = 'BLB_SLICE_ITEM'
+          and     l.lookup_code =
+        </text>
+      </sql>
+      <sql dbVendor="oracle">
+        <text>'' || bs.field </text>
+      </sql>
+      <sql dbVendor="mssql">
+        <text>cast(bs.field as varchar)</text>
+      </sql>
+      <sql>
+        <text>
+          and     bs.field in
+                    (select bsi.field
+                     from   prj_blb_slicerequests bsi
+                     where  request_name = ? )
+        </text>
+        <param name="requestName" type="string"/>
+        <param name="isActive" type="long">
+          <variation text=" and bs.is_active = ? "/>
+        </param>
+        <param name="isTemplate" type="long">
+          <variation text=" and bs.is_template = ? "/>
+        </param>
+        <param name="isInstaSlice" type="long">
+          <variation text=" and bs.is_synchronous = ? "/>
+        </param>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.getActualActionCode" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select  alias_code action_code
+          from    cmn_actions
+          where   action_code = ?
+          and     alias_code is not null
+        </text>
+        <param name="actionCode" type="string"/>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.getFirstUpdateSubPage" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select  v.code
+          from    odf_views v, odf_subviews sv, odf_subviews tsv, odf_subviews csv, odf_views cv
+          where   (v.view_type = 'property' or v.view_type = 'subObjectList')
+          and     v.view_subtype = 'update'
+          and     v.object_code = ?
+          and     v.id = sv.child_view_id
+          and     sv.parent_view_id = tsv.child_view_id
+          and     tsv.parent_view_id = csv.parent_view_id
+          and     csv.child_view_id = cv.id
+          and     cv.view_type = 'property'
+          and     cv.view_subtype = 'create'
+          order by v.sequence
+        </text>
+        <param name="objectCode" type="string"/>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.getReturnActionFromView" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select  a.action_code, v.object_code
+          from    cmn_actions a, odf_views v, odf_views va, cmn_action_params ap, odf_subviews sv1, odf_subviews sv2
+          where   v.code = ?
+          and     ap.parameter_value = va.code
+          and     ap.parameter_code = 'odf_view'
+          and     a.id = ap.action_id
+          and     sv1.child_view_id = v.id
+          and     sv2.child_view_id = va.id
+          and     sv1.parent_view_id = sv2.parent_view_id
+          and     a.action_code not like 'SubPage.%.actionLink'
+        </text>
+        <param name="viewCode" type="string"/>
+        <param name="objectCode" type="string">
+          <variation text=" and v.object_code = ? "/>
+        </param>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.getEntityHomeCurrency" databaseId="Niku">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          select  home_currency_code
+          from entity
+          where entity = ?
+        </text>
+        <param name="entityCode" type="string"/>
+      </sql>
+    </statement>
+  </statementSet>
+
+  <statementSet id="odf.getOBSCodeFromUnitCode">
+    <statement inputSource="map">
+      <sql>
+        <text>
+          SELECT unique_name, id
+          FROM PRJ_OBS_TYPES
+          WHERE id = ( SELECT type_id
+                       FROM PRJ_OBS_UNITS
+                       WHERE id = ? )
+        </text>
+        <param type="long" name="unit_id" />
+      </sql>
+    </statement>
+  </statementSet>
+
+</persistMetaData>

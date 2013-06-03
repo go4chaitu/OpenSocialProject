@@ -1,0 +1,34 @@
+{
+   "aboutMe": "I'm tommy",
+   "activities": [
+       "swimming",
+       "running"
+   ],
+   "age": 31,
+   "bodyType": {
+       "build": "bodyType_build_1174812258",
+       "eyeColor": "bodyType_eyeColor_1174812258",
+       "hairColor": "bodyType_hairColor_1174812258",
+       "height": 1.841,
+       "weight": 79
+   },
+   "books": [
+       "The Monk who sold his ferrari",
+       "The Alchemist"
+   ],
+   "id": "Tommy",
+   "jobInterests": "Senior Software Architect",
+   "name": {
+       "formatted": "Tommy"
+   },
+   "nickname": "Tommy",
+   "photos": [
+       {
+           "type": "jpg",
+           "value": "http://127.0.0.1:5984/lightcouch-db-test/476c6c79e05041e5973e2ae6078708ff/tomcruise.jpg",
+           "primary": true
+       }
+   ],
+   "isOwner": false,
+   "isViewer": false
+}

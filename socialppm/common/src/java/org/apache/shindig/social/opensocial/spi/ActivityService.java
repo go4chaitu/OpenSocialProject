@@ -21,6 +21,7 @@ package org.apache.shindig.social.opensocial.spi;
 import org.apache.shindig.auth.SecurityToken;
 import org.apache.shindig.protocol.ProtocolException;
 import org.apache.shindig.protocol.RestfulCollection;
+import org.apache.shindig.social.core.model.ActivityImpl;
 import org.apache.shindig.social.opensocial.model.Activity;
 
 import java.util.Set;
@@ -108,4 +109,14 @@ public interface ActivityService {
    */
   Future<Void> createActivity(UserId userId, GroupId groupId, String appId,
       Set<String> fields, Activity activity, SecurityToken token) throws ProtocolException;
+
+  Future<Void> addComment(UserId userId, String activityId,
+      Set<String> fields, Activity comment, SecurityToken token) throws ProtocolException;
+
+  Future<RestfulCollection<Activity>> getActivityComments(String activityId_, Set<String> fields, CollectionOptions options, SecurityToken token)
+      throws ProtocolException;
+
+  Future<RestfulCollection<Activity>> getNewActivities(long lastUpdatedTime, Set<String> fields, CollectionOptions options, SecurityToken token)
+      throws ProtocolException;
+
 }

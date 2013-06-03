@@ -240,6 +240,10 @@ public interface Activity {
    */
   String getId();
 
+  String getParentId();
+
+  void setParentId( String id );
+
   /**
    * Set a string ID that is permanently associated with this activity. Container support for this
    * field is OPTIONAL.

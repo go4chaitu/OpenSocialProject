@@ -23,6 +23,7 @@ import java.util.Set;
 import java.util.concurrent.Future;
 
 
+import com.google.common.collect.Lists;
 import org.apache.shindig.config.ContainerConfig;
 import org.apache.shindig.protocol.HandlerPreconditions;
 import org.apache.shindig.protocol.Operation;
@@ -33,7 +34,9 @@ import org.apache.shindig.protocol.Service;
 import org.apache.shindig.social.opensocial.model.Person;
 import org.apache.shindig.social.opensocial.spi.CollectionOptions;
 import org.apache.shindig.social.opensocial.spi.GroupId;
+import org.apache.shindig.social.opensocial.spi.GroupService;
 import org.apache.shindig.social.opensocial.spi.PersonService;
+import org.apache.shindig.social.opensocial.spi.RelationshipService;
 import org.apache.shindig.social.opensocial.spi.UserId;
 
 import com.google.common.base.Objects;
@@ -51,8 +54,16 @@ import com.google.inject.Inject;
 public class PersonHandler {
   private final PersonService personService;
   private final ContainerConfig config;
+  private RelationshipService relationshipService;
+  private GroupService groupService;
 
-
+  @Inject
+  public PersonHandler(PersonService personService,
+      RelationshipService relationshipService, GroupService groupService_, ContainerConfig config) {
+    this( personService, config );
+    this.relationshipService = relationshipService;
+    this.groupService = groupService_;
+  }
   // Return a future for the first item of a collection
   private static <T> Future<T> firstItem(Future<RestfulCollection<T>> collection) {
     Function<RestfulCollection<T>, T> firstItem = new Function<RestfulCollection<T>, T>() {
@@ -66,7 +77,6 @@ public class PersonHandler {
     return Futures.lazyTransform(collection, firstItem);
  }
 
-  @Inject
   public PersonHandler(PersonService personService, ContainerConfig config) {
     this.personService = personService;
     this.config = config;
@@ -157,5 +167,67 @@ public class PersonHandler {
     String container = Objects.firstNonNull(request.getToken().getContainer(), "default");
     return config.getList(container,
         "${Cur['gadgets.features'].opensocial.supportedFields.person}");
+  }
+
+  /**
+   * Create a new friendship between 2 users POST - {id: 'friendId'}
+   * /people/{userId}/@friends
+   *
+   * @param request
+   * @return
+   * @throws ProtocolException
+   */
+  @Operation(httpMethods = "POST", path = "/{userId}+/@friends")
+  public Future<?> createFriends(SocialRequestItem request)
+      throws ProtocolException {
+    Set<UserId> userIds = request.getUsers();
+    Person person = request.getTypedParameter("body", Person.class);
+    HandlerPreconditions.requireNotEmpty(userIds, "No userId specified");
+    HandlerPreconditions.requireSingular(userIds,
+        "Multiple userIds not supported");
+
+    if (person == null || person.getId() == null || person.getId().length() < 1) {
+      throw new IllegalArgumentException(
+          "Cannot create relationship without a person to befriend");
+    }
+    UserId userId = userIds.iterator().next();
+    return this.relationshipService.createRelationship(userId.getUserId(request
+        .getToken()), person.getId());
+  }
+
+  @Operation(httpMethods = "POST", path = "/{userId}+/{groupId}")
+  public Future<?> create(SocialRequestItem request)
+      throws ProtocolException {
+    Set<UserId> userIds = request.getUsers();
+    GroupId groupId = request.getGroup();
+    Person person = request.getTypedParameter("person", Person.class);
+    HandlerPreconditions.requireNotEmpty(userIds, "No userId specified");
+    HandlerPreconditions.requireSingular( userIds, "Multiple userIds not supported" );
+    HandlerPreconditions.requireNotEmpty( Lists.<Object>newArrayList( groupId ), "No groupId specified" );
+    HandlerPreconditions.requireSingular( Lists.<Object>newArrayList(groupId), "Multiple groupIds not supported");
+
+    if (person == null || person.getId() == null || person.getId().length() < 1) {
+      throw new IllegalArgumentException(
+          "Cannot create relationship without a person to befriend");
+    }
+    UserId userId = userIds.iterator().next();
+    return this.groupService.addUserToGroup( groupId, person.getId());
+  }
+
+  @Operation(httpMethods="DELETE")
+  public Future<?> delete(SocialRequestItem request)
+      throws ProtocolException {
+
+    Set<UserId> userIds = request.getUsers();
+    Set<String> userIdsToDelete = ImmutableSet.copyOf(request.getListParameter("userIds"));
+    GroupId groupId = request.getGroup();
+    HandlerPreconditions.requireNotEmpty(userIds, "No userId specified");
+    HandlerPreconditions.requireSingular(userIds, "Multiple userIds not supported");
+    HandlerPreconditions.requireNotEmpty(userIdsToDelete, "No userId to be removed from the group specified");
+    HandlerPreconditions.requireNotEmpty( Lists.<Object>newArrayList( groupId ), "No groupId specified" );
+    HandlerPreconditions.requireSingular( Lists.<Object>newArrayList(groupId), "Multiple groupIds not supported");
+
+    // Throws exceptions if userIds contains more than one element or zero elements
+    return this.groupService.removeGroupUser( groupId, userIdsToDelete );
   }
 }

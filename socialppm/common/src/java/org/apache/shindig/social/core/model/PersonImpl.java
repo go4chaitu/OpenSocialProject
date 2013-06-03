@@ -74,7 +74,7 @@ public class PersonImpl implements Person {
   private List<Enum<LookingFor>> lookingFor;
   private List<String> movies;
   private List<String> music;
-  private Name name;
+  private NameImpl name;
   private Enum<NetworkPresence> networkPresence;
   private String nickname;
   private List<Organization> organizations;
@@ -115,7 +115,7 @@ public class PersonImpl implements Person {
    * @param displayName The displayName of the person
    * @param name The person's name broken down into components
    */
-  public PersonImpl(String id, String displayName, Name name) {
+  public PersonImpl(String id, String displayName, NameImpl name) {
     this.id = id;
     this.displayName = displayName;
     this.name = name;
@@ -404,7 +404,7 @@ public class PersonImpl implements Person {
   }
 
   public void setName(Name name) {
-    this.name = name;
+    this.name = (NameImpl) name;
   }
 
   public Enum<NetworkPresence> getNetworkPresence() {

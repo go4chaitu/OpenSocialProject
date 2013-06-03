@@ -24,6 +24,7 @@ import java.util.concurrent.Future;
 import org.apache.shindig.auth.SecurityToken;
 import org.apache.shindig.protocol.ProtocolException;
 import org.apache.shindig.protocol.RestfulCollection;
+import org.apache.shindig.social.opensocial.model.Activity;
 import org.apache.shindig.social.opensocial.model.Group;
 
 /**
@@ -43,4 +44,28 @@ public interface GroupService {
   public Future<RestfulCollection<Group>> getGroups(UserId userId, CollectionOptions options,
     Set<String> fields, SecurityToken token) throws ProtocolException;
 
+  public Future<RestfulCollection<Group>> getFollowings(UserId userId, CollectionOptions options,
+    Set<String> fields, SecurityToken token) throws ProtocolException;
+
+  public Future<Group> getGroup( UserId userId, String groupId, CollectionOptions options, Set<String> fields,
+                                                     SecurityToken token ) throws ProtocolException;
+  /**
+   * Creates the passed in group for the passed in user. Once createGroup is called,
+   * getGroups will be able to return the Group.
+   *
+   * @param userId   The id of the person to create the activity for.
+   * @param fields   The fields to return.
+   * @param group    The group to create.
+   * @param token    A valid SecurityToken
+   * @return a response item containing any errors
+   */
+  public Future<Void> createGroup(UserId userId, Set<String> fields, Group group, SecurityToken token) throws ProtocolException;
+
+  public Future<Void> deleteGroup(UserId userId, GroupId groupId, SecurityToken token) throws ProtocolException;
+
+  public Future<Void> updateGroup(UserId userId, Group group, SecurityToken token) throws ProtocolException;
+
+  public Future<Void> addUserToGroup( GroupId groupId, String userId );
+
+  public Future<Void> removeGroupUser( GroupId groupId, Set<String> userIds );
 }

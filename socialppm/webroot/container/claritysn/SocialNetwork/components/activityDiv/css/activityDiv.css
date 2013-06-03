@@ -1,0 +1,159 @@
+
+.activityEntry {
+    min-height: 100px;
+    height: auto;
+    width: 100%;
+    padding: 0;
+}
+#sn_centerbar_activities {
+    width: 100%;
+    margin-top: 20px;
+}
+.activitycontent {
+    min-height: 70px;
+    width: 98%;
+}
+#activityEntryTemplate, #activitycontentTemplate, #usercommentTemplate, #activitycommentsTemplate {
+  display:none;
+}
+.activityEntry li {
+  display: block;
+  float: left;
+  padding: 0;
+}
+.activitycomments {
+    min-height: 70px;
+    background: #edeff4;
+    width: 80%;
+    margin-left: 80px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.activitycontent_inside {
+    padding: 0;
+}
+.userText {
+    margin-left: 20px;
+    max-width: 70%;
+	min-width: 50%;
+}
+.spanUserText {
+    max-width: 90%;
+    word-wrap: break-word;
+    text-align: left;
+    font-size: 15px;
+    width: 80%;
+}
+.userName {
+    display: block;
+    width: 100%;
+    font-family: sans-serif;
+    font-size: medium;
+    color: #3b5998;
+    margin-bottom: 5px;
+}
+.userActions {
+margin-left: 15px;
+margin-top: 5px;
+min-width: 50%;
+color: #6d84b4;
+font-size: x-small;
+}
+.userActions span {
+  margin-right: 10px;
+  float: left;
+}
+.userActions span:hover {
+    cursor: pointer;
+}
+.usercomment {
+    padding: 0;
+    display: block;
+    width: 100%;
+    float: left;
+    border-bottom: 2px solid white;
+}
+#commentedUserImg {
+    margin-right: 5px;
+    margin-top: 5px;
+}
+#comments_header {
+    max-height: 30px;
+    width: 100%;
+    color: #6d84b4;
+    font-family: serif;
+    font-size: 12px;
+    border-bottom: 3px solid white;
+}
+#comments_header:hover {
+    cursor: pointer;
+}
+#commentText {
+    width: 80%;
+    margin-top: 5px;
+    word-wrap: break-word;  text-align: left;
+    font-size: 12px;
+}
+#commentedUserId {
+    color: #3b5998;
+    font-weight: bold;
+    margin-right: 4px;
+}
+#comments_header span {
+    margin-left: 5px;
+}
+.comment_timestamp {
+    color: #808080;
+    font-size: x-small;
+    margin: 0 4 0 35;
+}
+.comment_liked {
+    color: #6d84b4;  font-size: x-small;
+}
+.comment_liked:hover {
+    cursor: pointer;
+}
+#comments_footer {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+
+
+#addcomment_ta {
+    display: block;
+    float: left;
+    width: 400px;
+    border: 0px;
+    min-height: 30px;
+    font-family: Arial, sans-serif;      font-size: 13px;      overflow: hidden;
+}
+#addcomment_textfield .lbr {
+    line-height: 3px;
+}
+#addcomment_textfield textarea {      padding: 5px;
+      resize: none;}
+#addcomment_textfield .textstuff {
+    resize: none; /* remove this if you want the user to be able to resize it in modern browsers */      overflow: hidden;
+}
+#addcomment_textfield .hiddendiv {
+    display: none;      white-space: pre-wrap;      word-wrap: break-word;      overflow-wrap: break-word; /* future version of deprecated 'word-wrap' */;
+}
+#addcomment_textfield .lbr {
+    line-height: 3px;
+}
+#addcomment_textfield {
+    margin: 0 0 0 80;
+    background: white;
+    border: 1px solid rgb(223, 214, 214);
+    margin-bottom: 10px;
+    width: 420px;
+}
+#addComment_button {
+    display: block;
+    float: left;
+    margin-top: 10px;
+}
+#addComment_button:hover {
+    cursor: pointer;
+}

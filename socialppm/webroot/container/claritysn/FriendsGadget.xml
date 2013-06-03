@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) 2013, CA Inc.  All rights reserved. -->
+<Module>
+	<ModulePrefs title="FriendsGadget!">
+		<Require feature="opensocial-0.9"/>
+		<Require feature="osapi"/>
+		<Require feature="dynamic-height"/>
+	</ModulePrefs>
+	
+	<Content type="html">
+	<![CDATA[
+	<head>
+	<link rel="stylesheet" href="/niku/socialppm/container/claritysn/css/friends.css" />
+	</head>
+	<body> 
+		<script type="text/javascript" src="OpenSocialWrapper.js"></script>
+		<script type="text/javascript" src="/niku/socialppm/container/claritysn/js/friends.js"></script>
+		
+		<script type="text/javascript">
+			social = new OpenSocialWrapper();
+			render = new FriendsRender();
+				
+			function blankToNull(str) {
+				return (str == '' ? null : str);
+			}
+		
+			// Adjusts the window height
+			function refresh() {
+				gadgets.window.adjustHeight();
+			}
+		
+			// Initializes the gadget
+			function init() {
+				render.renderWelcome('welcome', refresh);
+				
+			}
+			
+			gadgets.util.registerOnLoadHandler(init);
+		</script>
+		<div id='welcome'></div>
+	</body>	
+	]]>
+	</Content>
+</Module>

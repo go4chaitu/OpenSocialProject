@@ -6,5 +6,8 @@ function(doc){
         emit(doc.groupmembers[idx], doc.object);
       }
     }
+    if(doc.owner){
+    emit(doc.owner, doc.object);
+    }
   }
 }

@@ -5,7 +5,9 @@ function(doc){
       for(var idx in doc.object.recipients){
         emit(doc.object.recipients[idx], doc.object);
         emit([doc.object.recipients[idx],doc.object.type], doc.object);
-        emit([doc.object.recipients[idx],doc.object.type,doc.object.id], doc.object);
+        emit([doc.object.recipients[idx],doc.collectionId, doc.type], doc.object);
+        emit([doc.object.recipients[idx],doc.object.id, doc.type], doc.object);
+        emit([doc.object.recipients[idx],doc.collectionId, doc.object.id, doc.type], doc.object);
       }
     }
   }

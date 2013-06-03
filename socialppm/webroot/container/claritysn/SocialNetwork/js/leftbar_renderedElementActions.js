@@ -1,0 +1,3 @@
+$(".friendImgClass").click(function(){
+
+});

@@ -1,0 +1,121 @@
+#profile_ul {
+    display: block;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 20px;
+}
+#profile_ul li {
+    display: inline-block;
+    float: left;
+}
+#profile_header {
+    height: 120px;
+    width: 100%;
+    background: #e8ebf2;
+}
+#profile_pic img {
+    margin-top: 10px;
+}
+#profile_nameplate {
+    width: 40%;
+    margin-left: 5px;
+    height: 100%;
+    background: #e8ebf2;
+}
+#profile_nameheader {
+    margin: 7 0 0 10;
+    padding: 2;
+    background: #9db1c4;
+    height: 20px;
+    width: 90%;
+}
+#profile_nameplate ul {
+    padding: 0;
+}
+#profile_namedesc {
+    display: block;
+    width: 90%;
+    height: 63%;
+    padding: 2;
+    background: white;
+    margin: 3 0 0 10;
+}
+
+#profile_contacts {
+    margin: 10 0 0 30;  background: white;
+    height: 100px;
+    width: 25%;
+}
+#profile_nameheader span {
+    font-size: larger;
+    color: rgb(19, 6, 6);
+    font-family: sans-serif;
+    margin-left: 20px;
+}
+#profile_namedesc #designation {
+    display: block;
+    margin-left: 20px;
+    font-size: medium;
+    color: green;
+    line-height: 2em;
+}
+#profile_namedesc #aboutme {
+    margin-left: 20px;
+    font-size: 10px;
+    font-family: monospace;
+}
+#profile_contacts #contacts {
+    display: block;
+    background: #9db1c4;
+    padding: 2;
+    margin-bottom: 10px;
+}
+#contactdetails span {
+    display: block;
+    font-size: small;
+    margin-left: 5px;  color: rgb(2, 16, 122);
+}
+#contactdetails_mobile:before {
+    content: "Mobile:";
+}
+ {
+}
+#profileskills {
+    background: #e8ebf2;
+    min-height: 200px;
+    border-top: 1px solid rgb(207, 200, 200);
+    width: 100%;
+}
+#profileskills_span:before {
+    content: url("/niku/ui/uitk/images/bullet_right.png");
+}
+#profileskills span {
+    display: block;
+    width: 200px;
+}
+#profileskills_header {
+    background: #9db1c4;
+    padding: 3;
+    font-size: x-large;
+    margin-bottom: 10px;
+}
+#profileskills_span {
+    margin: 2 0 0 80;
+}
+#profileactivities {
+    background: #e8ebf2;  min-height: 200px;  border-top: 1px solid rgb(207, 200, 200);  width: 100%;    font-size: x-large;  margin-bottom: 10px;
+}
+#profileactivities_header {
+    background: #9db1c4;
+    width: 200px;
+    padding: 3;  font-size: x-large;  margin-bottom: 10px;
+}
+#profileactivities span {
+    display: block;
+}
+#profileactivities_content {
+    min-height: 100px;
+    margin-left: 50px;
+    width: 90%;
+}

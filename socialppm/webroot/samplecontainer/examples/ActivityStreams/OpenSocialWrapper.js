@@ -119,6 +119,15 @@ function OpenSocialWrapper() {
 		osapi.activitystreams.create(params).execute(callback);
 	}
 
+  this.createGroup = function(groupId, title, description, callback) {
+		var params = {
+			id: groupId,
+			title: title,
+      description: description
+		};
+		osapi.groups.create(params).execute(callback);
+	}
+
 	this.deleteActivityEntryById = function(activityEntryId, callback) {
 		var params = {
 			userId: '@viewer',

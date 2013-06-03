@@ -1,0 +1,267 @@
+#sn_main_content {
+  display: block;
+  float: left;
+  background: #e8ebf2;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: scroll;
+}
+#sn_main_content li {
+  display: block;
+  float: left;
+  padding: 0;
+}
+#sn_header {
+  width: 100%;
+  height: 30px;
+  background: rgb(227, 230, 236);
+  margin-top: 10px;
+}
+#sn_content {
+  background: #e8ebf2;
+  width: 70%;
+  height: 98%;
+  margin-left: 16%;
+}
+#sn_content_ul {
+  display: block;
+}
+#sn_sidebar {
+  background: rgb(255, 255, 255);
+  width: 13%;
+  height: 100%;
+  margin-right: 10px;
+}
+#sn_centerbar {
+  width: 65%;
+  height: 100%;
+  background: #e8ebf2;
+  margin: 0 2 0 2;
+}
+#sn_rightbar {
+  width: 20%;
+  height: 95%;
+}
+#sn_sidebar_sections {
+  display: block;
+  float: left;
+  width: 100%;
+  height: 95%;
+  margin: 0;
+  padding: 0;
+}
+#sn_picture {
+  height: 100px;
+  width: 100%;
+}
+#sn_picture_dtls {
+  background: #e8ebf2;
+  margin-bottom: 10px;
+}
+#sn_picture_dtls #name {
+  color: rgb(42, 0, 173);
+  font-size: 17;
+}
+#sn_picture_dtls {
+  background: #e8ebf2;
+}
+#designation {
+  color: black;
+  font-size: x-small;
+}
+#sn_frnds_ul {
+  display: block;
+  float: left;
+  width: 100%;
+}
+#snfrnds_header_1 {
+  width: 45px;
+  float: left;
+  margin: 3 0 0 1;
+  height: 20px;
+  font-weight: bold;
+  font-size: small;
+}
+#sn_friends {
+  width: 100%;
+  min-height: 80px;
+  background: #e8ebf2;
+  margin: 0;
+}
+#sn_frnds_content, #sn_followings_content {
+  width: 100%;
+  min-height: 80px;
+  background: #e8ebf2;
+}
+#calendar {
+  width: 100%;
+  height: 120px;
+  background: rgb(180, 176, 176);
+  border-bottom: 2px solid rgb(224, 227, 235);
+}
+.socialmenu_header {
+  background: #b4b0b0;
+}
+#sn_friends ul {
+  background: #b4b0b0;
+}
+#sn_friends ul {
+  padding: 0;
+  width: 100%;
+}
+#calendar ul {
+  padding: 0;
+}
+#sn_calendar_header {
+  width: 100%;
+  clear: both;
+  height: 20px;
+  font-weight: bold;
+  margin: 3 0 5 1;
+  font-size: small;
+}
+#sn_calendar_content {
+  width: 100%;
+  height: 130px;
+  background: rgb(255, 255, 255);
+  border-bottom: 1px solid rgb(224, 227, 235);
+}
+#snfrnds_header_2 {
+  float: right;
+  font-size: x-small;
+  margin: 5 0 0 1;
+  color: rgb(19, 19, 20);
+}
+#sn_frnds_header {
+  width: 100%;
+  margin-bottom: 4px;
+}
+#sn_header span {
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: small;
+  margin-left: 30px;
+}
+#sn_header_span {
+  margin-left: 300px;
+  margin-top: 4;
+}
+#sn_header span:after {
+  content: ' \7C ';
+  font-size: small;
+  font-weight: 100;
+  color: rgb(204, 196, 196);
+}
+#sn_header span:hover {
+  cursor: pointer;
+  color: rgb(253, 111, 0);
+}
+#sn_friend_img .frndId:hover {
+  cursor: pointer;
+}
+#sn_picture:hover {
+  cursor: pointer;
+}
+#snfrnds_header_2:hover {
+  cursor: pointer;
+  color: rgb(233, 73, 32);
+}
+#imgSpan {
+  float: left;
+  display: block;
+}
+#imgSpan:hover {
+  cursor: pointer
+}
+#sn_friend_viewall {
+  display: block;
+  clear: both;
+  float: left;
+  font-size: small;
+  font-family: serif;
+  color: black;
+}
+#sn_friend_viewall:before {
+  content: '\3E ';
+  font-size: xx-small;
+}
+#sn_header span:first-child:before {
+  content: '';
+}
+#sn_friend_viewall:hover {
+  cursor: pointer;
+}
+#sn_centerbar_statusupdate {
+  width: 100%;
+  padding: 0;
+}
+#sn_centerbar_sections {
+  padding: 0;
+}
+.frndId {
+  float: left;
+}
+#sn_sidebar_sections {
+  display: block;
+  float: left;
+  width: 100px;
+}
+#sn_sidebar_sections li {
+  display: inline-block;
+  float: left;
+}
+#gadget_sidebar_li {
+  display: inline;
+}
+body {
+  background: #e8ebf2;
+}
+#communityId {
+  color: #003366;
+  display: block;
+  padding: 3;
+  font-size: 11px;
+  font-weight: bold;
+  text-overflow: clip;
+}
+#sn_followings_content {
+  width: 90px;
+}
+#sn_followings_viewall {
+  margin-top: 5px;
+  font-size: 10px;
+  display: block;
+}
+#sn_followings {
+  width: 100%;
+  min-height: 80px;
+  background: #e8ebf2;
+  margin: 0;
+}
+#sn_followings ul {
+  padding: 0;
+  width: 100%;
+  background: #b4b0b0;
+}
+#communityId:hover {
+  cursor: pointer;
+  color: #199eee;
+}
+
+#sn_myactivities {
+  color: #b84500;
+  font-weight: bold;
+  font-size: 12px;
+  margin-bottom: 7px;
+}
+#sn_myactivities:hover {
+  cursor: pointer;
+  font-size: 14px;
+}
+#notification-bar {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+}

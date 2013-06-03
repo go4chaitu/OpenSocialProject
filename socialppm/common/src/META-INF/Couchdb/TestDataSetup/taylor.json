@@ -1,0 +1,34 @@
+{
+   "aboutMe": "I'm friend 1!",
+   "activities": [
+       "swimming",
+       "running"
+   ],
+   "age": 23,
+   "bodyType": {
+       "build": "medium",
+       "eyeColor": "bodyType_eyeColor_1721911537",
+       "hairColor": "bodyType_hairColor_1721911537",
+       "height": 1.841,
+       "weight": 79
+   },
+   "books": [
+       "The Monk who sold his ferrari",
+       "The Alchemist"
+   ],
+   "id": "Taylor",
+   "jobInterests": "Actor",
+   "name": {
+       "formatted": "Taylor"
+   },
+   "nickname": "Taylor",
+   "photos": [
+       {
+           "type": "jpg",
+           "value": "http://127.0.0.1:5984/lightcouch-db-test/6f3c8099f44d45a7ae42ad803e944415/kristina.jpg",
+           "primary": true
+       }
+   ],
+   "isOwner": false,
+   "isViewer": false
+}

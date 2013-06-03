@@ -1,5 +1,12 @@
 function(doc){
   if(doc.type == "activity"){
-    emit([doc.object.userId,doc.type], doc.object);
+    if( !doc.object.appId || doc.object.appId == "" || doc.object.appId == '@friends')
+    {
+      emit(['@friends',doc.object.userId,doc.type], doc.object);
+    }
+    else
+    {
+      emit([doc.object.appId,doc.object.userId,doc.type], doc.object);
+    }
   }
 }
